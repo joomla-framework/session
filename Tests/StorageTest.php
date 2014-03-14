@@ -42,22 +42,29 @@ class StorageTest extends StorageCase
 	/**
 	 * Test getInstance
 	 *
-	 * @todo Implement testGetInstance().
+	 * @covers Storage::getInstance
 	 *
 	 * @return void
 	 */
 	public function testGetInstance()
 	{
 		$className = static::$className;
-		$instance = $className::getInstance();
-		$instanceClass = get_class($instance);
+		$oldInstance = $className::getInstance();
+		$newInstance = $className::getInstance();
+		$instanceClass = get_class($oldInstance);
 
 		// Can't be us because we are abstract
 		$this->assertNotEquals($className, $instanceClass,  __LINE__);
 
 		// Should Default to None
 		$storageClass = 'Joomla\\Session\\Storage\\None';
-		$this->assertInstanceOf($storageClass, $instance, __LINE__);
+		$this->assertInstanceOf($storageClass, $oldInstance, __LINE__);
+
+		// Assert properies and values to be identical
+		$this->assertThat($oldInstance, $this->identicalTo($newInstance));
+
+		// Assert objects to be same
+		$this->assertSame($oldInstance, $newInstance);
 	}
 
 	/**
