@@ -5,4 +5,3 @@ Tests/ export-ignore
 _Tests/ export-ignore
 build/ export-ignore
 phpunit.xml.dist export-ignore
-README.md export-ignore
