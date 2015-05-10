@@ -82,6 +82,69 @@ class DatabaseHandler implements HandlerInterface
 	}
 
 	/**
+	 * Creates the session database table
+	 *
+	 * @return  boolean  True on success, false otherwise
+	 *
+	 * @since   __DEPLOY_VERSION__
+	 * @throws  \RuntimeException
+	 * @throws  \UnexpectedValueException
+	 */
+	public function createDatabaseTable()
+	{
+		switch ($this->db->name)
+		{
+			case 'mysql':
+			case 'mysqli':
+				$filename = 'mysql.sql';
+
+				break;
+
+			case 'postgresql':
+				$filename = 'pgsql.sql';
+
+				break;
+
+			case 'sqlsrv':
+			case 'sqlazure':
+				$filename = 'sqlsrv.sql';
+
+				break;
+
+			case 'sqlite':
+				$filename = 'sqlite.sql';
+
+				break;
+
+			default:
+				throw new \UnexpectedValueException(sprintf('The %s database driver is not supported.', $this->db->name));
+		}
+
+		$path = dirname(dirname(__DIR__)) . '/meta/sql/' . $filename;
+
+		if (!is_readable($path))
+		{
+			throw new \RuntimeException(sprintf('Database schema could not be read from %s.  Please ensure the file exists and is readable.', $path));
+		}
+
+		$queries = $this->db->splitSql(file_get_contents($path));
+
+		foreach ($queries as $query)
+		{
+			try
+			{
+				$this->db->setQuery($query)->execute();
+			}
+			catch (\RuntimeException $exception)
+			{
+				throw new \RuntimeException('Failed to create the session table.', 0, $exception);
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * Destroy a session
 	 *
 	 * @param   integer  $session_id  The session ID being destroyed
