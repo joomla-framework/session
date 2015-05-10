@@ -20,10 +20,14 @@
     "suggest": {
         "joomla/database": "Install joomla/database if you want to use Database session storage."
     },
-    "target-dir": "Joomla/Session",
     "autoload": {
-        "psr-0": {
-            "Joomla\\Session": ""
+    	"psr-4": {
+            "Joomla\\Session\\": "src/"
+    	}
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Joomla\\Session\\Tests\\": "tests/"
         }
     }
 }
