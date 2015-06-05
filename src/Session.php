@@ -54,9 +54,9 @@ class Session implements \IteratorAggregate
 	 * Security policy.
 	 * List of checks that will be done.
 	 *
-	 * Default values:
+	 * Possible values:
 	 * - fix_browser
-	 * - fix_adress
+	 * - fix_address
 	 *
 	 * @var    array
 	 * @since  1.0
@@ -942,7 +942,7 @@ class Session implements \IteratorAggregate
 		}
 
 		// Check for client address
-		if (in_array('fix_adress', $this->security) && isset($_SERVER['REMOTE_ADDR']))
+		if (in_array('fix_address', $this->security) && isset($_SERVER['REMOTE_ADDR']))
 		{
 			$ip = $this->get('session.client.address');
 
