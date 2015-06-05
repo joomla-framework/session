@@ -14,10 +14,8 @@ use Joomla\Input\Input;
 /**
  * Class for managing HTTP sessions
  *
- * Provides access to session-state values as well as session-level
- * settings and lifetime management methods.
- * Based on the standard PHP session handling mechanism it provides
- * more advanced features such as expire timeouts.
+ * Provides access to session-state values as well as session-level settings and lifetime management methods.
+ * Based on the standard PHP session handling mechanism it provides more advanced features such as expire timeouts.
  *
  * @since       1.0
  * @deprecated  The joomla/session package is deprecated
@@ -35,9 +33,17 @@ class Session implements \IteratorAggregate
 	protected $state = 'inactive';
 
 	/**
-	 * Maximum age of unused session in minutes
+	 * Session namespace prefix
 	 *
 	 * @var    string
+	 * @since  __DEPLOY_VERSION__
+	 */
+	protected $prefix = '__';
+
+	/**
+	 * Maximum age of unused session in minutes
+	 *
+	 * @var    integer
 	 * @since  1.0
 	 */
 	protected $expire = 15;
@@ -166,15 +172,14 @@ class Session implements \IteratorAggregate
 	 */
 	public function __get($name)
 	{
-		if ($name === 'storeName' || $name === 'state' || $name === 'expire')
+		if ($name === 'storeName')
 		{
 			return $this->$name;
 		}
 	}
 
 	/**
-	 * Returns the global Session object, only creating it
-	 * if it doesn't already exist.
+	 * Returns the global Session object, only creating it if it doesn't already exist.
 	 *
 	 * @param   string  $handler  The type of session handler.
 	 * @param   array   $options  An array of configuration options (for new sessions only).
@@ -220,9 +225,8 @@ class Session implements \IteratorAggregate
 	/**
 	 * Get a session token, if a token isn't set yet one will be generated.
 	 *
-	 * Tokens are used to secure forms from spamming attacks. Once a token
-	 * has been generated the system will check the post request to see if
-	 * it is present, if not it will invalidate the session.
+	 * Tokens are used to secure forms from spamming attacks. Once a token has been generated the system will check
+	 * the post request to see if it is present, if not it will invalidate the session.
 	 *
 	 * @param   boolean  $forceNew  If true, force a new token to be created
 	 *
@@ -245,8 +249,7 @@ class Session implements \IteratorAggregate
 	}
 
 	/**
-	 * Method to determine if a token exists in the session. If not the
-	 * session will be set to expired
+	 * Method to determine if a token exists in the session. If not the session will be set to expired.
 	 *
 	 * @param   string   $tCheck       Hashed token to be verified
 	 * @param   boolean  $forceExpire  If true, expires the session
@@ -322,24 +325,24 @@ class Session implements \IteratorAggregate
 	}
 
 	/**
-	 * Get the session handlers
+	 * Get the available session handlers
 	 *
 	 * @return  array  An array of available session handlers
 	 *
-	 * @since   1.0
+	 * @since   __DEPLOY_VERSION__
 	 */
-	public static function getStores()
+	public static function getHandlers()
 	{
 		$connectors = array();
 
-		// Get an iterator and loop trough the driver classes.
-		$iterator = new \DirectoryIterator(__DIR__ . '/Storage');
+		// Get an iterator and loop trough the handler classes.
+		$iterator = new \DirectoryIterator(__DIR__ . '/Handler');
 
 		foreach ($iterator as $file)
 		{
 			$fileName = $file->getFilename();
 
-			// Only load for php files.
+			// Only load for PHP files.
 			if (!$file->isFile() || $file->getExtension() != 'php')
 			{
 				continue;
@@ -357,8 +360,8 @@ class Session implements \IteratorAggregate
 			// Sweet!  Our class exists, so now we just need to know if it passes its test method.
 			if ($class::isSupported())
 			{
-				// Connector names should not have file extensions.
-				$connectors[] = str_ireplace('.php', '', $fileName);
+				// Connector names should not have file the handler suffix or the file extension.
+				$connectors[] = str_ireplace('Handler.php', '', $fileName);
 			}
 		}
 
@@ -429,7 +432,7 @@ class Session implements \IteratorAggregate
 	public function get($name, $default = null, $namespace = 'default')
 	{
 		// Add prefix to namespace to avoid collisions
-		$namespace = '__' . $namespace;
+		$namespace = $this->prefix . $namespace;
 
 		if ($this->state !== 'active' && $this->state !== 'expired')
 		{
@@ -461,7 +464,7 @@ class Session implements \IteratorAggregate
 	public function set($name, $value = null, $namespace = 'default')
 	{
 		// Add prefix to namespace to avoid collisions
-		$namespace = '__' . $namespace;
+		$namespace = $this->prefix . $namespace;
 
 		if ($this->state !== 'active')
 		{
@@ -496,7 +499,7 @@ class Session implements \IteratorAggregate
 	public function has($name, $namespace = 'default')
 	{
 		// Add prefix to namespace to avoid collisions.
-		$namespace = '__' . $namespace;
+		$namespace = $this->prefix . $namespace;
 
 		if ($this->state !== 'active')
 		{
@@ -520,7 +523,7 @@ class Session implements \IteratorAggregate
 	public function clear($name, $namespace = 'default')
 	{
 		// Add prefix to namespace to avoid collisions
-		$namespace = '__' . $namespace;
+		$namespace = $this->prefix . $namespace;
 
 		if ($this->state !== 'active')
 		{
@@ -590,7 +593,7 @@ class Session implements \IteratorAggregate
 		{
 			$session_name = session_name();
 
-			// Get the JInputCookie object
+			// Get the Cookie input object
 			$cookie = $this->input->cookie;
 
 			if (is_null($cookie->get($session_name)))
@@ -731,7 +734,7 @@ class Session implements \IteratorAggregate
 	 * Writes session data and ends session
 	 *
 	 * Session data is usually stored after your script terminated without the need
-	 * to call JSession::close(), but as session data is locked to prevent concurrent
+	 * to call {@link Session::close()}, but as session data is locked to prevent concurrent
 	 * writes only one script may operate on a session at any time. When using
 	 * framesets together with sessions you will experience the frames loading one
 	 * by one due to this locking. You can reduce the time needed to load all the
@@ -890,6 +893,11 @@ class Session implements \IteratorAggregate
 		if (isset($options['cookie_path']))
 		{
 			$this->cookie_path = $options['cookie_path'];
+		}
+
+		if (isset($options['prefix']))
+		{
+			$this->prefix = $options['prefix'];
 		}
 
 		if (isset($options['input']) && $options['input'] instanceof Input)
