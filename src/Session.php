@@ -65,7 +65,6 @@ class Session implements \IteratorAggregate
 
 	/**
 	 * Force cookies to be SSL only
-	 * Default  false
 	 *
 	 * @var    boolean
 	 * @since  1.0
@@ -398,14 +397,22 @@ class Session implements \IteratorAggregate
 	 * @param   Input       $input       Input object for the session to use.
 	 * @param   Dispatcher  $dispatcher  Dispatcher object for the session to use.
 	 *
-	 * @return  void.
+	 * @return  void
 	 *
 	 * @since   1.0
 	 */
-	public function initialise(Input $input, DispatcherInterface $dispatcher = null)
+	public function initialise(Input $input = null, DispatcherInterface $dispatcher = null)
 	{
-		$this->input      = $input;
-		$this->dispatcher = $dispatcher;
+		// If injected as options in the constructor, don't overwrite with nulls
+		if ($input instanceof Input)
+		{
+			$this->input = $input;
+		}
+
+		if ($dispatcher instanceof DispatcherInterface)
+		{
+			$this->dispatcher = $dispatcher;
+		}
 	}
 
 	/**
@@ -883,6 +890,16 @@ class Session implements \IteratorAggregate
 		if (isset($options['cookie_path']))
 		{
 			$this->cookie_path = $options['cookie_path'];
+		}
+
+		if (isset($options['input']) && $options['input'] instanceof Input)
+		{
+			$this->input = $options['input'];
+		}
+
+		if (isset($options['dispatcher']) && $options['dispatcher'] instanceof DispatcherInterface)
+		{
+			$this->dispatcher = $options['dispatcher'];
 		}
 
 		// Sync the session maxlifetime
