@@ -10,6 +10,8 @@ namespace Joomla\Session;
 
 use Joomla\Event\DispatcherInterface;
 use Joomla\Input\Input;
+use Joomla\Session\Handler\FilesystemHandler;
+use Joomla\Session\Storage\NativeStorage;
 
 /**
  * Class for managing HTTP sessions
@@ -22,16 +24,6 @@ use Joomla\Input\Input;
  */
 class Session implements SessionInterface
 {
-	/**
-	 * Internal state.
-	 * One of 'inactive'|'active'|'expired'|'destroyed'|'error'
-	 *
-	 * @var    string
-	 * @see    getState()
-	 * @since  1.0
-	 */
-	protected $state = 'inactive';
-
 	/**
 	 * Session namespace prefix
 	 *
@@ -128,12 +120,12 @@ class Session implements SessionInterface
 	/**
 	 * Constructor
 	 *
-	 * @param   string  $store    The type of storage for the session.
-	 * @param   array   $options  Optional parameters
+	 * @param   StorageInterface  $store    A StorageInterface implementation
+	 * @param   array             $options  Optional parameters
 	 *
 	 * @since   1.0
 	 */
-	public function __construct($store = 'none', array $options = array())
+	public function __construct(StorageInterface $store = null, array $options = array())
 	{
 		// Need to destroy any existing sessions started with session.auto_start
 		if (session_id())
@@ -149,9 +141,12 @@ class Session implements SessionInterface
 		ini_set('session.use_only_cookies', '1');
 
 		// Create handler
-		$this->store = Storage::getInstance($store, $options);
+		if (!($store instanceof StorageInterface))
+		{
+			$store = new NativeStorage(new FilesystemHandler);
+		}
 
-		$this->storeName = $store;
+		$this->store = $store;
 
 		// Set options
 		$this->_setOptions($options);
@@ -176,38 +171,6 @@ class Session implements SessionInterface
 		{
 			return $this->$name;
 		}
-	}
-
-	/**
-	 * Returns the global Session object, only creating it if it doesn't already exist.
-	 *
-	 * @param   string  $handler  The type of session handler.
-	 * @param   array   $options  An array of configuration options (for new sessions only).
-	 *
-	 * @return  Session  The Session object.
-	 *
-	 * @since   1.0
-	 */
-	public static function getInstance($handler, array $options = array ())
-	{
-		if (!is_object(self::$instance))
-		{
-			self::$instance = new self($handler, $options);
-		}
-
-		return self::$instance;
-	}
-
-	/**
-	 * Get current state of session
-	 *
-	 * @return  string  The session state
-	 *
-	 * @since   1.0
-	 */
-	public function getState()
-	{
-		return $this->state;
 	}
 
 	/**
@@ -316,12 +279,7 @@ class Session implements SessionInterface
 	 */
 	public function getId()
 	{
-		if ($this->state === 'destroyed')
-		{
-			return null;
-		}
-
-		return session_id();
+		return $this->store->getId();
 	}
 
 	/**
@@ -369,7 +327,7 @@ class Session implements SessionInterface
 	}
 
 	/**
-	 * Shorthand to check if the session is active
+	 * Check if the session is active
 	 *
 	 * @return  boolean
 	 *
@@ -377,7 +335,7 @@ class Session implements SessionInterface
 	 */
 	public function isActive()
 	{
-		return (bool) ($this->state == 'active');
+		return $this->store->isActive();
 	}
 
 	/**
@@ -434,20 +392,7 @@ class Session implements SessionInterface
 		// Add prefix to namespace to avoid collisions
 		$namespace = $this->prefix . $namespace;
 
-		if ($this->state !== 'active' && $this->state !== 'expired')
-		{
-			// @TODO :: generated error here
-			$error = null;
-
-			return $error;
-		}
-
-		if (isset($_SESSION[$namespace][$name]))
-		{
-			return $_SESSION[$namespace][$name];
-		}
-
-		return $default;
+		return $this->store->get($name, $default, $namespace);
 	}
 
 	/**
@@ -466,24 +411,7 @@ class Session implements SessionInterface
 		// Add prefix to namespace to avoid collisions
 		$namespace = $this->prefix . $namespace;
 
-		if ($this->state !== 'active')
-		{
-			// @TODO :: generated error here
-			return null;
-		}
-
-		$old = isset($_SESSION[$namespace][$name]) ? $_SESSION[$namespace][$name] : null;
-
-		if (null === $value)
-		{
-			unset($_SESSION[$namespace][$name]);
-		}
-		else
-		{
-			$_SESSION[$namespace][$name] = $value;
-		}
-
-		return $old;
+		return $this->store->set($name, $value, $namespace);
 	}
 
 	/**
@@ -501,13 +429,7 @@ class Session implements SessionInterface
 		// Add prefix to namespace to avoid collisions.
 		$namespace = $this->prefix . $namespace;
 
-		if ($this->state !== 'active')
-		{
-			// @TODO :: generated error here
-			return null;
-		}
-
-		return isset($_SESSION[$namespace][$name]);
+		return $this->store->has($name, $namespace);
 	}
 
 	/**
@@ -525,21 +447,7 @@ class Session implements SessionInterface
 		// Add prefix to namespace to avoid collisions
 		$namespace = $this->prefix . $namespace;
 
-		if ($this->state !== 'active')
-		{
-			// @TODO :: generated error here
-			return null;
-		}
-
-		$value = null;
-
-		if (isset($_SESSION[$namespace][$name]))
-		{
-			$value = $_SESSION[$namespace][$name];
-			unset($_SESSION[$namespace][$name]);
-		}
-
-		return $value;
+		return $this->store->remove($name, $namespace);
 	}
 
 	/**
@@ -551,14 +459,7 @@ class Session implements SessionInterface
 	 */
 	public function start()
 	{
-		if ($this->state === 'active')
-		{
-			return;
-		}
-
-		$this->_start();
-
-		$this->state = 'active';
+		$this->store->start();
 
 		// Initialise the session
 		$this->_setCounter();

@@ -16,15 +16,6 @@ namespace Joomla\Session;
 interface SessionInterface extends \IteratorAggregate
 {
 	/**
-	 * Get current state of session
-	 *
-	 * @return  string  The session state
-	 *
-	 * @since   __DEPLOY_VERSION__
-	 */
-	public function getState();
-
-	/**
 	 * Get expiration time in minutes
 	 *
 	 * @return  integer  The session expiration time in minutes
@@ -52,7 +43,7 @@ interface SessionInterface extends \IteratorAggregate
 	public function getId();
 
 	/**
-	 * Shorthand to check if the session is active
+	 * Check if the session is active
 	 *
 	 * @return  boolean
 	 *
