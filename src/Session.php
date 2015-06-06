@@ -175,61 +175,6 @@ class Session implements SessionInterface
 	}
 
 	/**
-	 * Get a session token, if a token isn't set yet one will be generated.
-	 *
-	 * Tokens are used to secure forms from spamming attacks. Once a token has been generated the system will check
-	 * the post request to see if it is present, if not it will invalidate the session.
-	 *
-	 * @param   boolean  $forceNew  If true, force a new token to be created
-	 *
-	 * @return  string  The session token
-	 *
-	 * @since   1.0
-	 */
-	public function getToken($forceNew = false)
-	{
-		$token = $this->get('session.token');
-
-		// Create a token
-		if ($token === null || $forceNew)
-		{
-			$token = $this->createToken(12);
-			$this->set('session.token', $token);
-		}
-
-		return $token;
-	}
-
-	/**
-	 * Method to determine if a token exists in the session. If not the session will be set to expired.
-	 *
-	 * @param   string   $tCheck       Hashed token to be verified
-	 * @param   boolean  $forceExpire  If true, expires the session
-	 *
-	 * @return  boolean
-	 *
-	 * @since   1.0
-	 */
-	public function hasToken($tCheck, $forceExpire = true)
-	{
-		// Check if a token exists in the session
-		$tStored = $this->get('session.token');
-
-		// Check token
-		if (($tStored !== $tCheck))
-		{
-			if ($forceExpire)
-			{
-				$this->state = 'expired';
-			}
-
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
 	 * Retrieve an external iterator.
 	 *
 	 * @return  \ArrayIterator  Return an ArrayIterator of $_SESSION.
@@ -756,30 +701,6 @@ class Session implements SessionInterface
 	}
 
 	/**
-	 * Create a token-string
-	 *
-	 * @param   integer  $length  Length of string
-	 *
-	 * @return  string  Generated token
-	 *
-	 * @since   1.0
-	 */
-	protected function createToken($length = 32)
-	{
-		static $chars = '0123456789abcdef';
-		$max = strlen($chars) - 1;
-		$token = '';
-		$name = session_name();
-
-		for ($i = 0; $i < $length; ++$i)
-		{
-			$token .= $chars[(rand(0, $max))];
-		}
-
-		return md5($token . $name);
-	}
-
-	/**
 	 * Set counter of session usage
 	 *
 	 * @return  boolean  True on success
@@ -917,7 +838,6 @@ class Session implements SessionInterface
 			$this->set('session.client.address', null);
 			$this->set('session.client.forwarded', null);
 			$this->set('session.client.browser', null);
-			$this->set('session.token', null);
 		}
 
 		// Check if session has expired
