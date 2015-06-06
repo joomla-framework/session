@@ -25,6 +25,16 @@ use Joomla\Session\Storage\NativeStorage;
 class Session implements SessionInterface
 {
 	/**
+	 * Internal state.
+	 * One of 'inactive'|'active'|'expired'|'destroyed'|'closed'|'error'
+	 *
+	 * @var    string
+	 * @see    getState()
+	 * @since  1.0
+	 */
+	protected $state = 'inactive';
+
+	/**
 	 * Session namespace prefix
 	 *
 	 * @var    string
@@ -43,10 +53,10 @@ class Session implements SessionInterface
 	/**
 	 * The session store object.
 	 *
-	 * @var    Storage
+	 * @var    StorageInterface
 	 * @since  1.0
 	 */
-	protected $store = null;
+	protected $store;
 
 	/**
 	 * Security policy.
@@ -84,22 +94,6 @@ class Session implements SessionInterface
 	 * @since  1.0
 	 */
 	protected $cookie_path;
-
-	/**
-	 * Session instances container.
-	 *
-	 * @var    Session
-	 * @since  1.0
-	 */
-	protected static $instance;
-
-	/**
-	 * The type of storage for the session.
-	 *
-	 * @var    string
-	 * @since  1.0
-	 */
-	protected $storeName;
 
 	/**
 	 * Holds the Input object
@@ -157,23 +151,6 @@ class Session implements SessionInterface
 	}
 
 	/**
-	 * Magic method to get read-only access to properties.
-	 *
-	 * @param   string  $name  Name of property to retrieve
-	 *
-	 * @return  mixed   The value of the property
-	 *
-	 * @since   1.0
-	 */
-	public function __get($name)
-	{
-		if ($name === 'storeName')
-		{
-			return $this->$name;
-		}
-	}
-
-	/**
 	 * Get expiration time in minutes
 	 *
 	 * @return  integer  The session expiration time in minutes
@@ -183,6 +160,18 @@ class Session implements SessionInterface
 	public function getExpire()
 	{
 		return $this->expire;
+	}
+
+	/**
+	 * Get current state of session
+	 *
+	 * @return  string  The session state
+	 *
+	 * @since   1.0
+	 */
+	public function getState()
+	{
+		return $this->state;
 	}
 
 	/**
@@ -249,7 +238,7 @@ class Session implements SessionInterface
 	 */
 	public function getIterator()
 	{
-		return new \ArrayIterator($_SESSION);
+		return new \ArrayIterator($this->all());
 	}
 
 	/**
@@ -261,13 +250,23 @@ class Session implements SessionInterface
 	 */
 	public function getName()
 	{
-		if ($this->state === 'destroyed')
-		{
-			// @TODO : raise error
-			return null;
-		}
+		return $this->store->getName();
+	}
 
-		return session_name();
+	/**
+	 * Set the session name
+	 *
+	 * @param   string  $name  The session name
+	 *
+	 * @return  $this
+	 *
+	 * @since   __DEPLOY_VERSION__
+	 */
+	public function setName($name)
+	{
+		$this->store->setName($name);
+
+		return $this;
 	}
 
 	/**
@@ -280,6 +279,22 @@ class Session implements SessionInterface
 	public function getId()
 	{
 		return $this->store->getId();
+	}
+
+	/**
+	 * Set the session ID
+	 *
+	 * @param   string  $id  The session ID
+	 *
+	 * @return  $this
+	 *
+	 * @since   __DEPLOY_VERSION__
+	 */
+	public function setId($id)
+	{
+		$this->store->setId($id);
+
+		return $this;
 	}
 
 	/**
@@ -335,7 +350,12 @@ class Session implements SessionInterface
 	 */
 	public function isActive()
 	{
-		return $this->store->isActive();
+		if ($this->getState() === 'active')
+		{
+			return $this->store->isActive();
+		}
+
+		return false;
 	}
 
 	/**
@@ -350,6 +370,18 @@ class Session implements SessionInterface
 		$counter = $this->get('session.counter');
 
 		return (bool) ($counter === 1);
+	}
+
+	/**
+	 * Check if the session is started
+	 *
+	 * @return  boolean
+	 *
+	 * @since   __DEPLOY_VERSION__
+	 */
+	public function isStarted()
+	{
+		return $this->store->isStarted();
 	}
 
 	/**
@@ -451,6 +483,40 @@ class Session implements SessionInterface
 	}
 
 	/**
+	 * Clears all variables from the session store
+	 *
+	 * @param   string  $namespace  Namespace to use, default to 'default'
+	 *
+	 * @return  void
+	 *
+	 * @since   __DEPLOY_VERSION__
+	 */
+	public function clear($namespace = 'default')
+	{
+		// Add prefix to namespace to avoid collisions
+		$namespace = $this->prefix . $namespace;
+
+		$this->store->clear($namespace);
+	}
+
+	/**
+	 * Retrieves all variables from the session store
+	 *
+	 * @param   string  $namespace  Namespace to use
+	 *
+	 * @return  array
+	 *
+	 * @since   __DEPLOY_VERSION__
+	 */
+	public function all($namespace = 'default')
+	{
+		// Add prefix to namespace to avoid collisions
+		$namespace = $this->prefix . $namespace;
+
+		return $this->store->all($namespace);
+	}
+
+	/**
 	 * Start a session.
 	 *
 	 * @return  void
@@ -459,7 +525,14 @@ class Session implements SessionInterface
 	 */
 	public function start()
 	{
+		if ($this->isStarted())
+		{
+			return;
+		}
+
 		$this->store->start();
+
+		$this->state = 'active';
 
 		// Initialise the session
 		$this->setCounter();
@@ -486,7 +559,7 @@ class Session implements SessionInterface
 	protected function _start()
 	{
 		// Start session if not started
-		if ($this->state === 'restart')
+		if ($this->getState() === 'restart')
 		{
 			session_regenerate_id(true);
 		}
@@ -503,7 +576,7 @@ class Session implements SessionInterface
 
 				if ($session_clean)
 				{
-					session_id($session_clean);
+					$this->setId($session_clean);
 					$cookie->set($session_name, '', time() - 3600);
 				}
 			}
@@ -540,7 +613,7 @@ class Session implements SessionInterface
 	public function destroy()
 	{
 		// Session was already destroyed
-		if ($this->state === 'destroyed')
+		if ($this->getState() === 'destroyed')
 		{
 			return true;
 		}
@@ -649,7 +722,8 @@ class Session implements SessionInterface
 	 */
 	public function close()
 	{
-		session_write_close();
+		$this->store->close();
+		$this->state = 'closed';
 	}
 
 	/**

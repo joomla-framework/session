@@ -34,6 +34,17 @@ interface SessionInterface extends \IteratorAggregate
 	public function getName();
 
 	/**
+	 * Set the session name
+	 *
+	 * @param   string  $name  The session name
+	 *
+	 * @return  $this
+	 *
+	 * @since   __DEPLOY_VERSION__
+	 */
+	public function setName($name);
+
+	/**
 	 * Get the session ID
 	 *
 	 * @return  string  The session ID
@@ -41,6 +52,17 @@ interface SessionInterface extends \IteratorAggregate
 	 * @since   __DEPLOY_VERSION__
 	 */
 	public function getId();
+
+	/**
+	 * Set the session ID
+	 *
+	 * @param   string  $id  The session ID
+	 *
+	 * @return  $this
+	 *
+	 * @since   __DEPLOY_VERSION__
+	 */
+	public function setId($id);
 
 	/**
 	 * Check if the session is active
@@ -59,6 +81,15 @@ interface SessionInterface extends \IteratorAggregate
 	 * @since   __DEPLOY_VERSION__
 	 */
 	public function isNew();
+
+	/**
+	 * Check if the session is started
+	 *
+	 * @return  boolean
+	 *
+	 * @since   __DEPLOY_VERSION__
+	 */
+	public function isStarted();
 
 	/**
 	 * Get data from the session store
@@ -113,11 +144,24 @@ interface SessionInterface extends \IteratorAggregate
 	/**
 	 * Clears all variables from the session store
 	 *
+	 * @param   string  $namespace  Namespace to use, default to 'default'
+	 *
 	 * @return  void
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function clear();
+	public function clear($namespace = 'default');
+
+	/**
+	 * Retrieves all variables from the session store
+	 *
+	 * @param   string  $namespace  Namespace to use
+	 *
+	 * @return  array
+	 *
+	 * @since   __DEPLOY_VERSION__
+	 */
+	public function all($namespace = 'default');
 
 	/**
 	 * Start a session

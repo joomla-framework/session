@@ -27,15 +27,23 @@ class NativeStorage implements StorageInterface
 	private $active = false;
 
 	/**
+	 * Internal flag identifying whether the session has been closed
+	 *
+	 * @var    boolean
+	 * @since  __DEPLOY_VERSION__
+	 */
+	private $closed = false;
+
+	/**
 	 * Session save handler
 	 *
-	 * @var    \SessionHandlerInterface|HandlerInterface
+	 * @var    \SessionHandlerInterface
 	 * @since  __DEPLOY_VERSION__
 	 */
 	private $handler;
 
 	/**
-	 * Internal flag whether the session has been started
+	 * Internal flag identifying whether the session has been started
 	 *
 	 * @var    boolean
 	 * @since  __DEPLOY_VERSION__
@@ -58,6 +66,20 @@ class NativeStorage implements StorageInterface
 
 		$this->setOptions($options);
 		$this->setHandler($handler);
+	}
+
+	/**
+	 * Retrieves all variables from the session store
+	 *
+	 * @param   string  $namespace  Namespace to use
+	 *
+	 * @return  array
+	 *
+	 * @since   __DEPLOY_VERSION__
+	 */
+	public function all($namespace)
+	{
+		return $_SESSION[$namespace];
 	}
 
 	/**
@@ -87,7 +109,7 @@ class NativeStorage implements StorageInterface
 	 */
 	public function get($name, $default, $namespace)
 	{
-		if (!$this->started)
+		if (!$this->isStarted())
 		{
 			$this->start();
 		}
@@ -148,7 +170,7 @@ class NativeStorage implements StorageInterface
 	 */
 	public function has($name, $namespace)
 	{
-		if (!$this->started)
+		if (!$this->isStarted())
 		{
 			$this->start();
 		}
@@ -165,7 +187,19 @@ class NativeStorage implements StorageInterface
 	 */
 	public function isActive()
 	{
-		return $this->active = \PHP_SESSION_ACTIVE === session_status();
+		return $this->active = session_status() === \PHP_SESSION_ACTIVE;
+	}
+
+	/**
+	 * Check if the session is started
+	 *
+	 * @return  boolean
+	 *
+	 * @since   __DEPLOY_VERSION__
+	 */
+	public function isStarted()
+	{
+		return $this->started;
 	}
 
 	/**
@@ -180,7 +214,7 @@ class NativeStorage implements StorageInterface
 	 */
 	public function remove($name, $namespace)
 	{
-		if (!$this->started)
+		if (!$this->isStarted())
 		{
 			$this->start();
 		}
@@ -190,6 +224,22 @@ class NativeStorage implements StorageInterface
 		unset($_SESSION[$namespace][$name]);
 
 		return $old;
+	}
+
+	/**
+	 * Writes session data and ends session
+	 *
+	 * @return  void
+	 *
+	 * @see     session_write_close()
+	 * @since   __DEPLOY_VERSION__
+	 */
+	public function close()
+	{
+		session_write_close();
+
+		$this->closed  = true;
+		$this->started = false;
 	}
 
 	/**
@@ -205,7 +255,7 @@ class NativeStorage implements StorageInterface
 	 */
 	public function set($name, $value = null, $namespace = 'default')
 	{
-		if (!$this->started)
+		if (!$this->isStarted())
 		{
 			$this->start();
 		}
@@ -225,11 +275,70 @@ class NativeStorage implements StorageInterface
 	 * @return  $this
 	 *
 	 * @since   __DEPLOY_VERSION__
+	 * @throws  \RuntimeException
 	 */
 	public function setHandler(\SessionHandlerInterface $handler = null)
 	{
+		// If the handler is an instance of our HandlerInterface, check whether it is supported
+		if ($handler instanceof HandlerInterface)
+		{
+			if (!$handler::isSupported())
+			{
+				throw new \RuntimeException(
+					sprintf(
+						'The "%s" handler is not supported in this environment.',
+						get_class($handler)
+					)
+				);
+			}
+		}
+
 		$this->handler = $handler;
 		session_set_save_handler($this->handler, false);
+
+		return $this;
+	}
+
+	/**
+	 * Set the session ID
+	 *
+	 * @param   string  $id  The session ID
+	 *
+	 * @return  $this
+	 *
+	 * @since   __DEPLOY_VERSION__
+	 * @throws  \LogicException
+	 */
+	public function setId($id)
+	{
+		if ($this->isActive())
+		{
+			throw new \LogicException('Cannot change the ID of an active session');
+		}
+
+		session_id($id);
+
+		return $this;
+	}
+
+	/**
+	 * Set the session name
+	 *
+	 * @param   string  $name  The session name
+	 *
+	 * @return  $this
+	 *
+	 * @since   __DEPLOY_VERSION__
+	 * @throws  \LogicException
+	 */
+	public function setName($name)
+	{
+		if ($this->isActive())
+		{
+			throw new \LogicException('Cannot change the name of an active session');
+		}
+
+		session_name($name);
 
 		return $this;
 	}
@@ -280,12 +389,12 @@ class NativeStorage implements StorageInterface
 	 */
 	public function start()
 	{
-		if ($this->started)
+		if ($this->isStarted())
 		{
 			return true;
 		}
 
-		if (session_status() === \PHP_SESSION_ACTIVE)
+		if ($this->isActive())
 		{
 			throw new \RuntimeException('Failed to start the session: already started by PHP.');
 		}
@@ -303,6 +412,7 @@ class NativeStorage implements StorageInterface
 		}
 
 		$this->isActive();
+		$this->closed  = false;
 		$this->started = true;
 	}
 }

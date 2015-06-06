@@ -25,6 +25,17 @@ interface StorageInterface
 	public function getName();
 
 	/**
+	 * Set the session name
+	 *
+	 * @param   string  $name  The session name
+	 *
+	 * @return  $this
+	 *
+	 * @since   __DEPLOY_VERSION__
+	 */
+	public function setName($name);
+
+	/**
 	 * Get the session ID
 	 *
 	 * @return  string  The session ID
@@ -34,6 +45,17 @@ interface StorageInterface
 	public function getId();
 
 	/**
+	 * Set the session ID
+	 *
+	 * @param   string  $id  The session ID
+	 *
+	 * @return  $this
+	 *
+	 * @since   __DEPLOY_VERSION__
+	 */
+	public function setId($id);
+
+	/**
 	 * Check if the session is active
 	 *
 	 * @return  boolean
@@ -41,6 +63,15 @@ interface StorageInterface
 	 * @since   __DEPLOY_VERSION__
 	 */
 	public function isActive();
+
+	/**
+	 * Check if the session is started
+	 *
+	 * @return  boolean
+	 *
+	 * @since   __DEPLOY_VERSION__
+	 */
+	public function isStarted();
 
 	/**
 	 * Get data from the session store
@@ -104,6 +135,17 @@ interface StorageInterface
 	public function clear($namespace);
 
 	/**
+	 * Retrieves all variables from the session store
+	 *
+	 * @param   string  $namespace  Namespace to use
+	 *
+	 * @return  array
+	 *
+	 * @since   __DEPLOY_VERSION__
+	 */
+	public function all($namespace);
+
+	/**
 	 * Start a session
 	 *
 	 * @return  void
@@ -111,4 +153,14 @@ interface StorageInterface
 	 * @since   __DEPLOY_VERSION__
 	 */
 	public function start();
+
+	/**
+	 * Writes session data and ends session
+	 *
+	 * @return  void
+	 *
+	 * @see     session_write_close()
+	 * @since   __DEPLOY_VERSION__
+	 */
+	public function close();
 }
