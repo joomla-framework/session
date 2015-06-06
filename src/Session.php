@@ -586,10 +586,8 @@ class Session implements SessionInterface
 		 * Write and Close handlers are called after destructing objects since PHP 5.0.5.
 		 * Thus destructors can use sessions but session handler can't use objects.
 		 * So we are moving session closure before destructing objects.
-		 *
-		 * Replace with session_register_shutdown() when dropping compatibility with PHP 5.3
 		 */
-		register_shutdown_function('session_write_close');
+		session_register_shutdown();
 
 		session_cache_limiter('none');
 		session_start();
