@@ -149,9 +149,9 @@ class Session implements SessionInterface
 		$this->store = $store;
 
 		// Set options
-		$this->_setOptions($options);
+		$this->setOptions($options);
 
-		$this->_setCookieParams();
+		$this->setCookieParams();
 
 		$this->state = 'inactive';
 	}
@@ -204,7 +204,7 @@ class Session implements SessionInterface
 		// Create a token
 		if ($token === null || $forceNew)
 		{
-			$token = $this->_createToken(12);
+			$token = $this->createToken(12);
 			$this->set('session.token', $token);
 		}
 
@@ -462,11 +462,11 @@ class Session implements SessionInterface
 		$this->store->start();
 
 		// Initialise the session
-		$this->_setCounter();
-		$this->_setTimers();
+		$this->setCounter();
+		$this->setTimers();
 
 		// Perform security checks
-		$this->_validate();
+		$this->validate();
 
 		if ($this->dispatcher instanceof DispatcherInterface)
 		{
@@ -588,11 +588,11 @@ class Session implements SessionInterface
 
 		// Regenerate session id
 		session_regenerate_id(true);
-		$this->_start();
+		//$this->_start();
 		$this->state = 'active';
 
-		$this->_validate();
-		$this->_setCounter();
+		$this->validate();
+		$this->setCounter();
 
 		return true;
 	}
@@ -659,7 +659,7 @@ class Session implements SessionInterface
 	 *
 	 * @since   1.0
 	 */
-	protected function _setCookieParams()
+	protected function setCookieParams()
 	{
 		$cookie = session_get_cookie_params();
 
@@ -690,7 +690,7 @@ class Session implements SessionInterface
 	 *
 	 * @since   1.0
 	 */
-	protected function _createToken($length = 32)
+	protected function createToken($length = 32)
 	{
 		static $chars = '0123456789abcdef';
 		$max = strlen($chars) - 1;
@@ -712,7 +712,7 @@ class Session implements SessionInterface
 	 *
 	 * @since   1.0
 	 */
-	protected function _setCounter()
+	protected function setCounter()
 	{
 		$counter = $this->get('session.counter', 0);
 		++$counter;
@@ -729,7 +729,7 @@ class Session implements SessionInterface
 	 *
 	 * @since   1.0
 	 */
-	protected function _setTimers()
+	protected function setTimers()
 	{
 		if (!$this->has('session.timer.start'))
 		{
@@ -755,7 +755,7 @@ class Session implements SessionInterface
 	 *
 	 * @since   1.0
 	 */
-	protected function _setOptions(array $options)
+	protected function setOptions(array $options)
 	{
 		// Set name
 		if (isset($options['name']))
@@ -833,7 +833,7 @@ class Session implements SessionInterface
 	 * @see     http://shiflett.org/articles/the-truth-about-sessions
 	 * @since   1.0
 	 */
-	protected function _validate($restart = false)
+	protected function validate($restart = false)
 	{
 		// Allow to restart a session
 		if ($restart)
