@@ -20,7 +20,7 @@ use Joomla\Input\Input;
  * @since       1.0
  * @deprecated  The joomla/session package is deprecated
  */
-class Session implements \IteratorAggregate
+class Session implements SessionInterface
 {
 	/**
 	 * Internal state.
@@ -511,16 +511,16 @@ class Session implements \IteratorAggregate
 	}
 
 	/**
-	 * Unset data from the session store
+	 * Unset a variable from the session store
 	 *
 	 * @param   string  $name       Name of variable
 	 * @param   string  $namespace  Namespace to use, default to 'default'
 	 *
 	 * @return  mixed   The value from session or NULL if not set
 	 *
-	 * @since   1.0
+	 * @since   __DEPLOY_VERSION__
 	 */
-	public function clear($name, $namespace = 'default')
+	public function remove($name, $namespace = 'default')
 	{
 		// Add prefix to namespace to avoid collisions
 		$namespace = $this->prefix . $namespace;
