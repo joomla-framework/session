@@ -404,7 +404,7 @@ class NativeStorage implements StorageInterface
 	{
 		if ($this->isStarted())
 		{
-			return true;
+			return;
 		}
 
 		if ($this->isActive())
