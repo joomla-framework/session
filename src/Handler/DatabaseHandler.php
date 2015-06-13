@@ -131,13 +131,18 @@ class DatabaseHandler implements HandlerInterface
 
 		foreach ($queries as $query)
 		{
-			try
+			$query = trim($query);
+
+			if ($query !== '')
 			{
-				$this->db->setQuery($query)->execute();
-			}
-			catch (\RuntimeException $exception)
-			{
-				throw new \RuntimeException('Failed to create the session table.', 0, $exception);
+				try
+				{
+					$this->db->setQuery($query)->execute();
+				}
+				catch (\RuntimeException $exception)
+				{
+					throw new \RuntimeException('Failed to create the session table.', 0, $exception);
+				}
 			}
 		}
 
@@ -236,7 +241,7 @@ class DatabaseHandler implements HandlerInterface
 			$query = $this->db->getQuery(true)
 				->select($this->db->quoteName('data'))
 				->from($this->db->quoteName('#__session'))
-				->where($this->db->quoteName('session_id') . ' = ' . $this->db->quote($id));
+				->where($this->db->quoteName('session_id') . ' = ' . $this->db->quote($session_id));
 
 			$this->db->setQuery($query);
 
@@ -262,13 +267,31 @@ class DatabaseHandler implements HandlerInterface
 	{
 		try
 		{
+			// Figure out if a row exists for the session ID
 			$query = $this->db->getQuery(true)
-				->update($this->db->quoteName('#__session'))
-				->set($this->db->quoteName('data') . ' = ' . $this->db->quote($session_data))
-				->set($this->db->quoteName('time') . ' = ' . $this->db->quote((int) time()))
+				->select($this->db->quoteName('session_id'))
+				->from($this->db->quoteName('#__session'))
 				->where($this->db->quoteName('session_id') . ' = ' . $this->db->quote($session_id));
 
-			// Try to update the session data in the database table.
+			$idExists = $this->db->setQuery($query)->loadResult();
+
+			$query = $this->db->getQuery(true);
+
+			if ($idExists)
+			{
+				$query->update($this->db->quoteName('#__session'))
+					->set($this->db->quoteName('data') . ' = ' . $this->db->quote($session_data))
+					->set($this->db->quoteName('time') . ' = ' . $this->db->quote((int) time()))
+					->where($this->db->quoteName('session_id') . ' = ' . $this->db->quote($session_id));
+			}
+			else
+			{
+				$query->insert($this->db->quoteName('#__session'))
+					->columns(array($this->db->quoteName('data'), $this->db->quoteName('time'), $this->db->quoteName('session_id')))
+					->values(implode(', ', array($this->db->quote($session_data), (int) time(), $this->db->quote($session_id))));
+			}
+
+			// Try to insert the session data in the database table.
 			$this->db->setQuery($query)->execute();
 
 			return true;

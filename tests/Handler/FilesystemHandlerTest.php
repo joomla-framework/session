@@ -21,16 +21,20 @@ class FilesystemHandlerTest extends \PHPUnit_Framework_TestCase
 		// Make sure the handler is supported in this environment
 		if (!FilesystemHandler::isSupported())
 		{
-			self::markTestSkipped('The FilesystemHandler is unsupported in this environment.');
+			static::markTestSkipped('The FilesystemHandler is unsupported in this environment.');
 		}
 	}
 
+	/**
+	 * @covers  Joomla\Session\Handler\FilesystemHandler::isSupported()
+	 */
 	public function testTheHandlerIsSupported()
 	{
 		$this->assertTrue(FilesystemHandler::isSupported());
 	}
 
 	/**
+	 * @covers             Joomla\Session\Handler\FilesystemHandler::__construct()
 	 * @expectedException  \InvalidArgumentException
 	 */
 	public function testTheHandlerHandlesAnInvalidPath()
@@ -38,6 +42,9 @@ class FilesystemHandlerTest extends \PHPUnit_Framework_TestCase
 		new FilesystemHandler('totally;invalid;string;for;this;object');
 	}
 
+	/**
+	 * @covers  Joomla\Session\Handler\FilesystemHandler::__construct()
+	 */
 	public function testTheHandlerIsInstantiatedCorrectly()
 	{
 		$handler = new FilesystemHandler;
@@ -45,6 +52,9 @@ class FilesystemHandlerTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame('files', ini_get('session.save_handler'));
 	}
 
+	/**
+	 * @covers  Joomla\Session\Handler\FilesystemHandler::__construct()
+	 */
 	public function testTheHandlerIsInstantiatedCorrectlyAndCreatesTheSavePathIfNeeded()
 	{
 		$handler = new FilesystemHandler(__DIR__ . '/savepath');
@@ -61,6 +71,8 @@ class FilesystemHandlerTest extends \PHPUnit_Framework_TestCase
 	 * @param   string  $path              The expected filesystem path for the handler
 	 *
 	 * @dataProvider  savePathDataProvider
+	 *
+	 * @covers  Joomla\Session\Handler\FilesystemHandler::__construct()
 	 */
 	public function testTheHandlerIsInstantiatedCorrectlyAndHandlesAllParametersAsExpected($savePath, $expectedSavePath, $path)
 	{
