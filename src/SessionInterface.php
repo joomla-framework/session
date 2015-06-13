@@ -94,74 +94,66 @@ interface SessionInterface extends \IteratorAggregate
 	/**
 	 * Get data from the session store
 	 *
-	 * @param   string  $name       Name of a variable
-	 * @param   mixed   $default    Default value of a variable if not set
-	 * @param   string  $namespace  Namespace to use, default to 'default'
+	 * @param   string  $name     Name of a variable
+	 * @param   mixed   $default  Default value of a variable if not set
 	 *
 	 * @return  mixed  Value of a variable
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function get($name, $default = null, $namespace = 'default');
+	public function get($name, $default = null);
 
 	/**
 	 * Set data into the session store
 	 *
-	 * @param   string  $name       Name of a variable.
-	 * @param   mixed   $value      Value of a variable.
-	 * @param   string  $namespace  Namespace to use, default to 'default'.
+	 * @param   string  $name   Name of a variable.
+	 * @param   mixed   $value  Value of a variable.
 	 *
 	 * @return  mixed  Old value of a variable.
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function set($name, $value = null, $namespace = 'default');
+	public function set($name, $value = null);
 
 	/**
 	 * Check whether data exists in the session store
 	 *
-	 * @param   string  $name       Name of variable
-	 * @param   string  $namespace  Namespace to use, default to 'default'
+	 * @param   string  $name  Name of variable
 	 *
 	 * @return  boolean  True if the variable exists
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function has($name, $namespace = 'default');
+	public function has($name);
 
 	/**
 	 * Unset a variable from the session store
 	 *
-	 * @param   string  $name       Name of variable
-	 * @param   string  $namespace  Namespace to use, default to 'default'
+	 * @param   string  $name  Name of variable
 	 *
 	 * @return  mixed   The value from session or NULL if not set
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function remove($name, $namespace = 'default');
+	public function remove($name);
 
 	/**
 	 * Clears all variables from the session store
-	 *
-	 * @param   string  $namespace  Namespace to use, default to 'default'
 	 *
 	 * @return  void
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function clear($namespace = 'default');
+	public function clear();
 
 	/**
 	 * Retrieves all variables from the session store
-	 *
-	 * @param   string  $namespace  Namespace to use
 	 *
 	 * @return  array
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function all($namespace = 'default');
+	public function all();
 
 	/**
 	 * Start a session

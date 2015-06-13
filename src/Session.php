@@ -19,8 +19,7 @@ use Joomla\Session\Storage\NativeStorage;
  * Provides access to session-state values as well as session-level settings and lifetime management methods.
  * Based on the standard PHP session handling mechanism it provides more advanced features such as expire timeouts.
  *
- * @since       1.0
- * @deprecated  The joomla/session package is deprecated
+ * @since  1.0
  */
 class Session implements SessionInterface
 {
@@ -33,14 +32,6 @@ class Session implements SessionInterface
 	 * @since  1.0
 	 */
 	protected $state = 'inactive';
-
-	/**
-	 * Session namespace prefix
-	 *
-	 * @var    string
-	 * @since  __DEPLOY_VERSION__
-	 */
-	protected $prefix = '__';
 
 	/**
 	 * Maximum age of unused session in minutes
@@ -356,109 +347,83 @@ class Session implements SessionInterface
 	/**
 	 * Get data from the session store
 	 *
-	 * @param   string  $name       Name of a variable
-	 * @param   mixed   $default    Default value of a variable if not set
-	 * @param   string  $namespace  Namespace to use, default to 'default'
+	 * @param   string  $name     Name of a variable
+	 * @param   mixed   $default  Default value of a variable if not set
 	 *
 	 * @return  mixed  Value of a variable
 	 *
 	 * @since   1.0
 	 */
-	public function get($name, $default = null, $namespace = 'default')
+	public function get($name, $default = null)
 	{
-		// Add prefix to namespace to avoid collisions
-		$namespace = $this->prefix . $namespace;
-
-		return $this->store->get($name, $default, $namespace);
+		return $this->store->get($name, $default);
 	}
 
 	/**
 	 * Set data into the session store.
 	 *
-	 * @param   string  $name       Name of a variable.
-	 * @param   mixed   $value      Value of a variable.
-	 * @param   string  $namespace  Namespace to use, default to 'default'.
+	 * @param   string  $name   Name of a variable.
+	 * @param   mixed   $value  Value of a variable.
 	 *
 	 * @return  mixed  Old value of a variable.
 	 *
 	 * @since   1.0
 	 */
-	public function set($name, $value = null, $namespace = 'default')
+	public function set($name, $value = null)
 	{
-		// Add prefix to namespace to avoid collisions
-		$namespace = $this->prefix . $namespace;
-
-		return $this->store->set($name, $value, $namespace);
+		return $this->store->set($name, $value);
 	}
 
 	/**
 	 * Check whether data exists in the session store
 	 *
-	 * @param   string  $name       Name of variable
-	 * @param   string  $namespace  Namespace to use, default to 'default'
+	 * @param   string  $name  Name of variable
 	 *
 	 * @return  boolean  True if the variable exists
 	 *
 	 * @since   1.0
 	 */
-	public function has($name, $namespace = 'default')
+	public function has($name)
 	{
-		// Add prefix to namespace to avoid collisions.
-		$namespace = $this->prefix . $namespace;
-
-		return $this->store->has($name, $namespace);
+		return $this->store->has($name);
 	}
 
 	/**
 	 * Unset a variable from the session store
 	 *
-	 * @param   string  $name       Name of variable
-	 * @param   string  $namespace  Namespace to use, default to 'default'
+	 * @param   string  $name  Name of variable
 	 *
 	 * @return  mixed   The value from session or NULL if not set
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function remove($name, $namespace = 'default')
+	public function remove($name)
 	{
-		// Add prefix to namespace to avoid collisions
-		$namespace = $this->prefix . $namespace;
-
-		return $this->store->remove($name, $namespace);
+		return $this->store->remove($name);
 	}
 
 	/**
 	 * Clears all variables from the session store
 	 *
-	 * @param   string  $namespace  Namespace to use, default to 'default'
-	 *
 	 * @return  void
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function clear($namespace = 'default')
+	public function clear()
 	{
-		// Add prefix to namespace to avoid collisions
-		$namespace = $this->prefix . $namespace;
-
-		$this->store->clear($namespace);
+		$this->store->clear();
 	}
 
 	/**
 	 * Retrieves all variables from the session store
 	 *
-	 * @param   string  $namespace  Namespace to use
-	 *
 	 * @return  array
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function all($namespace = 'default')
+	public function all()
 	{
-		// Add prefix to namespace to avoid collisions
-		$namespace = $this->prefix . $namespace;
-
-		return $this->store->all($namespace);
+		return $this->store->all();
 	}
 
 	/**

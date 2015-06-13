@@ -71,52 +71,47 @@ class NativeStorage implements StorageInterface
 	/**
 	 * Retrieves all variables from the session store
 	 *
-	 * @param   string  $namespace  Namespace to use
-	 *
 	 * @return  array
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function all($namespace)
+	public function all()
 	{
-		return $_SESSION[$namespace];
+		return $_SESSION;
 	}
 
 	/**
 	 * Clears all variables from the session store
 	 *
-	 * @param   string  $namespace  Namespace to use
-	 *
 	 * @return  void
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function clear($namespace)
+	public function clear()
 	{
-		$_SESSION[$namespace] = array();
+		$_SESSION = array();
 	}
 
 	/**
 	 * Get data from the session store
 	 *
-	 * @param   string  $name       Name of a variable
-	 * @param   mixed   $default    Default value of a variable if not set
-	 * @param   string  $namespace  Namespace to use
+	 * @param   string  $name     Name of a variable
+	 * @param   mixed   $default  Default value of a variable if not set
 	 *
 	 * @return  mixed  Value of a variable
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function get($name, $default, $namespace)
+	public function get($name, $default)
 	{
 		if (!$this->isStarted())
 		{
 			$this->start();
 		}
 
-		if (isset($_SESSION[$namespace][$name]))
+		if (isset($_SESSION[$name]))
 		{
-			return $_SESSION[$namespace][$name];
+			return $_SESSION[$name];
 		}
 
 		return $default;
@@ -161,21 +156,20 @@ class NativeStorage implements StorageInterface
 	/**
 	 * Check whether data exists in the session store
 	 *
-	 * @param   string  $name       Name of variable
-	 * @param   string  $namespace  Namespace to use
+	 * @param   string  $name  Name of variable
 	 *
 	 * @return  boolean  True if the variable exists
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function has($name, $namespace)
+	public function has($name)
 	{
 		if (!$this->isStarted())
 		{
 			$this->start();
 		}
 
-		return isset($_SESSION[$namespace][$name]);
+		return isset($_SESSION[$name]);
 	}
 
 	/**
@@ -205,23 +199,22 @@ class NativeStorage implements StorageInterface
 	/**
 	 * Unset a variable from the session store
 	 *
-	 * @param   string $name      Name of variable
-	 * @param   string $namespace Namespace to use
+	 * @param   string  $name  Name of variable
 	 *
-	 * @return  mixed   The value from session or NULL if not set
+	 * @return  mixed  The value from session or NULL if not set
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function remove($name, $namespace)
+	public function remove($name)
 	{
 		if (!$this->isStarted())
 		{
 			$this->start();
 		}
 
-		$old = isset($_SESSION[$namespace][$name]) ? $_SESSION[$namespace][$name] : null;
+		$old = isset($_SESSION[$name]) ? $_SESSION[$name] : null;
 
-		unset($_SESSION[$namespace][$name]);
+		unset($_SESSION[$name]);
 
 		return $old;
 	}
@@ -263,24 +256,23 @@ class NativeStorage implements StorageInterface
 	/**
 	 * Set data into the session store
 	 *
-	 * @param   string $name      Name of a variable.
-	 * @param   mixed  $value     Value of a variable.
-	 * @param   string $namespace Namespace to use, default to 'default'.
+	 * @param   string  $name   Name of a variable.
+	 * @param   mixed   $value  Value of a variable.
 	 *
 	 * @return  mixed  Old value of a variable.
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function set($name, $value = null, $namespace = 'default')
+	public function set($name, $value = null)
 	{
 		if (!$this->isStarted())
 		{
 			$this->start();
 		}
 
-		$old = isset($_SESSION[$namespace][$name]) ? $_SESSION[$namespace][$name] : null;
+		$old = isset($_SESSION[$name]) ? $_SESSION[$name] : null;
 
-		$_SESSION[$namespace][$name] = $value;
+		$_SESSION[$name] = $value;
 
 		return $old;
 	}
