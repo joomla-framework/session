@@ -610,6 +610,11 @@ class Session implements SessionInterface
 		$this->validate();
 		$this->setCounter();
 
+		if ($this->dispatcher instanceof DispatcherInterface)
+		{
+			$this->dispatcher->triggerEvent('onAfterSessionRestart');
+		}
+
 		return true;
 	}
 
