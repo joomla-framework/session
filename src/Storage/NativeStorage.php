@@ -60,6 +60,9 @@ class NativeStorage implements StorageInterface
 	 */
 	public function __construct(\SessionHandlerInterface $handler = null, array $options = array())
 	{
+		// Disable transparent sid support
+		ini_set('session.use_trans_sid', '0');
+
 		ini_set('session.use_cookies', 1);
 		session_cache_limiter('none');
 		session_register_shutdown();
@@ -90,6 +93,22 @@ class NativeStorage implements StorageInterface
 	public function clear()
 	{
 		$_SESSION = array();
+	}
+
+	/**
+	 * Writes session data and ends session
+	 *
+	 * @return  void
+	 *
+	 * @see     session_write_close()
+	 * @since   __DEPLOY_VERSION__
+	 */
+	public function close()
+	{
+		session_write_close();
+
+		$this->closed  = true;
+		$this->started = false;
 	}
 
 	/**
@@ -217,22 +236,6 @@ class NativeStorage implements StorageInterface
 		unset($_SESSION[$name]);
 
 		return $old;
-	}
-
-	/**
-	 * Writes session data and ends session
-	 *
-	 * @return  void
-	 *
-	 * @see     session_write_close()
-	 * @since   __DEPLOY_VERSION__
-	 */
-	public function close()
-	{
-		session_write_close();
-
-		$this->closed  = true;
-		$this->started = false;
 	}
 
 	/**

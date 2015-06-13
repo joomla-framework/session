@@ -112,30 +112,10 @@ class Session implements SessionInterface
 	 */
 	public function __construct(StorageInterface $store = null, array $options = array())
 	{
-		// Need to destroy any existing sessions started with session.auto_start
-		if (session_id())
-		{
-			session_unset();
-			session_destroy();
-		}
-
-		// Disable transparent sid support
-		ini_set('session.use_trans_sid', '0');
-
-		// Only allow the session ID to come from cookies and nothing else.
-		ini_set('session.use_only_cookies', '1');
-
-		// Create handler
-		if (!($store instanceof StorageInterface))
-		{
-			$store = new NativeStorage(new FilesystemHandler);
-		}
-
-		$this->store = $store;
+		$this->store = $store ?: new NativeStorage(new FilesystemHandler);
 
 		// Set options
 		$this->setOptions($options);
-
 		$this->setCookieParams();
 
 		$this->state = 'inactive';
@@ -258,7 +238,7 @@ class Session implements SessionInterface
 			}
 
 			// Derive the class name from the type.
-			$class = str_ireplace('.php', '', '\\Joomla\\Session\\Storage\\' . ucfirst(trim($fileName)));
+			$class = str_ireplace('.php', '', '\\Joomla\\Session\\Handler\\' . ucfirst(trim($fileName)));
 
 			// If the class doesn't exist we have nothing left to do but look at the next type. We did our best.
 			if (!class_exists($class))
