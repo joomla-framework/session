@@ -493,59 +493,11 @@ class Session implements SessionInterface
 	}
 
 	/**
-	 * Start a session.
-	 *
-	 * Creates a session (or resumes the current one based on the state of the session)
-	 *
-	 * @return  boolean  true on success
-	 *
-	 * @since   1.0
-	 */
-	protected function _start()
-	{
-		// Start session if not started
-		if ($this->getState() === 'restart')
-		{
-			session_regenerate_id(true);
-		}
-		else
-		{
-			$session_name = session_name();
-
-			// Get the Cookie input object
-			$cookie = $this->input->cookie;
-
-			if (is_null($cookie->get($session_name)))
-			{
-				$session_clean = $this->input->get($session_name, false, 'string');
-
-				if ($session_clean)
-				{
-					$this->setId($session_clean);
-					$cookie->set($session_name, '', time() - 3600);
-				}
-			}
-		}
-
-		/**
-		 * Write and Close handlers are called after destructing objects since PHP 5.0.5.
-		 * Thus destructors can use sessions but session handler can't use objects.
-		 * So we are moving session closure before destructing objects.
-		 */
-		session_register_shutdown();
-
-		session_cache_limiter('none');
-		session_start();
-
-		return true;
-	}
-
-	/**
 	 * Frees all session variables and destroys all data registered to a session
 	 *
 	 * This method resets the $_SESSION variable and destroys all of the data associated
 	 * with the current session in its storage (file or DB). It forces new session to be
-	 * started after this method is called. It does not unset the session cookie.
+	 * started after this method is called.
 	 *
 	 * @return  boolean  True on success
 	 *
@@ -561,18 +513,8 @@ class Session implements SessionInterface
 			return true;
 		}
 
-		/*
-		 * In order to kill the session altogether, such as to log the user out, the session id
-		 * must also be unset. If a cookie is used to propagate the session id (default behavior),
-		 * then the session cookie must be deleted.
-		 */
-		if (isset($_COOKIE[session_name()]))
-		{
-			setcookie(session_name(), '', time() - 42000, $this->cookie_path, $this->cookie_domain);
-		}
-
-		session_unset();
-		session_destroy();
+		$this->clear();
+		$this->fork(true);
 
 		$this->state = 'destroyed';
 
@@ -589,26 +531,29 @@ class Session implements SessionInterface
 	 */
 	public function restart()
 	{
+		// Backup existing session data
+		$data = $this->all();
+
 		$this->destroy();
 
-		if ($this->state !== 'destroyed')
+		if ($this->getState() !== 'destroyed')
 		{
 			// @TODO :: generated error here
 			return false;
 		}
 
-		// Re-register the session handler after a session has been destroyed, to avoid PHP bug
-		$this->store->register();
+		// Restart the session
+		$this->store->start();
 
-		$this->state = 'restart';
-
-		// Regenerate session id
-		session_regenerate_id(true);
-		//$this->_start();
-		$this->state = 'active';
-
-		$this->validate();
 		$this->setCounter();
+		$this->setTimers();
+		$this->validate(true);
+
+		// Restore the data
+		foreach ($data as $key => $value)
+		{
+			$this->set($key, $value);
+		}
 
 		if ($this->dispatcher instanceof DispatcherInterface)
 		{
@@ -621,33 +566,27 @@ class Session implements SessionInterface
 	/**
 	 * Create a new session and copy variables from the old one
 	 *
-	 * @return  boolean $result true on success
+	 * @param   boolean  $destroy  Whether to delete the old session or leave it to garbage collection.
+	 *
+	 * @return  boolean  True on success
 	 *
 	 * @since   1.0
 	 */
-	public function fork()
+	public function fork($destroy = false)
 	{
-		if ($this->state !== 'active')
+		if ($this->getState() !== 'active')
 		{
 			// @TODO :: generated error here
 			return false;
 		}
 
-		// Keep session config
-		$cookie = session_get_cookie_params();
+		$this->store->regenerate($destroy);
 
-		// Kill session
-		session_destroy();
-
-		// Re-register the session store after a session has been destroyed, to avoid PHP bug
-		$this->store->register();
-
-		// Restore config
-		session_set_cookie_params($cookie['lifetime'], $cookie['path'], $cookie['domain'], $cookie['secure'], true);
-
-		// Restart session with new id
-		session_regenerate_id(true);
-		session_start();
+		if ($destroy)
+		{
+			$this->setCounter();
+			$this->setTimers();
+		}
 
 		return true;
 	}
@@ -758,13 +697,13 @@ class Session implements SessionInterface
 		// Set name
 		if (isset($options['name']))
 		{
-			session_name(md5($options['name']));
+			$this->setName($options['name']);
 		}
 
 		// Set id
 		if (isset($options['id']))
 		{
-			session_id($options['id']);
+			$this->setId($options['id']);
 		}
 
 		// Set expire time

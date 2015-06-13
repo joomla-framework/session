@@ -155,6 +155,21 @@ interface StorageInterface
 	public function start();
 
 	/**
+	 * Regenerates the session ID that represents this storage.
+	 *
+	 * This method must invoke session_regenerate_id($destroy) unless this interface is used for a storage object designed for unit
+	 * or functional testing where a real PHP session would interfere with testing.
+	 *
+	 * @param   boolean  $destroy  Destroy session when regenerating?
+	 *
+	 * @return  boolean  True on success
+	 *
+	 * @see     session_regenerate_id()
+	 * @since   __DEPLOY_VERSION__
+	 */
+	public function regenerate($destroy = false);
+
+	/**
 	 * Writes session data and ends session
 	 *
 	 * @return  void
