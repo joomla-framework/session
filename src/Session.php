@@ -10,6 +10,7 @@ namespace Joomla\Session;
 
 use Joomla\Event\DispatcherAwareInterface;
 use Joomla\Event\DispatcherInterface;
+use Joomla\Event\Event;
 use Joomla\Session\Handler\FilesystemHandler;
 use Joomla\Session\Storage\NativeStorage;
 
@@ -397,7 +398,8 @@ class Session implements SessionInterface, DispatcherAwareInterface
 
 		if ($this->dispatcher instanceof DispatcherInterface)
 		{
-			$this->dispatcher->triggerEvent('onAfterSessionStart');
+			$event = (new Event('onAfterSessionStart'))->setArgument('session', $this);
+			$this->dispatcher->triggerEvent($event);
 		}
 	}
 
@@ -466,7 +468,8 @@ class Session implements SessionInterface, DispatcherAwareInterface
 
 		if ($this->dispatcher instanceof DispatcherInterface)
 		{
-			$this->dispatcher->triggerEvent('onAfterSessionRestart');
+			$event = (new Event('onAfterSessionRestart'))->setArgument('session', $this);
+			$this->dispatcher->triggerEvent($event);
 		}
 
 		return true;
