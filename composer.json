@@ -7,8 +7,6 @@
     "license": "GPL-2.0+",
     "require": {
         "php": ">=5.4",
-        "joomla/input": "~1.2",
-        "joomla/filter": "~1.1",
         "joomla/event": "2.0.*@dev"
     },
     "require-dev": {

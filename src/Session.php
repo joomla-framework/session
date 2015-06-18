@@ -9,7 +9,6 @@
 namespace Joomla\Session;
 
 use Joomla\Event\DispatcherInterface;
-use Joomla\Input\Input;
 use Joomla\Session\Handler\FilesystemHandler;
 use Joomla\Session\Storage\NativeStorage;
 
@@ -63,38 +62,6 @@ class Session implements SessionInterface
 	protected $security = array('fix_browser');
 
 	/**
-	 * Force cookies to be SSL only
-	 *
-	 * @var    boolean
-	 * @since  1.0
-	 */
-	protected $force_ssl = false;
-
-	/**
-	 * The domain to use when setting cookies.
-	 *
-	 * @var    mixed
-	 * @since  1.0
-	 */
-	protected $cookie_domain;
-
-	/**
-	 * The path to use when setting cookies.
-	 *
-	 * @var    mixed
-	 * @since  1.0
-	 */
-	protected $cookie_path;
-
-	/**
-	 * Holds the Input object
-	 *
-	 * @var    Input
-	 * @since  1.0
-	 */
-	private $input = null;
-
-	/**
 	 * Holds the Dispatcher object
 	 *
 	 * @var    DispatcherInterface
@@ -116,7 +83,6 @@ class Session implements SessionInterface
 
 		// Set options
 		$this->setOptions($options);
-		$this->setCookieParams();
 
 		$this->state = 'inactive';
 	}
@@ -303,21 +269,14 @@ class Session implements SessionInterface
 	/**
 	 * Check whether this session is currently created
 	 *
-	 * @param   Input       $input       Input object for the session to use.
-	 * @param   Dispatcher  $dispatcher  Dispatcher object for the session to use.
+	 * @param   DispatcherInterface  $dispatcher  DispatcherInterface for the session to use.
 	 *
 	 * @return  void
 	 *
 	 * @since   1.0
 	 */
-	public function initialise(Input $input = null, DispatcherInterface $dispatcher = null)
+	public function initialise(DispatcherInterface $dispatcher = null)
 	{
-		// If injected as options in the constructor, don't overwrite with nulls
-		if ($input instanceof Input)
-		{
-			$this->input = $input;
-		}
-
 		if ($dispatcher instanceof DispatcherInterface)
 		{
 			$this->dispatcher = $dispatcher;
@@ -559,35 +518,6 @@ class Session implements SessionInterface
 	}
 
 	/**
-	 * Set session cookie parameters
-	 *
-	 * @return  void
-	 *
-	 * @since   1.0
-	 */
-	protected function setCookieParams()
-	{
-		$cookie = session_get_cookie_params();
-
-		if ($this->force_ssl)
-		{
-			$cookie['secure'] = true;
-		}
-
-		if ($this->cookie_domain)
-		{
-			$cookie['domain'] = $this->cookie_domain;
-		}
-
-		if ($this->cookie_path)
-		{
-			$cookie['path'] = $this->cookie_path;
-		}
-
-		session_set_cookie_params($cookie['lifetime'], $cookie['path'], $cookie['domain'], $cookie['secure'], true);
-	}
-
-	/**
 	 * Set counter of session usage
 	 *
 	 * @return  boolean  True on success
@@ -661,31 +591,6 @@ class Session implements SessionInterface
 		if (isset($options['security']))
 		{
 			$this->security = explode(',', $options['security']);
-		}
-
-		if (isset($options['force_ssl']))
-		{
-			$this->force_ssl = (bool) $options['force_ssl'];
-		}
-
-		if (isset($options['cookie_domain']))
-		{
-			$this->cookie_domain = $options['cookie_domain'];
-		}
-
-		if (isset($options['cookie_path']))
-		{
-			$this->cookie_path = $options['cookie_path'];
-		}
-
-		if (isset($options['prefix']))
-		{
-			$this->prefix = $options['prefix'];
-		}
-
-		if (isset($options['input']) && $options['input'] instanceof Input)
-		{
-			$this->input = $options['input'];
 		}
 
 		if (isset($options['dispatcher']) && $options['dispatcher'] instanceof DispatcherInterface)

@@ -54,21 +54,16 @@ class SessionTest extends \PHPUnit_Framework_TestCase
 	 * @covers  Joomla\Session\Session::__construct()
 	 * @covers  Joomla\Session\Session::getState()
 	 * @covers  Joomla\Session\Session::isActive()
-	 * @covers  Joomla\Session\Session::setCookieParams()
 	 * @covers  Joomla\Session\Session::setOptions()
 	 */
 	public function testValidateASessionObjectIsCreatedCorrectly()
 	{
-		// Build a mock Input object
-		$mockInput = $this->getMock('\\Joomla\\Input\\Input');
-
 		// Build a mock event dispatcher
 		$mockDispatcher = $this->getMock('\\Joomla\\Event\\DispatcherInterface');
 
-		// Inject these mocks into the new object
+		// Inject the mock into the new object
 		$options = array(
-			'dispatcher' => $mockDispatcher,
-			'input'      => $mockInput
+			'dispatcher' => $mockDispatcher
 		);
 
 		$session = new Session($this->storage, $options);
@@ -119,16 +114,13 @@ class SessionTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testValidateTheDispatcherIsTriggeredWhenTheSessionIsStarted()
 	{
-		// Build a mock Input object
-		$mockInput = $this->getMock('\\Joomla\\Input\\Input');
-
 		// Build a mock event dispatcher
 		$mockDispatcher = $this->getMock('\\Joomla\\Event\\DispatcherInterface');
 		$mockDispatcher->expects($this->once())
 			->method('triggerEvent')
 			->with('onAfterSessionStart');
 
-		$this->session->initialise($mockInput, $mockDispatcher);
+		$this->session->initialise($mockDispatcher);
 
 		// The session should successfully start
 		$this->session->start();
@@ -315,13 +307,10 @@ class SessionTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testValidateTheSessionIsCorrectlyRestarted()
 	{
-		// Build a mock Input object
-		$mockInput = $this->getMock('\\Joomla\\Input\\Input');
-
 		// Build a mock event dispatcher
 		$mockDispatcher = $this->getMock('\\Joomla\\Event\\DispatcherInterface');
 
-		$this->session->initialise($mockInput, $mockDispatcher);
+		$this->session->initialise($mockDispatcher);
 		$this->session->start();
 
 		// Grab the session ID to check in a moment
