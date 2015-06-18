@@ -54,6 +54,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
 	 * @covers  Joomla\Session\Session::__construct()
 	 * @covers  Joomla\Session\Session::getState()
 	 * @covers  Joomla\Session\Session::isActive()
+	 * @covers  Joomla\Session\Session::setDispatcher()
 	 * @covers  Joomla\Session\Session::setOptions()
 	 */
 	public function testValidateASessionObjectIsCreatedCorrectly()
@@ -61,12 +62,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
 		// Build a mock event dispatcher
 		$mockDispatcher = $this->getMock('\\Joomla\\Event\\DispatcherInterface');
 
-		// Inject the mock into the new object
-		$options = array(
-			'dispatcher' => $mockDispatcher
-		);
-
-		$session = new Session($this->storage, $options);
+		$session = new Session($this->storage, $mockDispatcher);
 
 		// The state should be inactive
 		$this->assertSame('inactive', $session->getState());
@@ -105,9 +101,9 @@ class SessionTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Session::initialise()
 	 * @covers  Joomla\Session\Session::isStarted()
 	 * @covers  Joomla\Session\Session::setCounter()
+	 * @covers  Joomla\Session\Session::setDispatcher()
 	 * @covers  Joomla\Session\Session::setTimers()
 	 * @covers  Joomla\Session\Session::start()
 	 * @covers  Joomla\Session\Session::validate()
@@ -120,7 +116,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
 			->method('triggerEvent')
 			->with('onAfterSessionStart');
 
-		$this->session->initialise($mockDispatcher);
+		$this->session->setDispatcher($mockDispatcher);
 
 		// The session should successfully start
 		$this->session->start();
@@ -299,9 +295,9 @@ class SessionTest extends \PHPUnit_Framework_TestCase
 
 	/**
 	 * @covers  Joomla\Session\Session::restart()
+	 * @covers  Joomla\Session\Session::setDispatcher()
 	 * @covers  Joomla\Session\Session::validate()
 	 * @uses    Joomla\Session\Session::getId()
-	 * @uses    Joomla\Session\Session::initialise()
 	 * @uses    Joomla\Session\Session::set()
 	 * @uses    Joomla\Session\Session::start()
 	 */
@@ -310,7 +306,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
 		// Build a mock event dispatcher
 		$mockDispatcher = $this->getMock('\\Joomla\\Event\\DispatcherInterface');
 
-		$this->session->initialise($mockDispatcher);
+		$this->session->setDispatcher($mockDispatcher);
 		$this->session->start();
 
 		// Grab the session ID to check in a moment

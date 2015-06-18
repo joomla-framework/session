@@ -8,6 +8,7 @@
 
 namespace Joomla\Session;
 
+use Joomla\Event\DispatcherAwareInterface;
 use Joomla\Event\DispatcherInterface;
 use Joomla\Session\Handler\FilesystemHandler;
 use Joomla\Session\Storage\NativeStorage;
@@ -20,7 +21,7 @@ use Joomla\Session\Storage\NativeStorage;
  *
  * @since  1.0
  */
-class Session implements SessionInterface
+class Session implements SessionInterface, DispatcherAwareInterface
 {
 	/**
 	 * Internal state.
@@ -72,16 +73,21 @@ class Session implements SessionInterface
 	/**
 	 * Constructor
 	 *
-	 * @param   StorageInterface  $store    A StorageInterface implementation
-	 * @param   array             $options  Optional parameters
+	 * @param   StorageInterface     $store    A StorageInterface implementation
+	 * @param   DispatcherInterface  $dispatcher  DispatcherInterface for the session to use.
+	 * @param   array                $options  Optional parameters
 	 *
 	 * @since   1.0
 	 */
-	public function __construct(StorageInterface $store = null, array $options = array())
+	public function __construct(StorageInterface $store = null, DispatcherInterface $dispatcher = null, array $options = array())
 	{
 		$this->store = $store ?: new NativeStorage(new FilesystemHandler);
 
-		// Set options
+		if ($dispatcher)
+		{
+			$this->setDispatcher($dispatcher);
+		}
+
 		$this->setOptions($options);
 
 		$this->state = 'inactive';
@@ -180,6 +186,22 @@ class Session implements SessionInterface
 	}
 
 	/**
+	 * Set the dispatcher to use.
+	 *
+	 * @param   DispatcherInterface  $dispatcher  The dispatcher to use.
+	 *
+	 * @return  $this
+	 *
+	 * @since   __DEPLOY_VERSION__
+	 */
+	public function setDispatcher(DispatcherInterface $dispatcher)
+	{
+		$this->dispatcher = $dispatcher;
+
+		return $this;
+	}
+
+	/**
 	 * Get the available session handlers
 	 *
 	 * @return  array  An array of available session handlers
@@ -264,23 +286,6 @@ class Session implements SessionInterface
 	public function isStarted()
 	{
 		return $this->store->isStarted();
-	}
-
-	/**
-	 * Check whether this session is currently created
-	 *
-	 * @param   DispatcherInterface  $dispatcher  DispatcherInterface for the session to use.
-	 *
-	 * @return  void
-	 *
-	 * @since   1.0
-	 */
-	public function initialise(DispatcherInterface $dispatcher = null)
-	{
-		if ($dispatcher instanceof DispatcherInterface)
-		{
-			$this->dispatcher = $dispatcher;
-		}
 	}
 
 	/**
@@ -591,11 +596,6 @@ class Session implements SessionInterface
 		if (isset($options['security']))
 		{
 			$this->security = explode(',', $options['security']);
-		}
-
-		if (isset($options['dispatcher']) && $options['dispatcher'] instanceof DispatcherInterface)
-		{
-			$this->dispatcher = $options['dispatcher'];
 		}
 
 		// Sync the session maxlifetime
