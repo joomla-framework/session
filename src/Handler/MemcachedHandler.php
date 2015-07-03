@@ -26,15 +26,38 @@ class MemcachedHandler implements HandlerInterface
 	private $memcached;
 
 	/**
+	 * Session ID prefix to avoid naming conflicts
+	 *
+	 * @var    string
+	 * @since  __DEPLOY_VERSION__
+	 */
+	private $prefix;
+
+	/**
+	 * Time to live in seconds
+	 *
+	 * @var    integer
+	 * @since  __DEPLOY_VERSION__
+	 */
+	private $ttl;
+
+	/**
 	 * Constructor
 	 *
 	 * @param   \Memcached  $memcached  A Memcached instance
+	 * @param   array       $options    Associative array of options to configure the handler
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function __construct(\Memcached $memcached)
+	public function __construct(\Memcached $memcached, array $options = array())
 	{
 		$this->memcached = $memcached;
+
+		// Set the default time-to-live based on the Session object's default configuration
+		$this->ttl = isset($options['ttl']) ? (int) $options['ttl'] : 900;
+
+		// Namespace our session IDs to avoid potential conflicts
+		$this->prefix = isset($options['prefix']) ? $options['prefix'] : 'jfw';
 	}
 
 	/**
@@ -60,7 +83,7 @@ class MemcachedHandler implements HandlerInterface
 	 */
 	public function destroy($session_id)
 	{
-		return $this->memcached->delete($session_id);
+		return $this->memcached->delete($this->prefix . $session_id);
 	}
 
 	/**
@@ -120,7 +143,7 @@ class MemcachedHandler implements HandlerInterface
 	 */
 	public function read($session_id)
 	{
-		return $this->memcached->get($session_id) ?: '';
+		return $this->memcached->get($this->prefix . $session_id) ?: '';
 	}
 
 	/**
@@ -135,6 +158,6 @@ class MemcachedHandler implements HandlerInterface
 	 */
 	public function write($session_id, $session_data)
 	{
-		return $this->memcached->set($session_id, $session_data, 0);
+		return $this->memcached->set($this->prefix . $session_id, $session_data, time() + $this->ttl);
 	}
 }

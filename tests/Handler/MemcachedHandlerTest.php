@@ -29,6 +29,13 @@ class MemcachedHandlerTest extends TestDatabase
 	private $memcached;
 
 	/**
+	 * Options to inject into the handler
+	 *
+	 * @var  array
+	 */
+	private $options = array('prefix' => 'jfwtest_', 'ttl' => 1000);
+
+	/**
 	 * {@inheritdoc}
 	 */
 	protected function setUp()
@@ -41,7 +48,7 @@ class MemcachedHandlerTest extends TestDatabase
 		}
 
 		$this->memcached = $this->getMock('Memcached');
-		$this->handler  = new MemcachedHandler($this->Memcached);
+		$this->handler  = new MemcachedHandler($this->memcached, $this->options);
 	}
 
 	/**
@@ -78,7 +85,7 @@ class MemcachedHandlerTest extends TestDatabase
 	{
 		$this->memcached->expects($this->once())
 			->method('get')
-			->with('id')
+			->with($this->options['prefix'] . 'id')
 			->willReturn('foo');
 
 		$this->assertSame('foo', $this->handler->read('id'));
@@ -91,7 +98,7 @@ class MemcachedHandlerTest extends TestDatabase
 	{
 		$this->memcached->expects($this->once())
 			->method('set')
-			->with('id', 'data', 0)
+			->with($this->options['prefix'] . 'id', 'data', $this->equalTo(time() + $this->options['ttl'], 2))
 			->willReturn(true);
 
 		$this->assertTrue($this->handler->write('id', 'data'));
@@ -104,7 +111,7 @@ class MemcachedHandlerTest extends TestDatabase
 	{
 		$this->memcached->expects($this->once())
 			->method('delete')
-			->with('id')
+			->with($this->options['prefix'] . 'id')
 			->willReturn(true);
 
 		$this->assertTrue($this->handler->destroy('id'));
