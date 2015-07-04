@@ -20,8 +20,8 @@ services:
 before_script:
   - composer install
   - if [[ "$TRAVIS_PHP_VERSION" == "5.4" ]]; then phpenv config-add .travis/phpenv/apc-$TRAVIS_PHP_VERSION.ini; fi;
-  - if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then phpenv config-add .travis/phpenv/memcache.ini; fi;
-  - if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then phpenv config-add .travis/phpenv/memcached.ini; fi;
+  - if [[ "$TRAVIS_PHP_VERSION" != "7.0" ]] && [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then phpenv config-add .travis/phpenv/memcache.ini; fi;
+  - if [[ "$TRAVIS_PHP_VERSION" != "7.0" ]] && [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then phpenv config-add .travis/phpenv/memcached.ini; fi;
 
 script:
   - ./vendor/bin/phpunit
