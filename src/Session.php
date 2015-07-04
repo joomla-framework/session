@@ -74,9 +74,9 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	/**
 	 * Constructor
 	 *
-	 * @param   StorageInterface     $store    A StorageInterface implementation
+	 * @param   StorageInterface     $store       A StorageInterface implementation
 	 * @param   DispatcherInterface  $dispatcher  DispatcherInterface for the session to use.
-	 * @param   array                $options  Optional parameters
+	 * @param   array                $options     Optional parameters
 	 *
 	 * @since   1.0
 	 */
