@@ -7,12 +7,11 @@
 namespace Joomla\Session\Tests\Handler;
 
 use Joomla\Session\Handler\MemcacheHandler;
-use Joomla\Test\TestDatabase;
 
 /**
  * Test class for Joomla\Session\Handler\MemcacheHandler.
  */
-class MemcacheHandlerTest extends TestDatabase
+class MemcacheHandlerTest extends \PHPUnit_Framework_TestCase
 {
 	/**
 	 * MemcacheHandler for testing
