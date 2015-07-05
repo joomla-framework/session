@@ -87,7 +87,7 @@ class ApcHandler implements HandlerInterface
 	 */
 	public static function isSupported()
 	{
-		return extension_loaded('apc');
+		return extension_loaded('apc') && ini_get('apc.enabled');
 	}
 
 	/**
