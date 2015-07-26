@@ -85,7 +85,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 
 		$this->setOptions($options);
 
-		$this->state = 'inactive';
+		$this->setState('inactive');
 	}
 
 	/**
@@ -365,7 +365,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 
 		$this->store->start();
 
-		$this->state = 'active';
+		$this->setState('active');
 
 		// Initialise the session
 		$this->setCounter();
@@ -405,7 +405,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 		$this->clear();
 		$this->fork(true);
 
-		$this->state = 'destroyed';
+		$this->setState('destroyed');
 
 		return true;
 	}
@@ -500,7 +500,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	public function close()
 	{
 		$this->store->close();
-		$this->state = 'closed';
+		$this->setState('closed');
 	}
 
 	/**
@@ -518,6 +518,38 @@ class Session implements SessionInterface, DispatcherAwareInterface
 		$this->set('session.counter', $counter);
 
 		return true;
+	}
+
+	/**
+	 * Set the session expiration
+	 *
+	 * @param   integer  $expire  Maximum age of unused session in minutes
+	 *
+	 * @return  $this
+	 *
+	 * @since   1.3.0
+	 */
+	protected function setExpire($expire)
+	{
+		$this->expire = $expire;
+
+		return $this;
+	}
+
+	/**
+	 * Set the session state
+	 *
+	 * @param   string  $state  Internal state
+	 *
+	 * @return  $this
+	 *
+	 * @since   1.3.0
+	 */
+	protected function setState($state)
+	{
+		$this->state = $state;
+
+		return $this;
 	}
 
 	/**
@@ -570,7 +602,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 		// Set expire time
 		if (isset($options['expire']))
 		{
-			$this->expire = $options['expire'];
+			$this->setExpire($options['expire']);
 		}
 
 		// Get security options
@@ -580,7 +612,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 		}
 
 		// Sync the session maxlifetime
-		ini_set('session.gc_maxlifetime', $this->expire);
+		ini_set('session.gc_maxlifetime', $this->getExpire());
 
 		return true;
 	}
@@ -606,7 +638,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 		// Allow to restart a session
 		if ($restart)
 		{
-			$this->state = 'active';
+			$this->setState('active');
 
 			$this->set('session.client.address', null);
 			$this->set('session.client.forwarded', null);
@@ -622,7 +654,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 			// Empty session variables
 			if ($maxTime < $curTime)
 			{
-				$this->state = 'expired';
+				$this->setState('expired');
 
 				return false;
 			}
@@ -645,7 +677,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 			}
 			elseif ($_SERVER['REMOTE_ADDR'] !== $ip)
 			{
-				$this->state = 'error';
+				$this->setState('error');
 
 				return false;
 			}
