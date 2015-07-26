@@ -9,8 +9,8 @@
 namespace Joomla\Session;
 
 use Joomla\Event\DispatcherAwareInterface;
+use Joomla\Event\DispatcherAwareTrait;
 use Joomla\Event\DispatcherInterface;
-use Joomla\Event\Event;
 use Joomla\Session\Handler\FilesystemHandler;
 use Joomla\Session\Storage\NativeStorage;
 
@@ -24,6 +24,8 @@ use Joomla\Session\Storage\NativeStorage;
  */
 class Session implements SessionInterface, DispatcherAwareInterface
 {
+	use DispatcherAwareTrait;
+
 	/**
 	 * Internal state.
 	 * One of 'inactive'|'active'|'expired'|'destroyed'|'closed'|'error'
@@ -182,22 +184,6 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	public function setId($id)
 	{
 		$this->store->setId($id);
-
-		return $this;
-	}
-
-	/**
-	 * Set the dispatcher to use.
-	 *
-	 * @param   DispatcherInterface  $dispatcher  The dispatcher to use.
-	 *
-	 * @return  $this
-	 *
-	 * @since   __DEPLOY_VERSION__
-	 */
-	public function setDispatcher(DispatcherInterface $dispatcher)
-	{
-		$this->dispatcher = $dispatcher;
 
 		return $this;
 	}
