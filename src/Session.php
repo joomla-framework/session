@@ -66,14 +66,6 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	protected $security = array('fix_browser');
 
 	/**
-	 * Holds the Dispatcher object
-	 *
-	 * @var    DispatcherInterface
-	 * @since  1.0
-	 */
-	private $dispatcher = null;
-
-	/**
 	 * Constructor
 	 *
 	 * @param   StorageInterface     $store       A StorageInterface implementation
