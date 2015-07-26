@@ -22,14 +22,14 @@ A new interface, `SessionInterface` has been added to represent the primary sess
 
 ### HandlerInterface added
 
-A new interface, `HandlerInterface`, has been added as an extension of PHP's native `SessionHandlerInterface`. Classes implementing this
-interface are largely what the `Joomla\Session\Storage` class chain in v1 was handling.
+A new interface, [HandlerInterface](classes/HandlerInterface.md), has been added as an extension of PHP's native `SessionHandlerInterface`.
+Classes implementing this interface are largely what the `Joomla\Session\Storage` class chain in v1 was handling.
 
 ### StorageInterface added
 
-A new interface, `StorageInterface`, has been added to represent a class acting as a session store. A default implementation, `Storage\NativeStorage`,
-is included which stores data to PHP's `$_SESSION` superglobal. Abstracting this logic to a new interface improves the internal
-architecture of the package and enables better testing of the API.
+A new interface, [StorageInterface](classes/StorageInterface.md), has been added to represent a class acting as a session store.
+A default implementation, `Storage\NativeStorage`, is included which stores data to PHP's `$_SESSION` superglobal. Abstracting this
+logic to a new interface improves the internal architecture of the package and enables better testing of the API.
 
 ### Session::getInstance() removed
 
