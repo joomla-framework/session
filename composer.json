@@ -6,24 +6,29 @@
     "homepage": "https://github.com/joomla-framework/session",
     "license": "GPL-2.0+",
     "require": {
-        "php": ">=5.3.10",
-        "joomla/filter": "~1.0",
-        "joomla/event": "~1.1"
+        "php": ">=5.4",
+        "joomla/event": "2.0.*@dev"
     },
     "require-dev": {
-        "joomla/database": "~1.0",
+        "joomla/database": "2.0.*@dev",
+        "joomla/filesystem": "2.0.*@dev",
         "joomla/test": "~1.0",
         "phpunit/phpunit": "4.*",
         "phpunit/dbunit": "~1.2",
         "squizlabs/php_codesniffer": "1.*"
     },
     "suggest": {
-        "joomla/database": "Install joomla/database if you want to use Database session storage."
+        "joomla/database": "Install joomla/database if you want to use Database session storage.",
+        "joomla/filesystem": "Install joomla/filesystem if you want to use file based session storage."
     },
-    "target-dir": "Joomla/Session",
     "autoload": {
-        "psr-0": {
-            "Joomla\\Session": ""
+    	"psr-4": {
+            "Joomla\\Session\\": "src/"
+    	}
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Joomla\\Session\\Tests\\": "tests/"
         }
     }
 }
