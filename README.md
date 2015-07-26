@@ -1,25 +1,21 @@
-# The Session Package [![Build Status](https://travis-ci.org/joomla-framework/session.png?branch=master)](https://travis-ci.org/joomla-framework/session)
+# The Session Package [![Build Status](https://travis-ci.org/joomla-framework/session.png?branch=master)](https://travis-ci.org/joomla-framework/session) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/joomla-framework/session/badges/quality-score.png?b=2.0-dev)](https://scrutinizer-ci.com/g/joomla-framework/session/?branch=2.0-dev)
 
-[![Latest Stable Version](https://poser.pugx.org/joomla/session/v/stable)](https://packagist.org/packages/joomla/session) [![Total Downloads](https://poser.pugx.org/joomla/session/downloads)](https://packagist.org/packages/joomla/session) [![Latest Unstable Version](https://poser.pugx.org/joomla/session/v/unstable)](https://packagist.org/packages/joomla/session) [![License](https://poser.pugx.org/joomla/session/license)](https://packagist.org/packages/joomla/session)
+[![Latest Stable Version](https://poser.pugx.org/joomla/session/v/stable)](https://packagist.org/packages/joomla/session)
+[![Total Downloads](https://poser.pugx.org/joomla/session/downloads)](https://packagist.org/packages/joomla/session)
+[![Latest Unstable Version](https://poser.pugx.org/joomla/session/v/unstable)](https://packagist.org/packages/joomla/session)
+[![License](https://poser.pugx.org/joomla/session/license)](https://packagist.org/packages/joomla/session)
 
-## Deprecated
+The Session package provides an interface for managing sessions within an application.
 
-The `joomla/session` package has been deprecated.  No further updates are planned.
+## Requirements
 
-## Installation via Composer
+* PHP 5.4 or later
+* Joomla [Event](https://github.com/joomla-framework/string) Package 2.0 or later
 
-Add `"joomla/session": "~1.0"` to the require block in your composer.json and then run `composer install`.
+## Installation
 
-```json
-{
-	"require": {
-		"joomla/session": "~1.0"
-	}
-}
-```
-
-Alternatively, you can simply run the following from the command line:
-
+To install the package, you can simply run the following from the command line:
+           
 ```sh
-composer require joomla/session "~1.0"
+composer require joomla/session
 ```
