@@ -30,5 +30,11 @@
         "psr-4": {
             "Joomla\\Session\\Tests\\": "tests/"
         }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-2.0-dev": "2.x-dev"
+        }
     }
+}
 }
