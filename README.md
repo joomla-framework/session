@@ -10,7 +10,6 @@ The Session package provides an interface for managing sessions within an applic
 ## Requirements
 
 * PHP 5.4 or later
-* Joomla [Event](https://github.com/joomla-framework/string) Package 2.0 or later
 
 ## Installation
 
