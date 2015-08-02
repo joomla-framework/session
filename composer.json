@@ -8,7 +8,7 @@
     "require": {
         "php": ">=5.4",
         "joomla/event": "2.0.*@dev",
-		"joomla/input": "2.0.*@dev"
+        "joomla/input": "2.0.*@dev"
     },
     "require-dev": {
         "joomla/database": "2.0.*@dev",
