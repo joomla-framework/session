@@ -24,8 +24,8 @@ The `Session` class triggers events on session start and session restart. You ca
 #### Array of Options
 The session will take an array of options. The following keys are recognised:
 
-* ```name````: Will set the name of the session into the Storage class
-* ```id````: Will set the ID of the session into the Storage class
+* ```name```: Will set the name of the session into the Storage class
+* ```id```: Will set the ID of the session into the Storage class
 * ```expire``` (default 15 minutes) Will be used to set the expiry time for the session
 * ```security``` Security contains an array of which the following values are recognised:
     * ```fix_browser``` (enabled by default) Will check if there are any browser agents located in the ```session.client.browser``` key of your storage engine. The variable in storage will be used to whitelist browsers. If the variable in storage is not set then this check will allow all browsers.
