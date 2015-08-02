@@ -673,7 +673,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 		}
 
 		// Record proxy forwarded for in the session in case we need it later
-		$proxyForwarded = $this->input->server->get('HTTP_X_FORWARDED_FOR', null);
+		$proxyForwarded = $this->input->server->getString('HTTP_X_FORWARDED_FOR', null);
 
 		if ($proxyForwarded)
 		{
@@ -681,7 +681,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 		}
 
 		// Check for client address
-		$remoteServerAddress = $this->input->server->get('REMOTE_ADDR', null);
+		$remoteServerAddress = $this->input->server->getString('REMOTE_ADDR', null);
 
 		if (in_array('fix_address', $this->security) && $remoteServerAddress)
 		{
@@ -700,7 +700,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 		}
 
 		// Check for clients browser
-		$userAgent = $this->input->server->get('HTTP_USER_AGENT', null);
+		$userAgent = $this->input->server->getString('HTTP_USER_AGENT', null);
 
 		if (in_array('fix_browser', $this->security) && $userAgent)
 		{
