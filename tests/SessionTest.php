@@ -34,16 +34,17 @@ class SessionTest extends \PHPUnit_Framework_TestCase
 	 */
 	protected function setUp()
 	{
-		$this->storage = new MockStorage;
-		$mockInput     = $this->getMock('\\Joomla\\Input\\Input');
-				
+		$mockInput = $this->getMock('Joomla\Input\Input', array('get'));
+
 		// Mock the Input object internals
-		$mockServerInput = $this->getMock('Joomla\Input\Input', array('get', 'set'), array(), '', true, true, true, false, true);
+		$mockServerInput = $this->getMock('Joomla\Input\Input', array('get', 'set'));
 		$inputInternals = array(
 			'server' => $mockServerInput
 		);
+
 		TestHelper::setValue($mockInput, 'inputs', $inputInternals);
 
+		$this->storage = new MockStorage;
 		$this->session = new Session($mockInput, $this->storage);
 	}
 

@@ -38,12 +38,12 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	protected $state = 'inactive';
 
 	/**
-	 * The input object.
+	 * The Input object.
 	 *
 	 * @var    Input
-	 * @since  __DEPLOY_VERSION__
+	 * @since  1.0
 	 */
-	protected $input;
+	private $input;
 
 	/**
 	 * Maximum age of unused session in minutes
