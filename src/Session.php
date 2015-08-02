@@ -694,8 +694,9 @@ class Session implements SessionInterface, DispatcherAwareInterface
 			}
 			elseif ($_SERVER['HTTP_USER_AGENT'] !== $browser)
 			{
-				// @todo remove code: 				$this->_state	=	'error';
-				// @todo remove code: 				return false;
+				$this->setState('error');
+
+				return false;
 			}
 		}
 
