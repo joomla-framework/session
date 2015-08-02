@@ -13,7 +13,7 @@ The `Session` class constructor takes 1 compulsory and 3 optional parameters:
  * @param   DispatcherInterface  $dispatcher  DispatcherInterface for the session to use.
  * @param   array                $options     Optional parameters
  */
-public function __construct(StorageInterface $store = null, DispatcherInterface $dispatcher = null, array $options = array())
+public function __construct(Input $input, StorageInterface $store = null, DispatcherInterface $dispatcher = null, array $options = array())
 ```
 
 ### Input Object
