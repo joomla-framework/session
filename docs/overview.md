@@ -29,7 +29,7 @@ The session will take an array of options. The following keys are recognised:
 * ```expire``` (default 15 minutes) Will be used to set the expiry time for the session
 * ```security``` Security contains an array of which the following values are recognised:
     * ```fix_browser``` (enabled by default) Will check if there are any browser agents located in the ```session.client.browser``` key of your storage engine. The variable in storage will be used to whitelist browsers. If the variable in storage is not set then this check will allow all browsers.
-    * ```fix_address``` (disabled by default) Will check if there are any browser agents located in the ```session.client.address``` key of your storage engine. The variable in storage will be used to whitelist IP's. If the variable in storage is not set then this check will allow all IP's.
+    * ```fix_address``` (disabled by default) Will check if there are any IP addresses located in the ```session.client.address``` key of your storage engine. The variable in storage will be used to whitelist IP's. If the variable in storage is not set then this check will allow all IP's.
 
 ### Starting a session
 
