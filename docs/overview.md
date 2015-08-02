@@ -4,16 +4,20 @@ The Session package provides an interface for managing sessions within an applic
 within the package and serves as the primary API for managing a session.
 
 ### Creating your Session object
-The `Session` class constructor takes 3 optional parameters:
+The `Session` class constructor takes 1 compulsory and 3 optional parameters:
 
 ```php
 /**
+ * @param   Input                $input       The input object
  * @param   StorageInterface     $store       A StorageInterface implementation
  * @param   DispatcherInterface  $dispatcher  DispatcherInterface for the session to use.
  * @param   array                $options     Optional parameters
  */
-public function __construct(StorageInterface $store = null, DispatcherInterface $dispatcher = null, array $options = array())
+public function __construct(Input $input, StorageInterface $store = null, DispatcherInterface $dispatcher = null, array $options = array())
 ```
+
+### Input Object
+The Joomla Input object - required for accessing some variables in `$_SERVER` when validating a session. For more information on the Input package please read the [Joomla Input Package Documentation](https://github.com/joomla-framework/input)
 
 #### Storage Object
 The `StorageInterface` defines an object which represents a data store for session data. For more about this please read the [StorageInterface documentation](classes/StorageInterface.md).

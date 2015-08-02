@@ -8,6 +8,7 @@ namespace Joomla\Session\Tests;
 
 use Joomla\Session\Session;
 use Joomla\Session\Tests\Storage\MockStorage;
+use Joomla\Test\TestHelper;
 
 /**
  * Test class for Joomla\Session\Session.
@@ -33,8 +34,18 @@ class SessionTest extends \PHPUnit_Framework_TestCase
 	 */
 	protected function setUp()
 	{
+		$mockInput = $this->getMock('Joomla\Input\Input', array('get'));
+
+		// Mock the Input object internals
+		$mockServerInput = $this->getMock('Joomla\Input\Input', array('get', 'set'));
+		$inputInternals = array(
+			'server' => $mockServerInput
+		);
+
+		TestHelper::setValue($mockInput, 'inputs', $inputInternals);
+
 		$this->storage = new MockStorage;
-		$this->session = new Session($this->storage);
+		$this->session = new Session($mockInput, $this->storage);
 	}
 
 	/**
@@ -61,8 +72,9 @@ class SessionTest extends \PHPUnit_Framework_TestCase
 	{
 		// Build a mock event dispatcher
 		$mockDispatcher = $this->getMock('\\Joomla\\Event\\DispatcherInterface');
+		$mockInput      = $this->getMock('\\Joomla\\Input\\Input');
 
-		$session = new Session($this->storage, $mockDispatcher);
+		$session = new Session($mockInput, $this->storage, $mockDispatcher);
 
 		// The state should be inactive
 		$this->assertSame('inactive', $session->getState());

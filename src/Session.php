@@ -11,6 +11,7 @@ namespace Joomla\Session;
 use Joomla\Event\DispatcherAwareInterface;
 use Joomla\Event\DispatcherAwareTrait;
 use Joomla\Event\DispatcherInterface;
+use Joomla\Input\Input;
 use Joomla\Session\Handler\FilesystemHandler;
 use Joomla\Session\Storage\NativeStorage;
 
@@ -35,6 +36,14 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 * @since  1.0
 	 */
 	protected $state = 'inactive';
+
+	/**
+	 * The Input object.
+	 *
+	 * @var    Input
+	 * @since  1.0
+	 */
+	private $input;
 
 	/**
 	 * Maximum age of unused session in minutes
@@ -68,13 +77,14 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	/**
 	 * Constructor
 	 *
+	 * @param   Input                $input       The input object
 	 * @param   StorageInterface     $store       A StorageInterface implementation
 	 * @param   DispatcherInterface  $dispatcher  DispatcherInterface for the session to use.
 	 * @param   array                $options     Optional parameters
 	 *
 	 * @since   1.0
 	 */
-	public function __construct(StorageInterface $store = null, DispatcherInterface $dispatcher = null, array $options = array())
+	public function __construct(Input $input, StorageInterface $store = null, DispatcherInterface $dispatcher = null, array $options = array())
 	{
 		$this->store = $store ?: new NativeStorage(new FilesystemHandler);
 
@@ -82,6 +92,8 @@ class Session implements SessionInterface, DispatcherAwareInterface
 		{
 			$this->setDispatcher($dispatcher);
 		}
+
+		$this->input = $input;
 
 		$this->setOptions($options);
 
@@ -661,21 +673,25 @@ class Session implements SessionInterface, DispatcherAwareInterface
 		}
 
 		// Record proxy forwarded for in the session in case we need it later
-		if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+		$proxyForwarded = $this->input->server->getString('HTTP_X_FORWARDED_FOR', null);
+
+		if ($proxyForwarded)
 		{
-			$this->set('session.client.forwarded', $_SERVER['HTTP_X_FORWARDED_FOR']);
+			$this->set('session.client.forwarded', $proxyForwarded);
 		}
 
 		// Check for client address
-		if (in_array('fix_address', $this->security) && isset($_SERVER['REMOTE_ADDR']))
+		$remoteServerAddress = $this->input->server->getString('REMOTE_ADDR', null);
+
+		if (in_array('fix_address', $this->security) && $remoteServerAddress)
 		{
 			$ip = $this->get('session.client.address');
 
 			if ($ip === null)
 			{
-				$this->set('session.client.address', $_SERVER['REMOTE_ADDR']);
+				$this->set('session.client.address', $remoteServerAddress);
 			}
-			elseif ($_SERVER['REMOTE_ADDR'] !== $ip)
+			elseif ($remoteServerAddress !== $ip)
 			{
 				$this->setState('error');
 
@@ -684,15 +700,17 @@ class Session implements SessionInterface, DispatcherAwareInterface
 		}
 
 		// Check for clients browser
-		if (in_array('fix_browser', $this->security) && isset($_SERVER['HTTP_USER_AGENT']))
+		$userAgent = $this->input->server->getString('HTTP_USER_AGENT', null);
+
+		if (in_array('fix_browser', $this->security) && $userAgent)
 		{
 			$browser = $this->get('session.client.browser');
 
 			if ($browser === null)
 			{
-				$this->set('session.client.browser', $_SERVER['HTTP_USER_AGENT']);
+				$this->set('session.client.browser', $userAgent);
 			}
-			elseif ($_SERVER['HTTP_USER_AGENT'] !== $browser)
+			elseif ($userAgent !== $browser)
 			{
 				$this->setState('error');
 
