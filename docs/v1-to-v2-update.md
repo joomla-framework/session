@@ -38,8 +38,8 @@ container or the `Joomla\Application\AbstractWebApplication` object.
 
 ### Session::initialise() removed
 
-The `initialise` method has been removed. The base `Session` class no longer uses a `Joomla\Input\Input` object and the `Joomla\Event\DispatcherInterface`
-object should be injected via the constructor or the `setDispatcher` method.
+The `initialise` method has been removed. The base `Session` class now requires a `Joomla\Input\Input` object as part of the
+constructor and the `Joomla\Event\DispatcherInterface` object should be injected via the constructor or the `setDispatcher` method.
 
 ### Namespaced session variables dropped
 
