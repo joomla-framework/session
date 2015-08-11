@@ -577,9 +577,9 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 *
 	 * @return  string  Generated token
 	 *
-	 * @since   1.0
+	 * @since   __DEPLOY_VERSION__
 	 */
-	protected function _createToken($length = 32)
+	protected function createToken($length = 32)
 	{
 		static $chars = '0123456789abcdef';
 		$max = strlen($chars) - 1;
