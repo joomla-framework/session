@@ -47,6 +47,13 @@ class FilesystemHandlerTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testTheHandlerIsInstantiatedCorrectly()
 	{
+		$phpSessionPath = ini_get('session.save_path');
+
+		if (empty($phpSessionPath))
+		{
+			$this->setExpectedException('\InvalidArgumentException');
+		}
+
 		$handler = new FilesystemHandler;
 
 		$this->assertSame('files', ini_get('session.save_handler'));

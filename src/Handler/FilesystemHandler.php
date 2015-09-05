@@ -33,6 +33,12 @@ class FilesystemHandler extends \SessionHandler implements HandlerInterface
 			$path = ini_get('session.save_path');
 		}
 
+		// If the path is still empty, then we can't use this handler
+		if (empty($path))
+		{
+			throw new \InvalidArgumentException('Invalid argument $path');
+		}
+
 		$baseDir = $path;
 
 		if ($count = substr_count($path, ';'))
