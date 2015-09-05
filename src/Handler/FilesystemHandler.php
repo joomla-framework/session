@@ -8,7 +8,6 @@
 
 namespace Joomla\Session\Handler;
 
-use Joomla\Filesystem\Folder;
 use Joomla\Session\HandlerInterface;
 
 /**
@@ -25,6 +24,7 @@ class FilesystemHandler extends \SessionHandler implements HandlerInterface
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 * @throws  \InvalidArgumentException
+	 * @throws  \RuntimeException
 	 */
 	public function __construct($path = null)
 	{
@@ -49,7 +49,10 @@ class FilesystemHandler extends \SessionHandler implements HandlerInterface
 		// Create the directory if it doesn't exist
 		if (!is_dir($baseDir))
 		{
-			Folder::create($baseDir);
+			if (!mkdir($baseDir, 0755))
+			{
+				throw new \RuntimeException(sprintf('Could not create session directory "%s"', $baseDir));
+			}
 		}
 
 		ini_set('session.save_path', $path);
@@ -65,6 +68,6 @@ class FilesystemHandler extends \SessionHandler implements HandlerInterface
 	 */
 	public static function isSupported()
 	{
-		return class_exists('Joomla\\Filesystem\\Folder');
+		return true;
 	}
 }
