@@ -39,6 +39,11 @@ class MemcachedHandlerTest extends \PHPUnit_Framework_TestCase
 	 */
 	protected function setUp()
 	{
+		if (PHP_MAJOR_VERSION === 7)
+		{
+			$this->markTestSkipped('Memcached is not yet supported on PHP 7.');
+		}
+
 		parent::setUp();
 
 		if (version_compare(phpversion('memcached'), '2.2.0', '>='))
