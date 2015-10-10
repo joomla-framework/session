@@ -263,11 +263,8 @@ class SessionTest extends \PHPUnit_Framework_TestCase
 		$this->session->set('foo', 'bar');
 		$this->session->set('joomla.framework', 'is awesome');
 
-		$this->assertSame(
-			array(
-				'foo' => 'bar',
-				'joomla.framework' => 'is awesome'
-			),
+		$this->assertArrayHasKey(
+			'joomla.framework',
 			$this->session->all()
 		);
 
