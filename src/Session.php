@@ -346,6 +346,11 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 */
 	public function get($name, $default = null)
 	{
+		if (!$this->isActive())
+		{
+			$this->start();
+		}
+
 		return $this->store->get($name, $default);
 	}
 
@@ -361,6 +366,11 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 */
 	public function set($name, $value = null)
 	{
+		if (!$this->isActive())
+		{
+			$this->start();
+		}
+
 		return $this->store->set($name, $value);
 	}
 
@@ -375,6 +385,11 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 */
 	public function has($name)
 	{
+		if (!$this->isActive())
+		{
+			$this->start();
+		}
+
 		return $this->store->has($name);
 	}
 
@@ -389,6 +404,11 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 */
 	public function remove($name)
 	{
+		if (!$this->isActive())
+		{
+			$this->start();
+		}
+
 		return $this->store->remove($name);
 	}
 
@@ -401,6 +421,11 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 */
 	public function clear()
 	{
+		if (!$this->isActive())
+		{
+			$this->start();
+		}
+
 		$this->store->clear();
 	}
 
@@ -413,6 +438,11 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 */
 	public function all()
 	{
+		if (!$this->isActive())
+		{
+			$this->start();
+		}
+
 		return $this->store->all();
 	}
 
