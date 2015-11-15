@@ -37,6 +37,18 @@ class MemcachedHandlerTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * {@inheritdoc}
 	 */
+	public static function setUpBeforeClass()
+	{
+		// Make sure the handler is supported in this environment
+		if (!MemcachedHandler::isSupported())
+		{
+			static::markTestSkipped('The MemcachedHandler is unsupported in this environment.');
+		}
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
 	protected function setUp()
 	{
 		if (PHP_MAJOR_VERSION === 7)
