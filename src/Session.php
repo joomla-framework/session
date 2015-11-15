@@ -474,7 +474,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 		if ($this->dispatcher instanceof DispatcherInterface)
 		{
 			$event = new SessionEvent('onAfterSessionStart', $this);
-			$this->dispatcher->triggerEvent($event);
+			$this->dispatcher->dispatch('onAfterSessionStart', $event);
 		}
 	}
 
@@ -544,7 +544,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 		if ($this->dispatcher instanceof DispatcherInterface)
 		{
 			$event = new SessionEvent('onAfterSessionRestart', $this);
-			$this->dispatcher->triggerEvent($event);
+			$this->dispatcher->dispatch('onAfterSessionRestart', $event);
 		}
 
 		return true;

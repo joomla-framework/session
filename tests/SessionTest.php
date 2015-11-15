@@ -125,7 +125,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
 		// Build a mock event dispatcher
 		$mockDispatcher = $this->getMock('\\Joomla\\Event\\DispatcherInterface');
 		$mockDispatcher->expects($this->once())
-			->method('triggerEvent');
+			->method('dispatch');
 
 		$this->session->setDispatcher($mockDispatcher);
 
@@ -325,7 +325,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
 
 		// Now restart the session
 		$mockDispatcher->expects($this->once())
-			->method('triggerEvent');
+			->method('dispatch');
 		$this->assertTrue($this->session->restart());
 
 		// Validate the restart
