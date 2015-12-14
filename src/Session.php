@@ -781,26 +781,18 @@ class Session implements SessionInterface, DispatcherAwareInterface
 			}
 		}
 
-		// Record proxy forwarded for in the session in case we need it later
-		$proxyForwarded = $this->input->server->getString('HTTP_X_FORWARDED_FOR', null);
-
-		if ($proxyForwarded)
-		{
-			$this->set('session.client.forwarded', $proxyForwarded);
-		}
+		$remoteAddr = $this->input->server->getString('REMOTE_ADDR', '');
 
 		// Check for client address
-		$remoteServerAddress = $this->input->server->getString('REMOTE_ADDR', null);
-
-		if (in_array('fix_address', $this->security) && $remoteServerAddress)
+		if (in_array('fix_address', $this->security) && !empty($remoteAddr) && filter_var($remoteAddr, FILTER_VALIDATE_IP) !== false)
 		{
 			$ip = $this->get('session.client.address');
 
 			if ($ip === null)
 			{
-				$this->set('session.client.address', $remoteServerAddress);
+				$this->set('session.client.address', $remoteAddr);
 			}
-			elseif ($remoteServerAddress !== $ip)
+			elseif ($remoteAddr !== $ip)
 			{
 				$this->setState('error');
 
@@ -808,23 +800,12 @@ class Session implements SessionInterface, DispatcherAwareInterface
 			}
 		}
 
-		// Check for clients browser
-		$userAgent = $this->input->server->getString('HTTP_USER_AGENT', null);
+		$xForwardedFor = $this->input->server->getString('HTTP_X_FORWARDED_FOR', '');
 
-		if (in_array('fix_browser', $this->security) && $userAgent)
+		// Record proxy forwarded for in the session in case we need it later
+		if (!empty($xForwardedFor) && filter_var($xForwardedFor, FILTER_VALIDATE_IP) !== false)
 		{
-			$browser = $this->get('session.client.browser');
-
-			if ($browser === null)
-			{
-				$this->set('session.client.browser', $userAgent);
-			}
-			elseif ($userAgent !== $browser)
-			{
-				$this->setState('error');
-
-				return false;
-			}
+			$this->set('session.client.forwarded', $xForwardedFor);
 		}
 
 		return true;
