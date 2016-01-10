@@ -95,6 +95,8 @@ class MemcachedHandlerTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testTheHandlerReadsDataFromTheSessionCorrectly()
 	{
+		$this->handler->write('id', 'foo');
+
 		$this->assertSame('foo', $this->handler->read('id'));
 	}
 
