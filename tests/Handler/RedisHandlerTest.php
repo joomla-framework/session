@@ -121,7 +121,7 @@ class RedisHandlerTest extends \PHPUnit_Framework_TestCase
 	public function testTheHandlerDestroysTheSessionCorrectly()
 	{
 		$this->redis->expects($this->once())
-			->method('delete')
+			->method('del')
 			->with($this->options['prefix'] . 'id')
 			->willReturn(true);
 
