@@ -51,11 +51,6 @@ class RedisHandlerTest extends \PHPUnit_Framework_TestCase
 	 */
 	protected function setUp()
 	{
-		if (PHP_MAJOR_VERSION === 7)
-		{
-			$this->markTestSkipped('Redis is not yet supported on PHP 7.');
-		}
-
 		parent::setUp();
 
 		$this->redis   = $this->getMock('Redis');
