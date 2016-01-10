@@ -85,10 +85,6 @@ class MemcacheHandlerTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testTheHandlerClosesTheSessionCorrectly()
 	{
-		$this->memcache->expects($this->once())
-			->method('close')
-			->willReturn(true);
-
 		$this->assertTrue($this->handler->close());
 	}
 
@@ -97,11 +93,6 @@ class MemcacheHandlerTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testTheHandlerReadsDataFromTheSessionCorrectly()
 	{
-		$this->memcache->expects($this->once())
-			->method('get')
-			->with($this->options['prefix'] . 'id')
-			->willReturn('foo');
-
 		$this->assertSame('foo', $this->handler->read('id'));
 	}
 
@@ -110,11 +101,6 @@ class MemcacheHandlerTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testTheHandlerWritesDataToTheSessionCorrectly()
 	{
-		$this->memcache->expects($this->once())
-			->method('set')
-			->with($this->options['prefix'] . 'id', 'data', 0, $this->equalTo(time() + $this->options['ttl'], 2))
-			->willReturn(true);
-
 		$this->assertTrue($this->handler->write('id', 'data'));
 	}
 
@@ -123,11 +109,6 @@ class MemcacheHandlerTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testTheHandlerDestroysTheSessionCorrectly()
 	{
-		$this->memcache->expects($this->once())
-			->method('delete')
-			->with($this->options['prefix'] . 'id')
-			->willReturn(true);
-
 		$this->assertTrue($this->handler->destroy('id'));
 	}
 
