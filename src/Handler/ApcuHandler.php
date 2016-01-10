@@ -61,7 +61,7 @@ class ApcuHandler implements HandlerInterface
 	 */
 	public function destroy($session_id)
 	{
-		// apcu_delete returns false if the id does not exist
+		// The apcu_delete function returns false if the id does not exist
 		return apcu_delete($this->prefix . $session_id) || !apcu_exists($this->prefix . $session_id);
 	}
 
