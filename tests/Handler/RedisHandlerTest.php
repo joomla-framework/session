@@ -109,7 +109,7 @@ class RedisHandlerTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->redis->expects($this->once())
 			->method('setex')
-			->with($this->options['prefix'] . 'id', $this->equalTo(time() + $this->options['ttl'], 2), 'data')
+			->with($this->options['prefix'] . 'id', $this->options['ttl'], 'data')
 			->willReturn(true);
 
 		$this->assertTrue($this->handler->write('id', 'data'));
@@ -127,7 +127,7 @@ class RedisHandlerTest extends \PHPUnit_Framework_TestCase
 			->with($this->options['prefix'] . 'id', 'data')
 			->willReturn(true);
 
-		$this->assertTrue($this->handler->write('id', 'data'));
+		$this->assertTrue($handler->write('id', 'data'));
 	}
 
 	/**
