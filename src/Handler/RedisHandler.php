@@ -159,9 +159,9 @@ class RedisHandler implements HandlerInterface
 	{
 		if ($this->ttl > 0)
 		{
-			return $this->redis->setex($this->prefix . $session_id, $this->ttl, $data);
+			return $this->redis->setex($this->prefix . $session_id, $this->ttl, $session_data);
 		}
 
-		return $this->redis->set($this->prefix . $session_id, $data);
+		return $this->redis->set($this->prefix . $session_id, $session_data);
 	}
 }
