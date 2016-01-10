@@ -105,11 +105,26 @@ class RedisHandlerTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @covers  Joomla\Session\Handler\RedisHandler::write()
 	 */
-	public function testTheHandlerWritesDataToTheSessionCorrectly()
+	public function testTheHandlerWritesDataToTheSessionCorrectlyWithATimeToLive()
 	{
 		$this->redis->expects($this->once())
+			->method('setex')
+			->with($this->options['prefix'] . 'id', $this->equalTo(time() + $this->options['ttl'], 2), 'data')
+			->willReturn(true);
+
+		$this->assertTrue($this->handler->write('id', 'data'));
+	}
+
+	/**
+	 * @covers  Joomla\Session\Handler\RedisHandler::write()
+	 */
+	public function testTheHandlerWritesDataToTheSessionCorrectlyWithoutATimeToLive()
+	{
+		$handler = new RedisHandler($this->redis, ['prefix' => 'jfwtest_', 'ttl' => 0]);
+
+		$this->redis->expects($this->once())
 			->method('set')
-			->with($this->options['prefix'] . 'id', 'data', $this->equalTo(time() + $this->options['ttl'], 2))
+			->with($this->options['prefix'] . 'id', 'data')
 			->willReturn(true);
 
 		$this->assertTrue($this->handler->write('id', 'data'));
