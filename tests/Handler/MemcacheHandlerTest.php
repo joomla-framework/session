@@ -21,9 +21,9 @@ class MemcacheHandlerTest extends \PHPUnit_Framework_TestCase
 	private $handler;
 
 	/**
-	 * Mock Memcache object for testing
+	 * Memcache object for testing
 	 *
-	 * @var  \PHPUnit_Framework_MockObject_MockObject
+	 * @var  \Memcache
 	 */
 	private $memcache;
 
@@ -32,7 +32,7 @@ class MemcacheHandlerTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @var  array
 	 */
-	private $options = array('prefix' => 'jfwtest_', 'ttl' => 1000);
+	private $options = ['prefix' => 'jfwtest_', 'ttl' => 1000];
 
 	/**
 	 * {@inheritdoc}
@@ -51,15 +51,17 @@ class MemcacheHandlerTest extends \PHPUnit_Framework_TestCase
 	 */
 	protected function setUp()
 	{
-		if (PHP_MAJOR_VERSION === 7)
-		{
-			$this->markTestSkipped('Memcache is not yet supported on PHP 7.');
-		}
-
 		parent::setUp();
 
-		$this->memcache = $this->getMock('Memcache');
-		$this->handler  = new MemcacheHandler($this->memcache, $this->options);
+		$this->memcache = new \Memcache;
+
+		if (@$this->memcache->connect('localhost', 11211) === false)
+		{
+			unset($this->memcache);
+			$this->markTestSkipped('Cannot connect to Memcache.');
+		}
+
+		$this->handler = new MemcacheHandler($this->memcache, $this->options);
 	}
 
 	/**
@@ -67,10 +69,7 @@ class MemcacheHandlerTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testTheHandlerIsSupported()
 	{
-		$this->assertSame(
-			(extension_loaded('memcache') && class_exists('Memcache')),
-			MemcacheHandler::isSupported()
-		);
+		$this->assertTrue(MemcacheHandler::isSupported());
 	}
 
 	/**

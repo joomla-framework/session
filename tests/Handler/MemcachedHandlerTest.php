@@ -21,9 +21,9 @@ class MemcachedHandlerTest extends \PHPUnit_Framework_TestCase
 	private $handler;
 
 	/**
-	 * Mock Memcached object for testing
+	 * Memcached object for testing
 	 *
-	 * @var  \PHPUnit_Framework_MockObject_MockObject
+	 * @var  \Memcached
 	 */
 	private $memcached;
 
@@ -32,7 +32,7 @@ class MemcachedHandlerTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @var  array
 	 */
-	private $options = array('prefix' => 'jfwtest_', 'ttl' => 1000);
+	private $options = ['prefix' => 'jfwtest_', 'ttl' => 1000];
 
 	/**
 	 * {@inheritdoc}
@@ -51,20 +51,19 @@ class MemcachedHandlerTest extends \PHPUnit_Framework_TestCase
 	 */
 	protected function setUp()
 	{
-		if (PHP_MAJOR_VERSION === 7)
-		{
-			$this->markTestSkipped('Memcached is not yet supported on PHP 7.');
-		}
-
 		parent::setUp();
 
-		if (version_compare(phpversion('memcached'), '2.2.0', '>='))
+		$this->memcached = new \Memcached;
+		$this->memcached->setOption(\Memcached::OPT_COMPRESSION, false);
+		$this->memcached->addServer('127.0.0.1', 11211);
+
+		if (@fsockopen('127.0.0.1', 11211) === false)
 		{
-			$this->markTestSkipped('Tests can only be run with memcached extension 2.1.0 or lower');
+			unset($this->memcached);
+			$this->markTestSkipped('Cannot connect to Memcached.');
 		}
 
-		$this->memcached = $this->getMock('Memcached');
-		$this->handler  = new MemcachedHandler($this->memcached, $this->options);
+		$this->handler = new MemcachedHandler($this->memcached, $this->options);
 	}
 
 	/**
@@ -72,10 +71,7 @@ class MemcachedHandlerTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testTheHandlerIsSupported()
 	{
-		$this->assertSame(
-			(class_exists('Memcached')),
-			MemcachedHandler::isSupported()
-		);
+		$this->assertTrue(MemcachedHandler::isSupported());
 	}
 
 	/**
