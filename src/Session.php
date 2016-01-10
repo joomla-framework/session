@@ -143,7 +143,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 		// Create a token
 		if ($token === null || $forceNew)
 		{
-			$token = $this->createToken(12);
+			$token = $this->createToken();
 			$this->set('session.token', $token);
 		}
 
@@ -611,17 +611,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 */
 	protected function createToken($length = 32)
 	{
-		static $chars = '0123456789abcdef';
-		$max = strlen($chars) - 1;
-		$token = '';
-		$name = session_name();
-
-		for ($i = 0; $i < $length; ++$i)
-		{
-			$token .= $chars[(rand(0, $max))];
-		}
-
-		return md5($token . $name);
+		return bin2hex(random_bytes($length));
 	}
 
 	/**
