@@ -71,7 +71,7 @@ class DatabaseHandler implements HandlerInterface
 
 			// Remove expired sessions from the database.
 			$this->db->setQuery($query)->execute();
-			
+
 			$this->gcCalled   = false;
 			$this->gcLifetime = null;
 		}
