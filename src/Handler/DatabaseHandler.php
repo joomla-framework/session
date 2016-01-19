@@ -65,15 +65,15 @@ class DatabaseHandler implements HandlerInterface
 	{
 		if ($this->gcCalled)
 		{
-			$this->gcCalled   = false;
-			$this->gcLifetime = null;
-
 			$query = $this->db->getQuery(true)
 				->delete($this->db->quoteName('#__session'))
 				->where($this->db->quoteName('time') . ' < ' . $this->db->quote((int) $this->gcLifetime));
 
 			// Remove expired sessions from the database.
 			$this->db->setQuery($query)->execute();
+			
+			$this->gcCalled   = false;
+			$this->gcLifetime = null;
 		}
 
 		$this->db->disconnect();
