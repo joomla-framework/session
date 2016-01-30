@@ -5,6 +5,7 @@ sudo: false
 env:
   global:
     - RUN_PHPCS="no"
+    - COMPOSER_FLAGS=""
     - INSTALL_MEMCACHE="yes"
     - INSTALL_MEMCACHED="yes"
     - INSTALL_REDIS="yes"
@@ -13,6 +14,8 @@ matrix:
   include:
     - php: 5.4
       env: INSTALL_APC="yes"
+    - php: 5.4
+      env: INSTALL_APC="yes" COMPOSER_FLAGS="--prefer-lowest"
     - php: 5.5
       env: INSTALL_APCU="yes"
     - php: 5.6
