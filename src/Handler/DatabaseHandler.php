@@ -8,7 +8,7 @@
 
 namespace Joomla\Session\Handler;
 
-use Joomla\Database\DatabaseDriver;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Session\HandlerInterface;
 
 /**
@@ -21,7 +21,7 @@ class DatabaseHandler implements HandlerInterface
 	/**
 	 * Database connector
 	 *
-	 * @var    \Joomla\Database\DatabaseDriver
+	 * @var    DatabaseInterface
 	 * @since  __DEPLOY_VERSION__
 	 */
 	private $db;
@@ -45,11 +45,11 @@ class DatabaseHandler implements HandlerInterface
 	/**
 	 * Constructor
 	 *
-	 * @param   DatabaseDriver  $db  Database connector
+	 * @param   DatabaseInterface  $db  Database connector
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function __construct(DatabaseDriver $db)
+	public function __construct(DatabaseInterface $db)
 	{
 		$this->db = $db;
 	}
@@ -204,7 +204,7 @@ class DatabaseHandler implements HandlerInterface
 	 */
 	public static function isSupported()
 	{
-		return class_exists('Joomla\\Database\\DatabaseDriver');
+		return interface_exists('Joomla\\Database\\DatabaseInterface');
 	}
 
 	/**
