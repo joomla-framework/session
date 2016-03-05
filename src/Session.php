@@ -571,7 +571,6 @@ class Session implements SessionInterface, DispatcherAwareInterface
 
 		if ($destroy)
 		{
-			$this->setCounter();
 			$this->setTimers();
 		}
 
