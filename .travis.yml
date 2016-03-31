@@ -35,7 +35,8 @@ services:
   - redis-server
 
 before_script:
-  - composer install $COMPOSER_FLAGS
+  - composer self-update
+  - composer update $COMPOSER_FLAGS
   - if [ "RUN_SCRUTINIZER" == "yes" ]; then composer require --no-update satooshi/php-coveralls:~1.0; fi
   # Enable additional PHP extensions
   - if [[ $INSTALL_MEMCACHE == "yes" ]]; then phpenv config-add .travis/phpenv/memcache.ini; fi
