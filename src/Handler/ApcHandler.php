@@ -87,7 +87,15 @@ class ApcHandler implements HandlerInterface
 	 */
 	public static function isSupported()
 	{
-		return extension_loaded('apc') && ini_get('apc.enabled');
+		$supported = extension_loaded('apc') && ini_get('apc.enabled');
+
+		// If on the CLI interface, the `apc.enable_cli` option must also be enabled
+		if ($supported && php_sapi_name() === 'cli')
+		{
+			$supported = ini_get('apc.enable_cli');
+		}
+
+		return (bool) $supported;
 	}
 
 	/**
