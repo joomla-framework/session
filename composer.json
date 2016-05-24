@@ -20,8 +20,7 @@
     },
     "suggest": {
         "joomla/database": "Install joomla/database if you want to use Database session storage.",
-        "joomla/event": "Install joomla/event to dispatch session events in Joomla\\Session\\Session.",
-        "joomla/filesystem": "Install joomla/filesystem if you want to use file based session storage.",
+        "joomla/event": "The joomla/event package is required to use Joomla\\Session\\Session.",
         "joomla/input": "The joomla/input package is required to use Joomla\\Session\\Session.",
         "paragonie/random_compat": "The paragonie/random_compat package is required to use Joomla\\Session\\Session on PHP 5.x."
     },
