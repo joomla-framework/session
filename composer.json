@@ -6,11 +6,11 @@
     "homepage": "https://github.com/joomla-framework/session",
     "license": "GPL-2.0+",
     "require": {
-        "php": ">=5.4|>=7.0"
+        "php": ">=5.4|>=7.0",
+        "joomla/event": "~2.0@dev"
     },
     "require-dev": {
         "joomla/database": "~2.0@dev",
-        "joomla/event": "~2.0@dev",
         "joomla/input": "~2.0@dev",
         "joomla/test": "~1.0",
         "paragonie/random_compat": "~1.0|~2.0",
