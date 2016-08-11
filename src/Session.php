@@ -721,8 +721,8 @@ class Session implements SessionInterface, DispatcherAwareInterface
 			$this->security = explode(',', $options['security']);
 		}
 
-		// Sync the session maxlifetime
-		ini_set('session.gc_maxlifetime', $this->getExpire());
+		// Sync the session maxlifetime in seconds
+		ini_set('session.gc_maxlifetime', $this->getExpire() * 60);
 
 		return true;
 	}
@@ -759,7 +759,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 		if ($this->expire)
 		{
 			$curTime = $this->get('session.timer.now', 0);
-			$maxTime = $this->get('session.timer.last', 0) + $this->expire;
+			$maxTime = $this->get('session.timer.last', 0) + $this->expire * 60;
 
 			// Empty session variables
 			if ($maxTime < $curTime)
