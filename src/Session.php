@@ -46,12 +46,12 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	private $input;
 
 	/**
-	 * Maximum age of unused session in minutes
+	 * Maximum age of unused session in seconds
 	 *
 	 * @var    integer
 	 * @since  1.0
 	 */
-	protected $expire = 15;
+	protected $expire = 900;
 
 	/**
 	 * The session store object.
@@ -101,9 +101,9 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	}
 
 	/**
-	 * Get expiration time in minutes
+	 * Get expiration time in seconds
 	 *
-	 * @return  integer  The session expiration time in minutes
+	 * @return  integer  The session expiration time in seconds
 	 *
 	 * @since   1.0
 	 */
@@ -633,7 +633,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	/**
 	 * Set the session expiration
 	 *
-	 * @param   integer  $expire  Maximum age of unused session in minutes
+	 * @param   integer  $expire  Maximum age of unused session in seconds
 	 *
 	 * @return  $this
 	 *
