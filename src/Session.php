@@ -752,7 +752,6 @@ class Session implements SessionInterface, DispatcherAwareInterface
 
 			$this->set('session.client.address', null);
 			$this->set('session.client.forwarded', null);
-			$this->set('session.client.browser', null);
 		}
 
 		// Check if session has expired
