@@ -51,3 +51,10 @@ a top level container, such as `$_SESSION[$namespace]`. In v2, data is stored di
 In v1, when the `onAfterSessionStart` method was dispatched, a generic `Joomla\Event\Event` object was passed with no parameters. In v2,
 a `SessionEvent` object has been added and is dispatched with the `onAfterSessionStart` and new `onAfterSessionRestart` events. The `SessionEvent`
 object is dispatched with the current `Session` instance attached so its API is accessible within the events.
+
+### Session Validation Abstracted
+
+In order to allow the session package to be more easily integrated with other providers we have abstracted the session
+validators. A new interface, [ValidatorInterface](classes/ValidatorInterface.md) has been added to make it easier to add
+custom session validators as well as removing the hard dependency of the JInput class from the session package. This
+makes it easier when integrating the session package with PSR-7 compliant applications.
