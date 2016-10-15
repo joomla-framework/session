@@ -1,4 +1,4 @@
-## StorageInterface
+## Joomla\Session\StorageInterface
 
 The `StorageInterface` defines an object which represents a data store for session data.
 
@@ -15,7 +15,7 @@ public function getName();
 
 ### Set the Session Name
 
-The `setName` method is used to set the session name. In regular use, the `Session` object will inject the calculated session
+The `setName` method is used to set the session name. In regular use, the `Joomla\Session\Session` object will inject the calculated session
 name into the storage object.
 
 ```php

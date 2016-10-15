@@ -3,3 +3,4 @@
 * Classes & Interfaces
     * [HandlerInterface](classes/HandlerInterface.md)
     * [StorageInterface](classes/StorageInterface.md)
+    * [ValidatorInterface](classes/ValidatorInterface.md)
