@@ -8,6 +8,7 @@ env:
     - RUN_SCRUTINIZER="no"
     - COMPOSER_FLAGS=""
     - PHPUNIT_FLAGS=""
+    - INSTALL_APCU="yes"
     - INSTALL_MEMCACHE="yes"
     - INSTALL_MEMCACHED="yes"
     - INSTALL_REDIS="yes"
@@ -15,19 +16,18 @@ env:
 matrix:
   include:
     - php: 5.5
-      env: INSTALL_APCU="yes"
     - php: 5.5
-      env: INSTALL_APCU="yes" COMPOSER_FLAGS="--prefer-lowest"
+      env: COMPOSER_FLAGS="--prefer-lowest"
     - php: 5.6
-      env: RUN_PHPCS="yes" RUN_SCRUTINIZER="yes" PHPUNIT_FLAGS="--coverage-clover .travis/logs/clover.xml" INSTALL_APCU="yes"
+      env: RUN_PHPCS="yes" RUN_SCRUTINIZER="yes" PHPUNIT_FLAGS="--coverage-clover .travis/logs/clover.xml"
     - php: 7.0
-      env: INSTALL_APCU="yes" INSTALL_APCU_BC_BETA="no" INSTALL_MEMCACHE="no" INSTALL_MEMCACHED="yes" INSTALL_REDIS="yes" # Disabled apcu_bc install until https://github.com/travis-ci/travis-ci/issues/5303 is resolved
+      env: INSTALL_APCU_BC_BETA="no" INSTALL_MEMCACHE="no" # Disabled apcu_bc install until https://github.com/travis-ci/travis-ci/issues/5303 is resolved
     - php: 7.1
-      env: INSTALL_APCU="yes" INSTALL_APCU_BC_BETA="no" INSTALL_MEMCACHE="no" INSTALL_MEMCACHED="yes" INSTALL_REDIS="yes" # Disabled apcu_bc install until https://github.com/travis-ci/travis-ci/issues/5303 is resolved
-    - php: hhvm
-      env: INSTALL_APCU_BC_BETA="no" INSTALL_MEMCACHE="no" INSTALL_MEMCACHED="no" INSTALL_REDIS="no"
+      env: INSTALL_APCU_BC_BETA="no" INSTALL_MEMCACHE="no" # Disabled apcu_bc install until https://github.com/travis-ci/travis-ci/issues/5303 is resolved
+    - php: nightly
+      env: INSTALL_APCU_BC_BETA="no" INSTALL_MEMCACHE="no" # Disabled apcu_bc install until https://github.com/travis-ci/travis-ci/issues/5303 is resolved
   allow_failures:
-    - php: hhvm
+    - php: nightly
 
 services:
   - memcache
