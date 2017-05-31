@@ -4,14 +4,17 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Session\Tests\Storage;
+namespace Joomla\Session\Storage;
 
 use Joomla\Session\StorageInterface;
 
 /**
- * Mock session storage object for testing
+ * Session storage object that stores objects in Runtime memory. This is designed for use in CLI Apps, including
+ * unit testing applications in PHPUnit.
+ *
+ * @since  __DEPLOY_VERSION__
  */
-class MockStorage implements StorageInterface
+class RuntimeStorage implements StorageInterface
 {
 	/**
 	 * Flag if the session is active
@@ -294,7 +297,7 @@ class MockStorage implements StorageInterface
 	{
 		if ($this->isStarted())
 		{
-			return true;
+			return;
 		}
 
 		if ($this->isActive())

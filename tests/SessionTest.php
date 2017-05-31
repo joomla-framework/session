@@ -7,7 +7,7 @@
 namespace Joomla\Session\Tests;
 
 use Joomla\Session\Session;
-use Joomla\Session\Tests\Storage\MockStorage;
+use Joomla\Session\Storage\RuntimeStorage;
 use Joomla\Session\Validator\AddressValidator;
 use Joomla\Session\Validator\ForwardedValidator;
 use Joomla\Test\TestHelper;
@@ -27,7 +27,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * Storage object for testing
 	 *
-	 * @var  MockStorage
+	 * @var  RuntimeStorage
 	 */
 	private $storage;
 
@@ -46,7 +46,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
 
 		TestHelper::setValue($mockInput, 'inputs', $inputInternals);
 
-		$this->storage = new MockStorage;
+		$this->storage = new RuntimeStorage;
 		$this->session = new Session($this->storage);
 		$addressValidator = new AddressValidator($mockInput, $this->session);
 		$forwardedValidator = new ForwardedValidator($mockInput, $this->session);
