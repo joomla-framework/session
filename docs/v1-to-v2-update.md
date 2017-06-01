@@ -29,9 +29,12 @@ was handling.
 ### Joomla\Session\StorageInterface added
 
 A new interface, [Joomla\Session\StorageInterface](classes/StorageInterface.md), has been added to represent a class acting as
-a session store. A default implementation, `Joomla\Session\Storage\NativeStorage`, is included which stores data to PHP's `$_SESSION`
-superglobal. Abstracting this logic to a new interface improves the internal architecture of the package and enables better testing
-of the API.
+a session store. Abstracting this logic to a new interface improves the internal architecture of the package and enables better
+testing of the API. There are two default implementations:
+
+1) `Joomla\Session\Storage\NativeStorage`, which stores data to PHP's `$_SESSION` superglobal.
+2) `Joomla\Session\Storage\RuntimeStorage` which stores data in PHP's memory. This is useful for when running unit tests,
+or conventional CLI Applications.
 
 ### Joomla\Session\Session::getInstance() removed
 
