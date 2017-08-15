@@ -4,7 +4,7 @@ The following changes were made to the Session package between v1 and v2.
 
 ### Minimum supported PHP version raised
 
-All framework packages now require PHP 5.5.9 or newer.
+All Framework packages now require PHP 7.0 or newer.
 
 ### Joomla\Session\Storage class chain removed
 

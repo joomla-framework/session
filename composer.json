@@ -6,15 +6,14 @@
     "homepage": "https://github.com/joomla-framework/session",
     "license": "GPL-2.0+",
     "require": {
-        "php": "^5.5.9|~7.0"
+        "php": "~7.0"
     },
     "require-dev": {
         "joomla/database": "~2.0@dev",
         "joomla/event": "~2.0@dev",
         "joomla/input": "~2.0@dev",
         "joomla/test": "~1.0",
-        "paragonie/random_compat": "~1.0|~2.0",
-        "phpunit/phpunit": "~4.8|~5.0",
+        "phpunit/phpunit": "~5.0",
         "phpunit/dbunit": "~1.3",
         "squizlabs/php_codesniffer": "1.*"
     },
@@ -22,8 +21,6 @@
         "joomla/database": "Install joomla/database if you want to use Database session storage.",
         "joomla/event": "The joomla/event package is required to use Joomla\\Session\\Session.",
         "joomla/input": "The joomla/input package is required to use Address and Forwarded session validators.",
-        "paragonie/random_compat": "The paragonie/random_compat package is required to use Joomla\\Session\\Session on PHP 5.x.",
-        "ext-apc": "To use APC cache as a session handler",
         "ext-apcu": "To use APCu cache as a session handler",
         "ext-memcached": "To use a Memcached server as a session handler",
         "ext-memcache": "To use a Memcache server as a session handler",
