@@ -78,7 +78,7 @@ class NativeStorage implements StorageInterface
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function all()
+	public function all(): array
 	{
 		return $_SESSION;
 	}
@@ -121,7 +121,7 @@ class NativeStorage implements StorageInterface
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function get($name, $default)
+	public function get(string $name, $default)
 	{
 		if (!$this->isStarted())
 		{
@@ -143,7 +143,7 @@ class NativeStorage implements StorageInterface
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function getHandler()
+	public function getHandler(): \SessionHandlerInterface
 	{
 		return $this->handler;
 	}
@@ -155,7 +155,7 @@ class NativeStorage implements StorageInterface
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function getId()
+	public function getId(): string
 	{
 		return session_id();
 	}
@@ -167,7 +167,7 @@ class NativeStorage implements StorageInterface
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function getName()
+	public function getName(): string
 	{
 		return session_name();
 	}
@@ -181,7 +181,7 @@ class NativeStorage implements StorageInterface
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function has($name)
+	public function has(string $name): bool
 	{
 		if (!$this->isStarted())
 		{
@@ -198,7 +198,7 @@ class NativeStorage implements StorageInterface
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function isActive()
+	public function isActive(): bool
 	{
 		return $this->active = session_status() === \PHP_SESSION_ACTIVE;
 	}
@@ -210,7 +210,7 @@ class NativeStorage implements StorageInterface
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function isStarted()
+	public function isStarted(): bool
 	{
 		return $this->started;
 	}
@@ -224,14 +224,14 @@ class NativeStorage implements StorageInterface
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function remove($name)
+	public function remove(string $name)
 	{
 		if (!$this->isStarted())
 		{
 			$this->start();
 		}
 
-		$old = isset($_SESSION[$name]) ? $_SESSION[$name] : null;
+		$old = $_SESSION[$name] ?? null;
 
 		unset($_SESSION[$name]);
 
@@ -251,7 +251,7 @@ class NativeStorage implements StorageInterface
 	 * @see     session_regenerate_id()
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function regenerate($destroy = false)
+	public function regenerate(bool $destroy = false): bool
 	{
 		return session_regenerate_id($destroy);
 	}
@@ -266,14 +266,14 @@ class NativeStorage implements StorageInterface
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function set($name, $value = null)
+	public function set(string $name, $value = null)
 	{
 		if (!$this->isStarted())
 		{
 			$this->start();
 		}
 
-		$old = isset($_SESSION[$name]) ? $_SESSION[$name] : null;
+		$old = $_SESSION[$name] ?? null;
 
 		$_SESSION[$name] = $value;
 
@@ -322,7 +322,7 @@ class NativeStorage implements StorageInterface
 	 * @since   __DEPLOY_VERSION__
 	 * @throws  \LogicException
 	 */
-	public function setId($id)
+	public function setId(string $id)
 	{
 		if ($this->isActive())
 		{
@@ -344,7 +344,7 @@ class NativeStorage implements StorageInterface
 	 * @since   __DEPLOY_VERSION__
 	 * @throws  \LogicException
 	 */
-	public function setName($name)
+	public function setName(string $name)
 	{
 		if ($this->isActive())
 		{

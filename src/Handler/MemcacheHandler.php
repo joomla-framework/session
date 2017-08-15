@@ -108,7 +108,7 @@ class MemcacheHandler implements HandlerInterface
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public static function isSupported()
+	public static function isSupported(): bool
 	{
 		return extension_loaded('memcache') && class_exists('Memcache');
 	}
