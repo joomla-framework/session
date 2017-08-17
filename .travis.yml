@@ -9,7 +9,6 @@ env:
     - COMPOSER_FLAGS="--prefer-stable"
     - PHPUNIT_FLAGS=""
     - INSTALL_APCU="yes"
-    - INSTALL_MEMCACHE="yes"
     - INSTALL_MEMCACHED="yes"
     - INSTALL_REDIS="yes"
 
@@ -41,9 +40,8 @@ before_script:
   - composer update $COMPOSER_FLAGS
   - if [ "RUN_SCRUTINIZER" == "yes" ]; then composer require --no-update satooshi/php-coveralls:~1.0; fi
   # Enable additional PHP extensions
-  - if [[ $INSTALL_MEMCACHE == "yes" ]]; then phpenv config-add .travis/phpenv/memcache.ini; fi
   - if [[ $INSTALL_MEMCACHED == "yes" ]]; then phpenv config-add .travis/phpenv/memcached.ini; fi
-  - if [[ $INSTALL_APCU == "yes" && $TRAVIS_PHP_VERSION = 7.* ]]; then printf "\n" | pecl install apcu-beta && phpenv config-add .travis/phpenv/apcu-$TRAVIS_PHP_VERSION.ini; fi
+  - if [[ $INSTALL_APCU == "yes" ]]; then phpenv config-add .travis/phpenv/apcu.ini; fi
   - if [[ $INSTALL_REDIS == "yes" ]]; then phpenv config-add .travis/phpenv/redis.ini; fi
 
 script:
