@@ -7,11 +7,12 @@
 namespace Joomla\Session\Tests\Handler;
 
 use Joomla\Session\Handler\XCacheHandler;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Joomla\Session\Handler\XCacheHandler.
  */
-class XCacheHandlerTest extends \PHPUnit_Framework_TestCase
+class XCacheHandlerTest extends TestCase
 {
 	/**
 	 * XCacheHandler for testing

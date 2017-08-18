@@ -6,16 +6,19 @@
 
 namespace Joomla\Session\Tests;
 
+use Joomla\Event\DispatcherInterface;
+use Joomla\Input\Input;
 use Joomla\Session\Session;
 use Joomla\Session\Storage\RuntimeStorage;
 use Joomla\Session\Validator\AddressValidator;
 use Joomla\Session\Validator\ForwardedValidator;
 use Joomla\Test\TestHelper;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Joomla\Session\Session.
  */
-class SessionTest extends \PHPUnit_Framework_TestCase
+class SessionTest extends TestCase
 {
 	/**
 	 * Session object for testing
@@ -36,13 +39,18 @@ class SessionTest extends \PHPUnit_Framework_TestCase
 	 */
 	protected function setUp()
 	{
-		$mockInput = $this->getMock('Joomla\Input\Input', array('get'));
+		$mockInput = $this->getMockBuilder(Input::class)
+			->setMethods(['get'])
+			->getMock();
 
 		// Mock the Input object internals
-		$mockServerInput = $this->getMock('Joomla\Input\Input', array('get', 'set'));
-		$inputInternals = array(
-			'server' => $mockServerInput
-		);
+		$mockServerInput = $this->getMockBuilder(Input::class)
+			->setMethods(['get', 'set'])
+			->getMock();
+
+		$inputInternals = [
+			'server' => $mockServerInput,
+		];
 
 		TestHelper::setValue($mockInput, 'inputs', $inputInternals);
 
@@ -77,7 +85,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
 	public function testValidateASessionObjectIsCreatedCorrectly()
 	{
 		// Build a mock event dispatcher
-		$mockDispatcher = $this->getMock('\\Joomla\\Event\\DispatcherInterface');
+		$mockDispatcher = $this->getMockBuilder(DispatcherInterface::class)->getMock();
 
 		$session = new Session($this->storage, $mockDispatcher);
 
@@ -128,7 +136,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
 	public function testValidateTheDispatcherIsTriggeredWhenTheSessionIsStarted()
 	{
 		// Build a mock event dispatcher
-		$mockDispatcher = $this->getMock('\\Joomla\\Event\\DispatcherInterface');
+		$mockDispatcher = $this->getMockBuilder(DispatcherInterface::class)->getMock();
 		$mockDispatcher->expects($this->once())
 			->method('dispatch');
 
@@ -317,7 +325,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
 	public function testValidateTheSessionIsCorrectlyRestarted()
 	{
 		// Build a mock event dispatcher
-		$mockDispatcher = $this->getMock('\\Joomla\\Event\\DispatcherInterface');
+		$mockDispatcher = $this->getMockBuilder(DispatcherInterface::class)->getMock();
 
 		$this->session->setDispatcher($mockDispatcher);
 		$this->session->start();

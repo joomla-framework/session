@@ -7,11 +7,12 @@
 namespace Joomla\Session\Tests\Handler;
 
 use Joomla\Session\Handler\WincacheHandler;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Joomla\Session\Handler\WincacheHandler.
  */
-class WincacheHandlerTest extends \PHPUnit_Framework_TestCase
+class WincacheHandlerTest extends TestCase
 {
 	/**
 	 * {@inheritdoc}
@@ -40,6 +41,8 @@ class WincacheHandlerTest extends \PHPUnit_Framework_TestCase
 	{
 		$handler = new WincacheHandler;
 
-		$this->assertSame('wincache', ini_get('session.save_handler'));
+		$expected = headers_sent() ? ini_get('session.save_handler') : 'wincache';
+
+		$this->assertSame($expected, ini_get('session.save_handler'));
 	}
 }

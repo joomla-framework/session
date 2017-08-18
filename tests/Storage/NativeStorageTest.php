@@ -8,6 +8,7 @@ namespace Joomla\Session\Tests\Handler;
 
 use Joomla\Session\Handler\FilesystemHandler;
 use Joomla\Session\Storage\NativeStorage;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Joomla\Session\Storage\NativeStorage.
@@ -15,7 +16,7 @@ use Joomla\Session\Storage\NativeStorage;
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
  */
-class NativeStorageTest extends \PHPUnit_Framework_TestCase
+class NativeStorageTest extends TestCase
 {
 	/**
 	 * Save path for our storage handler
@@ -166,7 +167,6 @@ class NativeStorageTest extends \PHPUnit_Framework_TestCase
 		// Setting an name now should throw an exception
 		$this->storage->setName('fail');
 	}
-
 
 	/**
 	 * @covers  Joomla\Session\Storage\NativeStorage::get()

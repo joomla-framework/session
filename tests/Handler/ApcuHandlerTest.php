@@ -7,11 +7,12 @@
 namespace Joomla\Session\Tests\Handler;
 
 use Joomla\Session\Handler\ApcuHandler;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Joomla\Session\Handler\ApcuHandler.
  */
-class ApcuHandlerTest extends \PHPUnit_Framework_TestCase
+class ApcuHandlerTest extends TestCase
 {
 	/**
 	 * ApcuHandler for testing

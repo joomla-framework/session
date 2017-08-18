@@ -7,11 +7,12 @@
 namespace Joomla\Session\Tests\Handler;
 
 use Joomla\Session\Handler\RedisHandler;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Joomla\Session\Handler\RedisHandler.
  */
-class RedisHandlerTest extends \PHPUnit_Framework_TestCase
+class RedisHandlerTest extends TestCase
 {
 	/**
 	 * RedisHandler for testing
@@ -53,7 +54,7 @@ class RedisHandlerTest extends \PHPUnit_Framework_TestCase
 	{
 		parent::setUp();
 
-		$this->redis   = $this->getMock('Redis');
+		$this->redis   = $this->getMockBuilder('Redis')->getMock();
 		$this->handler = new RedisHandler($this->redis, $this->options);
 	}
 
