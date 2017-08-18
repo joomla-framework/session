@@ -61,9 +61,13 @@ class NativeStorage implements StorageInterface
 	public function __construct(\SessionHandlerInterface $handler = null, array $options = [])
 	{
 		// Disable transparent sid support
-		ini_set('session.use_trans_sid', '0');
+		$options['use_transport_sid'] = '0';
 
-		ini_set('session.use_cookies', 1);
+		if (!headers_sent() && (int) ini_get('session.use_cookies') !== 1)
+		{
+			ini_set('session.use_cookies', 1);
+		}
+
 		session_cache_limiter('none');
 		session_register_shutdown();
 
@@ -372,13 +376,18 @@ class NativeStorage implements StorageInterface
 	 */
 	public function setOptions(array $options)
 	{
+		if (headers_sent())
+		{
+			return $this;
+		}
+
 		$validOptions = array_flip(
 			[
 				'cache_limiter', 'cookie_domain', 'cookie_httponly', 'cookie_lifetime', 'cookie_path', 'cookie_secure', 'entropy_file',
 				'entropy_length', 'gc_divisor', 'gc_maxlifetime', 'gc_probability', 'hash_bits_per_character', 'hash_function', 'name',
-				'referer_check', 'serialize_handler', 'use_cookies', 'use_only_cookies', 'use_trans_sid', 'upload_progress.enabled',
-				'upload_progress.cleanup', 'upload_progress.prefix', 'upload_progress.name', 'upload_progress.freq', 'upload_progress.min-freq',
-				'url_rewriter.tags',
+				'referer_check', 'serialize_handler', 'use_strict_mode', 'use_cookies', 'use_only_cookies', 'use_trans_sid',
+				'upload_progress.enabled', 'upload_progress.cleanup', 'upload_progress.prefix', 'upload_progress.name',  'upload_progress.freq',
+				'upload_progress.min-freq', 'url_rewriter.tags', 'sid_length', 'sid_bits_per_character', 'trans_sid_hosts', 'trans_sid_tags',
 			]
 		);
 

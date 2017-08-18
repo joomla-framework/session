@@ -58,8 +58,11 @@ class FilesystemHandler extends \SessionHandler implements HandlerInterface
 			}
 		}
 
-		ini_set('session.save_path', $path);
-		ini_set('session.save_handler', 'files');
+		if (!headers_sent())
+		{
+			ini_set('session.save_path', $path);
+			ini_set('session.save_handler', 'files');
+		}
 	}
 
 	/**
