@@ -466,9 +466,8 @@ class Session implements SessionInterface, DispatcherAwareInterface
 		// Perform security checks
 		if (!$this->validate())
 		{
-			// If the session isn't valid because it expired try to restart it
-			// else destroy it.
-			if ($this->state === 'expired')
+			// If the session isn't valid because it expired try to restart it or destroy it.
+			if ($this->getState() === 'expired')
 			{
 				$this->restart();
 			}
@@ -476,7 +475,6 @@ class Session implements SessionInterface, DispatcherAwareInterface
 			{
 				$this->destroy();
 			}
-			
 		}
 
 		if ($this->dispatcher instanceof DispatcherInterface)
@@ -547,14 +545,10 @@ class Session implements SessionInterface, DispatcherAwareInterface
 
 		$this->setCounter();
 		$this->setTimers();
-		
-		
-		if(!$this->validate(true))
+
+		// If the restarted session cannot be validated then it will be destroyed
+		if (!$this->validate(true))
 		{
-			/**
-			 * Destroy the session if it's not valid .
-			 * 
-			 */
 			$this->destroy();
 		}
 
