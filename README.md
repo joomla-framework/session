@@ -9,7 +9,7 @@ The Session package provides an interface for managing sessions within an applic
 
 ## Requirements
 
-* PHP 5.4 or later
+* PHP 7.0 or later
 
 ## Installation
 
