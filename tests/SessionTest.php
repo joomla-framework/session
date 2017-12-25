@@ -69,10 +69,10 @@ class SessionTest extends TestCase
 	 */
 	public function setProvider()
 	{
-		return array(
-			array('joomla', 'rocks'),
-			array('joomla.framework', 'too much awesomeness')
-		);
+		return [
+			['joomla', 'rocks'],
+			['joomla.framework', 'too much awesomeness'],
+		];
 	}
 
 	/**
@@ -418,5 +418,17 @@ class SessionTest extends TestCase
 
 		// Validate the closure
 		$this->assertSame('closed', $this->session->getState());
+	}
+
+	/**
+	 * @covers  Joomla\Session\Session::gc()
+	 * @uses    Joomla\Session\Session::getState()
+	 * @uses    Joomla\Session\Session::start()
+	 */
+	public function testValidateThatSessionGarbageCollectionIsPerformed()
+	{
+		$this->session->start();
+
+		$this->assertSame(0, $this->session->gc());
 	}
 }
