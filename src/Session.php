@@ -466,10 +466,27 @@ class Session implements SessionInterface, DispatcherAwareInterface
 		// Perform security checks
 		$this->validate();
 
-		if ($this->dispatcher instanceof DispatcherInterface)
+		if ($this->dispatcher)
 		{
-			$event = new SessionEvent('onAfterSessionStart', $this);
-			$this->dispatcher->dispatch('onAfterSessionStart', $event);
+			if (method_exists($this->dispatcher, 'getListeners'))
+			{
+				if (!empty($this->dispatcher->getListeners('onAfterSessionStart')))
+				{
+					@trigger_error(
+						sprintf(
+							'The `onAfterSessionStart` event is deprecated and will be removed in 3.0, use the %s::START event instead.',
+							SessionEvents::class
+						),
+						E_USER_DEPRECATED
+					);
+				}
+			}
+
+			// Dispatch deprecated event
+			$this->dispatcher->dispatch('onAfterSessionStart', new SessionEvent('onAfterSessionStart', $this));
+
+			// Dispatch new event
+			$this->dispatcher->dispatch(SessionEvents::START, new SessionEvent(SessionEvents::START, $this));
 		}
 	}
 
@@ -536,10 +553,27 @@ class Session implements SessionInterface, DispatcherAwareInterface
 			$this->set($key, $value);
 		}
 
-		if ($this->dispatcher instanceof DispatcherInterface)
+		if ($this->dispatcher)
 		{
-			$event = new SessionEvent('onAfterSessionRestart', $this);
-			$this->dispatcher->dispatch('onAfterSessionRestart', $event);
+			if (method_exists($this->dispatcher, 'getListeners'))
+			{
+				if (!empty($this->dispatcher->getListeners('onAfterSessionRestart')))
+				{
+					@trigger_error(
+						sprintf(
+							'The `onAfterSessionRestart` event is deprecated and will be removed in 3.0, use the %s::RESTART event instead.',
+							SessionEvents::class
+						),
+						E_USER_DEPRECATED
+					);
+				}
+			}
+
+			// Dispatch deprecated event
+			$this->dispatcher->dispatch('onAfterSessionRestart', new SessionEvent('onAfterSessionRestart', $this));
+
+			// Dispatch new event
+			$this->dispatcher->dispatch(SessionEvents::RESTART, new SessionEvent(SessionEvents::RESTART, $this));
 		}
 
 		return true;
