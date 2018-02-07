@@ -551,17 +551,20 @@ class Session implements SessionInterface, DispatcherAwareInterface
 			return false;
 		}
 
+		// Restart the session
+		$this->store->start();
+
+		$this->setState('active');
+
+		// Initialise the session
+		$this->setCounter();
+		$this->setTimers();
+
 		// Restore the data
 		foreach ($data as $key => $value)
 		{
 			$this->set($key, $value);
 		}
-
-		// Restart the session
-		$this->store->start();
-
-		$this->setCounter();
-		$this->setTimers();
 
 		// If the restarted session cannot be validated then it will be destroyed
 		if (!$this->validate(true))
