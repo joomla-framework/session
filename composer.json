@@ -23,10 +23,8 @@
         "joomla/input": "The joomla/input package is required to use Address and Forwarded session validators.",
         "ext-apcu": "To use APCu cache as a session handler",
         "ext-memcached": "To use a Memcached server as a session handler",
-        "ext-memcache": "To use a Memcache server as a session handler",
         "ext-redis": "To use a Redis server as a session handler",
-        "ext-wincache": "To use WinCache as a session handler",
-        "ext-xcache": "To use XCache as a session handler"
+        "ext-wincache": "To use WinCache as a session handler"
     },
     "autoload": {
     	"psr-4": {
