@@ -143,7 +143,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	}
 
 	/**
-	 * Method to determine if a token exists in the session. If not the session will be set to expired
+	 * Check if the session has the given token.
 	 *
 	 * @param   string   $token        Hashed token to be verified
 	 * @param   boolean  $forceExpire  If true, expires the session

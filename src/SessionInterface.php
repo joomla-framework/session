@@ -106,7 +106,7 @@ interface SessionInterface extends \IteratorAggregate
 	public function getToken($forceNew = false);
 
 	/**
-	 * Method to determine if a token exists in the session.
+	 * Check if the session has the given token.
 	 *
 	 * @param   string   $token        Hashed token to be verified
 	 * @param   boolean  $forceExpire  If true, expires the session
