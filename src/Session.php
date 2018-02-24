@@ -133,16 +133,13 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 */
 	public function getToken($forceNew = false)
 	{
-		$token = $this->get('session.token');
-
-		// Create a token
-		if ($token === null || $forceNew)
+		// Ensure the session token exists and create it if necessary
+		if (!$this->has('session.token') || $forceNew)
 		{
-			$token = $this->createToken();
-			$this->set('session.token', $token);
+			$this->set('session.token', $this->createToken());
 		}
 
-		return $token;
+		return $this->get('session.token');
 	}
 
 	/**
