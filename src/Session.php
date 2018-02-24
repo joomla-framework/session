@@ -120,14 +120,14 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	}
 
 	/**
-	 * Get a session token, if a token isn't set yet one will be generated.
+	 * Get a session token.
 	 *
-	 * Tokens are used to secure forms from spamming attacks. Once a token has been generated the system will check the post request to see if
+	 * Tokens are used to secure forms from spamming attacks. Once a token has been generated the system will check the request to see if
 	 * it is present, if not it will invalidate the session.
 	 *
-	 * @param   boolean  $forceNew  If true, force a new token to be created
+	 * @param   boolean  $forceNew  If true, forces a new token to be created
 	 *
-	 * @return  string  The session token
+	 * @return  string
 	 *
 	 * @since   1.0
 	 */
@@ -145,14 +145,14 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	/**
 	 * Method to determine if a token exists in the session. If not the session will be set to expired
 	 *
-	 * @param   string   $tCheck       Hashed token to be verified
+	 * @param   string   $token        Hashed token to be verified
 	 * @param   boolean  $forceExpire  If true, expires the session
 	 *
 	 * @return  boolean
 	 *
 	 * @since   1.0
 	 */
-	public function hasToken($tCheck, $forceExpire = true)
+	public function hasToken($token, $forceExpire = true)
 	{
 		// Check if a token exists in the session
 		$tStored = $this->get('session.token');
