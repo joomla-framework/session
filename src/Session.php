@@ -599,9 +599,8 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 */
 	public function fork($destroy = false)
 	{
-		if ($this->getState() !== 'active')
+		if (!$this->isStarted())
 		{
-			// @TODO :: generated error here
 			return false;
 		}
 
