@@ -337,7 +337,7 @@ class SessionTest extends TestCase
 		$this->session->set('foo', 'bar');
 
 		// Now restart the session
-		$mockDispatcher->expects($this->exactly('2'))
+		$mockDispatcher->expects($this->exactly(2))
 			->method('dispatch');
 		$this->assertTrue($this->session->restart());
 
