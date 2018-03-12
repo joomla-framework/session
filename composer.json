@@ -14,8 +14,8 @@
         "joomla/event": "~2.0@dev",
         "joomla/input": "~2.0@dev",
         "joomla/test": "~1.0",
-        "phpunit/phpunit": "^5.4.3",
-        "phpunit/dbunit": "~1.3"
+        "phpunit/phpunit": "~6.3",
+        "phpunit/dbunit": "~3.0"
     },
     "suggest": {
         "joomla/database": "Install joomla/database if you want to use Database session storage.",

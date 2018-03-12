@@ -6,20 +6,41 @@
 
 namespace Joomla\Session\Tests\Handler;
 
+use Joomla\Database\DatabaseDriver;
+use Joomla\Database\Sqlite\SqliteDriver;
 use Joomla\Session\Handler\DatabaseHandler;
-use Joomla\Test\TestDatabase;
+use PHPUnit\DbUnit\Database\DefaultConnection;
+use PHPUnit\DbUnit\DataSet\ArrayDataSet;
+use PHPUnit\DbUnit\Operation\Composite;
+use PHPUnit\DbUnit\Operation\Factory;
+use PHPUnit\DbUnit\Operation\Operation;
+use PHPUnit\DbUnit\TestCase;
 
 /**
  * Test class for Joomla\Session\Handler\DatabaseHandler.
  */
-class DatabaseHandlerTest extends TestDatabase
+class DatabaseHandlerTest extends TestCase
 {
+	/**
+	 * The active database driver being used for the tests.
+	 *
+	 * @var  DatabaseDriver
+	 */
+	private static $driver;
+
 	/**
 	 * DatabaseHandler for testing
 	 *
 	 * @var  DatabaseHandler
 	 */
 	private $handler;
+
+	/**
+	 * The database driver options for the connection.
+	 *
+	 * @var  array
+	 */
+	private static $options = ['driver' => 'sqlite', 'database' => ':memory:'];
 
 	/**
 	 * Flag if the session table has been created
@@ -29,20 +50,46 @@ class DatabaseHandlerTest extends TestDatabase
 	private static $sessionTableCreated = false;
 
 	/**
-	 * {@inheritdoc}
+	 * This method is called before the first test of this test class is run.
+	 *
+	 * An example DSN would be: host=localhost;port=5432;dbname=joomla_ut;user=utuser;pass=ut1234
+	 *
+	 * @return  void
 	 */
 	public static function setUpBeforeClass()
 	{
-		// Make sure the handler is supported in this environment
-		if (!DatabaseHandler::isSupported() || !class_exists('PDO') || !in_array('sqlite', \PDO::getAvailableDrivers()))
+		// Make sure the driver is supported
+		if (!SqliteDriver::isSupported())
 		{
-			static::markTestSkipped('The DatabaseHandler is unsupported in this environment.');
+			static::markTestSkipped('The SQLite driver is not supported on this platform.');
 		}
 
-		parent::setUpBeforeClass();
+		try
+		{
+			// Attempt to instantiate the driver.
+			static::$driver = DatabaseDriver::getInstance(static::$options);
 
-		// Drop the session table from the test data schema, we will create it with the preferred schema later
-		static::$driver->dropTable('#__session');
+			// Get the PDO instance for an SQLite memory database and load the test schema into it.
+			static::$driver->connect();
+		}
+		catch (\RuntimeException $e)
+		{
+			static::$driver = null;
+		}
+	}
+
+	/**
+	 * This method is called after the last test of this test class is run.
+	 *
+	 * @return  void
+	 */
+	public static function tearDownAfterClass()
+	{
+		if (static::$driver !== null)
+		{
+			static::$driver->disconnect();
+			static::$driver = null;
+		}
 	}
 
 	/**
@@ -64,6 +111,60 @@ class DatabaseHandlerTest extends TestDatabase
 	}
 
 	/**
+	 * Returns the default database connection for running the tests.
+	 *
+	 * @return  DefaultConnection
+	 */
+	protected function getConnection()
+	{
+		if (static::$driver === null)
+		{
+			static::fail('Could not fetch a database driver to establish the connection.');
+		}
+
+		static::$driver->connect();
+
+		return $this->createDefaultDBConnection(static::$driver->getConnection(), static::$options['database']);
+	}
+
+	/**
+	 * Gets the data set to be loaded into the database during setup
+	 *
+	 * @return  ArrayDataSet
+	 */
+	protected function getDataSet()
+	{
+		return $this->createArrayDataSet([]);
+	}
+
+	/**
+	 * Returns the database operation executed in test setup.
+	 *
+	 * @return  Operation
+	 */
+	protected function getSetUpOperation()
+	{
+		// Required given the use of InnoDB contraints.
+		return new Composite(
+			[
+				Factory::DELETE_ALL(),
+				Factory::INSERT(),
+			]
+		);
+	}
+
+	/**
+	 * Returns the database operation executed in test cleanup.
+	 *
+	 * @return  Operation
+	 */
+	protected function getTearDownOperation()
+	{
+		// Required given the use of InnoDB contraints.
+		return Factory::DELETE_ALL();
+	}
+
+	/**
 	 * @covers  Joomla\Session\Handler\DatabaseHandler::isSupported()
 	 */
 	public function testTheHandlerIsSupported()
@@ -81,11 +182,11 @@ class DatabaseHandlerTest extends TestDatabase
 	 */
 	public function testValidateSessionDataIsCorrectlyReadWrittenAndDestroyed()
 	{
-		$sessionData = array('foo' => 'bar', 'joomla' => 'rocks');
+		$sessionData = ['foo' => 'bar', 'joomla' => 'rocks'];
 		$sessionId   = 'sid';
 
 		$this->assertTrue($this->handler->open('', $sessionId));
-		$this->assertTrue($this->handler->write($sessionId, json_encode(array('foo' => 'bar'))));
+		$this->assertTrue($this->handler->write($sessionId, json_encode(['foo' => 'bar'])));
 		$this->assertTrue($this->handler->write($sessionId, json_encode($sessionData)));
 		$this->assertSame($sessionData, json_decode($this->handler->read($sessionId), true));
 		$this->assertTrue($this->handler->destroy($sessionId));
