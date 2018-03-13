@@ -599,19 +599,14 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 */
 	public function fork($destroy = false)
 	{
-		if (!$this->isStarted())
-		{
-			return false;
-		}
+		$result = $this->store->regenerate($destroy);
 
-		$this->store->regenerate($destroy);
-
-		if ($destroy)
+		if ($result)
 		{
 			$this->setTimers();
 		}
 
-		return true;
+		return $result;
 	}
 
 	/**
