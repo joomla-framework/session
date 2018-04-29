@@ -137,7 +137,7 @@ class SessionTest extends TestCase
 	{
 		// Build a mock event dispatcher
 		$mockDispatcher = $this->getMockBuilder(DispatcherInterface::class)->getMock();
-		$mockDispatcher->expects($this->exactly(2))
+		$mockDispatcher->expects($this->once())
 			->method('dispatch');
 
 		$this->session->setDispatcher($mockDispatcher);
@@ -337,7 +337,7 @@ class SessionTest extends TestCase
 		$this->session->set('foo', 'bar');
 
 		// Now restart the session
-		$mockDispatcher->expects($this->exactly(2))
+		$mockDispatcher->expects($this->once())
 			->method('dispatch');
 		$this->assertTrue($this->session->restart());
 
