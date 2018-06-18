@@ -431,4 +431,16 @@ class SessionTest extends TestCase
 
 		$this->assertSame(0, $this->session->gc());
 	}
+
+	/**
+	 * @covers  Joomla\Session\Session::abort()
+	 * @uses    Joomla\Session\Session::getState()
+	 * @uses    Joomla\Session\Session::start()
+	 */
+	public function testValidateThatSessionIsAborted()
+	{
+		$this->session->start();
+
+		$this->assertTrue($this->session->abort());
+	}
 }
