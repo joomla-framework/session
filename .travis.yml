@@ -28,7 +28,6 @@ matrix:
     - php: nightly
       env: INSTALL_MEMCACHED="no"
   allow_failures:
-    - php: 7.2
     - php: nightly
 
 services:
