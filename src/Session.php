@@ -685,7 +685,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	protected function setCounter()
 	{
 		$counter = $this->get('session.counter', 0);
-		++$counter;
+		$counter++;
 
 		$this->set('session.counter', $counter);
 

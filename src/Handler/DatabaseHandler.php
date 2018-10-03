@@ -122,7 +122,7 @@ class DatabaseHandler implements HandlerInterface
 				throw new \UnexpectedValueException(sprintf('The %s database driver is not supported.', $this->db->name));
 		}
 
-		$path = dirname(dirname(__DIR__)) . '/meta/sql/' . $filename;
+		$path = \dirname(\dirname(__DIR__)) . '/meta/sql/' . $filename;
 
 		if (!is_readable($path))
 		{
@@ -296,7 +296,7 @@ class DatabaseHandler implements HandlerInterface
 			else
 			{
 				$query->insert($this->db->quoteName('#__session'))
-					->columns(array($this->db->quoteName('data'), $this->db->quoteName('time'), $this->db->quoteName('session_id')))
+					->columns([$this->db->quoteName('data'), $this->db->quoteName('time'), $this->db->quoteName('session_id')])
 					->values('?, ?, ?')
 					->bind(1, $session_data)
 					->bind(2, $time, ParameterType::INTEGER)

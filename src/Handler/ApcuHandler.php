@@ -35,7 +35,7 @@ class ApcuHandler implements HandlerInterface
 	public function __construct(array $options = [])
 	{
 		// Namespace our session IDs to avoid potential conflicts
-		$this->prefix = isset($options['prefix']) ? $options['prefix'] : 'jfw';
+		$this->prefix = $options['prefix'] ?? 'jfw';
 	}
 
 	/**
@@ -88,10 +88,10 @@ class ApcuHandler implements HandlerInterface
 	 */
 	public static function isSupported(): bool
 	{
-		$supported = extension_loaded('apcu') && ini_get('apc.enabled');
+		$supported = \extension_loaded('apcu') && ini_get('apc.enabled');
 
 		// If on the CLI interface, the `apc.enable_cli` option must also be enabled
-		if ($supported && php_sapi_name() === 'cli')
+		if ($supported && PHP_SAPI === 'cli')
 		{
 			$supported = ini_get('apc.enable_cli');
 		}

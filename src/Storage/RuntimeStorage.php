@@ -83,7 +83,7 @@ class RuntimeStorage implements StorageInterface
 	 */
 	public function clear()
 	{
-		$this->data = array();
+		$this->data = [];
 	}
 
 	/**

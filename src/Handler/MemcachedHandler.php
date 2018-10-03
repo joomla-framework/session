@@ -57,7 +57,7 @@ class MemcachedHandler implements HandlerInterface
 		$this->ttl = isset($options['ttl']) ? (int) $options['ttl'] : 900;
 
 		// Namespace our session IDs to avoid potential conflicts
-		$this->prefix = isset($options['prefix']) ? $options['prefix'] : 'jfw';
+		$this->prefix = $options['prefix'] ?? 'jfw';
 	}
 
 	/**
@@ -114,7 +114,7 @@ class MemcachedHandler implements HandlerInterface
 		 * GAE and HHVM have both had instances where Memcached the class was defined but no extension was loaded.
 		 * If the class is there, we can assume it works.
 		 */
-		return (class_exists('Memcached'));
+		return class_exists('Memcached');
 	}
 
 	/**

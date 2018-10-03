@@ -127,7 +127,7 @@ class NativeStorage implements StorageInterface
 	 */
 	public function gc()
 	{
-		if (!function_exists('session_gc'))
+		if (!\function_exists('session_gc'))
 		{
 			return false;
 		}
@@ -352,7 +352,7 @@ class NativeStorage implements StorageInterface
 				throw new \RuntimeException(
 					sprintf(
 						'The "%s" handler is not supported in this environment.',
-						get_class($handler)
+						\get_class($handler)
 					)
 				);
 			}

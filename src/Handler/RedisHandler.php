@@ -57,7 +57,7 @@ class RedisHandler implements HandlerInterface
 		$this->ttl = isset($options['ttl']) ? (int) $options['ttl'] : 900;
 
 		// Namespace our session IDs to avoid potential conflicts
-		$this->prefix = isset($options['prefix']) ? $options['prefix'] : 'jfw';
+		$this->prefix = $options['prefix'] ?? 'jfw';
 	}
 
 	/**
@@ -113,7 +113,7 @@ class RedisHandler implements HandlerInterface
 	 */
 	public static function isSupported(): bool
 	{
-		return extension_loaded('redis') && class_exists('Redis');
+		return \extension_loaded('redis') && class_exists('Redis');
 	}
 
 	/**
