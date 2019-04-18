@@ -8,8 +8,12 @@
 
 namespace Joomla\Session\Handler;
 
+use Joomla\Database\DatabaseDriver;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\Exception\ExecutionFailureException;
 use Joomla\Database\ParameterType;
+use Joomla\Session\Exception\CreateSessionTableException;
+use Joomla\Session\Exception\UnsupportedDatabaseDriverException;
 use Joomla\Session\HandlerInterface;
 
 /**
@@ -86,15 +90,15 @@ class DatabaseHandler implements HandlerInterface
 	/**
 	 * Creates the session database table
 	 *
-	 * @return  boolean  True on success, false otherwise
+	 * @return  boolean
 	 *
 	 * @since   __DEPLOY_VERSION__
-	 * @throws  \RuntimeException
-	 * @throws  \UnexpectedValueException
+	 * @throws  CreateSessionTableException
+	 * @throws  UnsupportedDatabaseDriverException
 	 */
-	public function createDatabaseTable()
+	public function createDatabaseTable(): bool
 	{
-		switch ($this->db->name)
+		switch ($this->db->getName())
 		{
 			case 'mysql':
 			case 'mysqli':
@@ -119,17 +123,17 @@ class DatabaseHandler implements HandlerInterface
 				break;
 
 			default:
-				throw new \UnexpectedValueException(sprintf('The %s database driver is not supported.', $this->db->name));
+				throw new UnsupportedDatabaseDriverException(sprintf('The %s database driver is not supported.', $this->db->getName()));
 		}
 
-		$path = \dirname(\dirname(__DIR__)) . '/meta/sql/' . $filename;
+		$path = \dirname(__DIR__, 2) . '/meta/sql/' . $filename;
 
 		if (!is_readable($path))
 		{
-			throw new \RuntimeException(sprintf('Database schema could not be read from %s.  Please ensure the file exists and is readable.', $path));
+			throw new CreateSessionTableException(sprintf('Database schema could not be read from %s.  Please ensure the file exists and is readable.', $path));
 		}
 
-		$queries = $this->db->splitSql(file_get_contents($path));
+		$queries = DatabaseDriver::splitSql(file_get_contents($path));
 
 		foreach ($queries as $query)
 		{
@@ -141,9 +145,9 @@ class DatabaseHandler implements HandlerInterface
 				{
 					$this->db->setQuery($query)->execute();
 				}
-				catch (\RuntimeException $exception)
+				catch (ExecutionFailureException $exception)
 				{
-					throw new \RuntimeException('Failed to create the session table.', 0, $exception);
+					throw new CreateSessionTableException('Failed to create the session table.', 0, $exception);
 				}
 			}
 		}
