@@ -296,7 +296,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	/**
 	 * Check whether this session is currently created
 	 *
-	 * @return  boolean  True on success.
+	 * @return  boolean
 	 *
 	 * @since   1.0
 	 */
@@ -304,7 +304,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	{
 		$counter = $this->get('session.counter');
 
-		return (bool) ($counter === 1);
+		return $counter === 1;
 	}
 
 	/**
@@ -495,7 +495,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 * with the current session in its storage (file or DB). It forces new session to be
 	 * started after this method is called.
 	 *
-	 * @return  boolean  True on success
+	 * @return  boolean
 	 *
 	 * @see     session_destroy()
 	 * @see     session_unset()

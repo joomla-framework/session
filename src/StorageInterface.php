@@ -88,10 +88,10 @@ interface StorageInterface
 	/**
 	 * Set data into the session store
 	 *
-	 * @param   string  $name   Name of a variable.
-	 * @param   mixed   $value  Value of a variable.
+	 * @param   string  $name   Name of a variable
+	 * @param   mixed   $value  Value of a variable
 	 *
-	 * @return  mixed  Old value of a variable.
+	 * @return  mixed  Old value of a variable
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
@@ -102,7 +102,7 @@ interface StorageInterface
 	 *
 	 * @param   string  $name  Name of variable
 	 *
-	 * @return  boolean  True if the variable exists
+	 * @return  boolean
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */

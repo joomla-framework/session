@@ -4,9 +4,7 @@ The `ValidatorInterface` is designed to allow custom validation of the session t
 
 ### Check if the session is valid
 
-The `validate` method is used to check if the session is valid. If the session is invalid it should throw a
-`Joomla\Session\Exception\InvalidSessionException`. If the `$restart` flag is set to `true` then any data
-stored in the session should be invalidated (normally by setting it to `null`) and new properties retrieved.
+The `validate` method is used to check if the session is valid. If the session is invalid it should throw a `Joomla\Session\Exception\InvalidSessionException`. If the `$restart` flag is set to `true` then any data stored in the session should be invalidated (normally by setting it to `null`) and new properties retrieved.
 
 ```php
 /**
@@ -14,8 +12,8 @@ stored in the session should be invalidated (normally by setting it to `null`) a
  *
  * @return  void
  *
- * @throws  Joomla\Session\Exception\InvalidSessionException
+ * @throws  \Joomla\Session\Exception\InvalidSessionException
  */
-public function validate($restart = false);
+public function validate(bool $restart = false);
 ```
 

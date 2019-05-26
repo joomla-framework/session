@@ -76,7 +76,7 @@ interface SessionInterface extends \IteratorAggregate
 	/**
 	 * Check whether this session is newly created
 	 *
-	 * @return  boolean  True on success.
+	 * @return  boolean
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
@@ -197,7 +197,7 @@ interface SessionInterface extends \IteratorAggregate
 	 * with the current session in its storage (file or DB). It forces new session to be
 	 * started after this method is called. It does not unset the session cookie.
 	 *
-	 * @return  boolean  True on success
+	 * @return  boolean
 	 *
 	 * @see     session_destroy()
 	 * @see     session_unset()
