@@ -32,7 +32,7 @@ final class SessionEvents
 	 * @var    string
 	 * @since  __DEPLOY_VERSION__
 	 */
-	const START = 'session.start';
+	public const START = 'session.start';
 
 	/**
 	 * Session event which is dispatched after the session has been restarted.
@@ -42,5 +42,5 @@ final class SessionEvents
 	 * @var    string
 	 * @since  __DEPLOY_VERSION__
 	 */
-	const RESTART = 'session.restart';
+	public const RESTART = 'session.restart';
 }

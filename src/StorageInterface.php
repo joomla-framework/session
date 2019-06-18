@@ -126,7 +126,7 @@ interface StorageInterface
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function clear();
+	public function clear(): void;
 
 	/**
 	 * Retrieves all variables from the session store
@@ -144,7 +144,7 @@ interface StorageInterface
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function start();
+	public function start(): void;
 
 	/**
 	 * Regenerates the session ID that represents this storage.
@@ -169,7 +169,7 @@ interface StorageInterface
 	 * @see     session_write_close()
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function close();
+	public function close(): void;
 
 	/**
 	 * Perform session data garbage collection
@@ -189,5 +189,5 @@ interface StorageInterface
 	 * @see     session_abort()
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function abort();
+	public function abort(): bool;
 }

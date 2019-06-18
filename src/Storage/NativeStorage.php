@@ -58,7 +58,7 @@ class NativeStorage implements StorageInterface
 	 *
 	 * @since   1.0
 	 */
-	public function __construct(\SessionHandlerInterface $handler = null, array $options = [])
+	public function __construct(?\SessionHandlerInterface $handler = null, array $options = [])
 	{
 		// Disable transparent sid support and default use cookies
 		$options += [
@@ -96,7 +96,7 @@ class NativeStorage implements StorageInterface
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function clear()
+	public function clear(): void
 	{
 		$_SESSION = [];
 	}
@@ -109,7 +109,7 @@ class NativeStorage implements StorageInterface
 	 * @see     session_write_close()
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function close()
+	public function close(): void
 	{
 		session_write_close();
 
@@ -127,11 +127,6 @@ class NativeStorage implements StorageInterface
 	 */
 	public function gc()
 	{
-		if (!\function_exists('session_gc'))
-		{
-			return false;
-		}
-
 		if (!$this->isStarted())
 		{
 			$this->start();
@@ -148,7 +143,7 @@ class NativeStorage implements StorageInterface
 	 * @see     session_abort()
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function abort()
+	public function abort(): bool
 	{
 		if (!$this->isStarted())
 		{
@@ -186,11 +181,11 @@ class NativeStorage implements StorageInterface
 	/**
 	 * Gets the save handler instance
 	 *
-	 * @return  \SessionHandlerInterface
+	 * @return  \SessionHandlerInterface|null
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function getHandler(): \SessionHandlerInterface
+	public function getHandler(): ?\SessionHandlerInterface
 	{
 		return $this->handler;
 	}
@@ -342,7 +337,7 @@ class NativeStorage implements StorageInterface
 	 * @since   __DEPLOY_VERSION__
 	 * @throws  \RuntimeException
 	 */
-	public function setHandler(\SessionHandlerInterface $handler = null)
+	public function setHandler(?\SessionHandlerInterface $handler = null): self
 	{
 		// If the handler is an instance of our HandlerInterface, check whether it is supported
 		if ($handler instanceof HandlerInterface)
@@ -426,7 +421,7 @@ class NativeStorage implements StorageInterface
 	 * @see     http://php.net/session.configuration
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function setOptions(array $options)
+	public function setOptions(array $options): self
 	{
 		if (headers_sent() || $this->isActive())
 		{
@@ -461,7 +456,7 @@ class NativeStorage implements StorageInterface
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function start()
+	public function start(): void
 	{
 		if ($this->isStarted())
 		{

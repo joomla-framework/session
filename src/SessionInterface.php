@@ -170,7 +170,7 @@ interface SessionInterface extends \IteratorAggregate
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function clear();
+	public function clear(): void;
 
 	/**
 	 * Retrieves all variables from the session store
@@ -179,7 +179,7 @@ interface SessionInterface extends \IteratorAggregate
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function all();
+	public function all(): array;
 
 	/**
 	 * Start a session
@@ -260,5 +260,5 @@ interface SessionInterface extends \IteratorAggregate
 	 * @see     session_abort()
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function abort();
+	public function abort(): bool;
 }

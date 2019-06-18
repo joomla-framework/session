@@ -81,7 +81,7 @@ class RuntimeStorage implements StorageInterface
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function clear()
+	public function clear(): void
 	{
 		$this->data = [];
 	}
@@ -94,7 +94,7 @@ class RuntimeStorage implements StorageInterface
 	 * @see     session_write_close()
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function close()
+	public function close(): void
 	{
 		$this->closed  = true;
 		$this->started = false;
@@ -121,7 +121,7 @@ class RuntimeStorage implements StorageInterface
 	 * @see     session_abort()
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function abort()
+	public function abort(): bool
 	{
 		$this->closed  = true;
 		$this->started = false;
@@ -359,7 +359,7 @@ class RuntimeStorage implements StorageInterface
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function start()
+	public function start(): void
 	{
 		if ($this->isStarted())
 		{

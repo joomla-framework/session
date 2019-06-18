@@ -90,7 +90,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function addValidator(ValidatorInterface $validator)
+	public function addValidator(ValidatorInterface $validator): void
 	{
 		$this->sessionValidators[] = $validator;
 	}
@@ -404,7 +404,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function clear()
+	public function clear(): void
 	{
 		if (!$this->isActive())
 		{
@@ -421,7 +421,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function all()
+	public function all(): array
 	{
 		if (!$this->isActive())
 		{
@@ -651,7 +651,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 * @see     session_abort()
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function abort()
+	public function abort(): bool
 	{
 		if (!$this->isActive())
 		{

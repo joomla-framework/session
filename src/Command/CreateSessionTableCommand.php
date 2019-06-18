@@ -61,7 +61,7 @@ class CreateSessionTableCommand extends AbstractCommand
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	protected function configure()
+	protected function configure(): void
 	{
 		$this->setDescription('Creates the session database table if not already present');
 	}
