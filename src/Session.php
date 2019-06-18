@@ -402,9 +402,9 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 *
 	 * @return  void
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   1.0
 	 */
-	public function clear(): void
+	public function clear()
 	{
 		if (!$this->isActive())
 		{
