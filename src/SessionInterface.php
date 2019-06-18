@@ -170,7 +170,7 @@ interface SessionInterface extends \IteratorAggregate
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function clear(): void;
+	public function clear();
 
 	/**
 	 * Retrieves all variables from the session store
