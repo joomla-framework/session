@@ -35,7 +35,7 @@ class NativeStorageTest extends TestCase
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function setUp()
+	protected function setUp(): void
 	{
 		$this->savePath = sys_get_temp_dir() . '/jfw-test';
 
@@ -53,7 +53,7 @@ class NativeStorageTest extends TestCase
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function tearDown()
+	protected function tearDown(): void
 	{
 		// Reset our session data
 		session_write_close();
@@ -68,14 +68,12 @@ class NativeStorageTest extends TestCase
 	/**
 	 * Data provider for set tests
 	 *
-	 * @return  array
+	 * @return  \Generator
 	 */
-	public function setProvider()
+	public function setProvider(): \Generator
 	{
-		return array(
-			array('joomla', 'rocks'),
-			array('joomla.framework', 'too much awesomeness')
-		);
+		yield ['joomla', 'rocks'];
+		yield ['joomla.framework', 'too much awesomeness'];
 	}
 
 	/**
@@ -122,11 +120,11 @@ class NativeStorageTest extends TestCase
 	/**
 	 * @covers  Joomla\Session\Storage\NativeStorage::setId()
 	 * @use     Joomla\Session\Storage\NativeStorage::start()
-	 *
-	 * @expectedException  \LogicException
 	 */
 	public function testValidateTheSessionIdCannotBeChangedAfterTheSessionIsStarted()
 	{
+		$this->expectException(\LogicException::class);
+
 		// The storage should successfully start
 		$this->storage->start();
 
@@ -156,11 +154,11 @@ class NativeStorageTest extends TestCase
 	/**
 	 * @covers  Joomla\Session\Storage\NativeStorage::setName()
 	 * @use     Joomla\Session\Storage\NativeStorage::start()
-	 *
-	 * @expectedException  \LogicException
 	 */
 	public function testValidateTheSessionNameCannotBeChangedAfterTheSessionIsStarted()
 	{
+		$this->expectException(\LogicException::class);
+
 		// The storage should successfully start
 		$this->storage->start();
 

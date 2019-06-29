@@ -17,7 +17,7 @@ class WincacheHandlerTest extends TestCase
 	/**
 	 * {@inheritdoc}
 	 */
-	public static function setUpBeforeClass()
+	public static function setUpBeforeClass(): void
 	{
 		// Make sure the handler is supported in this environment
 		if (!WincacheHandler::isSupported())

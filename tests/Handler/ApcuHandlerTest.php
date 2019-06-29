@@ -31,7 +31,7 @@ class ApcuHandlerTest extends TestCase
 	/**
 	 * {@inheritdoc}
 	 */
-	public static function setUpBeforeClass()
+	public static function setUpBeforeClass(): void
 	{
 		// Make sure the handler is supported in this environment
 		if (!ApcuHandler::isSupported())
@@ -43,7 +43,7 @@ class ApcuHandlerTest extends TestCase
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function setUp()
+	protected function setUp(): void
 	{
 		parent::setUp();
 

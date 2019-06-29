@@ -37,7 +37,7 @@ class SessionTest extends TestCase
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function setUp()
+	protected function setUp(): void
 	{
 		$mockInput = $this->getMockBuilder(Input::class)
 			->setMethods(['get'])
@@ -56,23 +56,19 @@ class SessionTest extends TestCase
 
 		$this->storage = new RuntimeStorage;
 		$this->session = new Session($this->storage);
-		$addressValidator = new AddressValidator($mockInput, $this->session);
-		$forwardedValidator = new ForwardedValidator($mockInput, $this->session);
-		$this->session->addValidator($addressValidator);
-		$this->session->addValidator($forwardedValidator);
+		$this->session->addValidator(new AddressValidator($mockInput, $this->session));
+		$this->session->addValidator(new ForwardedValidator($mockInput, $this->session));
 	}
 
 	/**
 	 * Data provider for set tests
 	 *
-	 * @return  array
+	 * @return  \Generator
 	 */
-	public function setProvider()
+	public function setProvider(): \Generator
 	{
-		return [
-			['joomla', 'rocks'],
-			['joomla.framework', 'too much awesomeness'],
-		];
+		yield ['joomla', 'rocks'];
+		yield ['joomla.framework', 'too much awesomeness'];
 	}
 
 	/**

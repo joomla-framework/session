@@ -17,7 +17,7 @@ class FilesystemHandlerTest extends TestCase
 	/**
 	 * {@inheritdoc}
 	 */
-	public static function setUpBeforeClass()
+	public static function setUpBeforeClass(): void
 	{
 		// Make sure the handler is supported in this environment
 		if (!FilesystemHandler::isSupported())
@@ -35,11 +35,12 @@ class FilesystemHandlerTest extends TestCase
 	}
 
 	/**
-	 * @covers             Joomla\Session\Handler\FilesystemHandler::__construct()
-	 * @expectedException  \InvalidArgumentException
+	 * @covers  Joomla\Session\Handler\FilesystemHandler::__construct()
 	 */
 	public function testTheHandlerHandlesAnInvalidPath()
 	{
+		$this->expectException(\InvalidArgumentException::class);
+
 		new FilesystemHandler('totally;invalid;string;for;this;object');
 	}
 
@@ -97,16 +98,14 @@ class FilesystemHandlerTest extends TestCase
 	/**
 	 * Data provider with expected paths for handler construction
 	 *
-	 * @return  array
+	 * @return  \Generator
 	 */
-	public function savePathDataProvider()
+	public function savePathDataProvider(): \Generator
 	{
 		$base = sys_get_temp_dir();
 
-		return array(
-			array("$base/savepath", "$base/savepath", "$base/savepath"),
-			array("5;$base/savepath", "5;$base/savepath", "$base/savepath"),
-			array("5;0600;$base/savepath", "5;0600;$base/savepath", "$base/savepath"),
-		);
+		yield ["$base/savepath", "$base/savepath", "$base/savepath"];
+		yield ["5;$base/savepath", "5;$base/savepath", "$base/savepath"];
+		yield ["5;0600;$base/savepath", "5;0600;$base/savepath", "$base/savepath"];
 	}
 }

@@ -58,7 +58,7 @@ class CreateSessionTableCommandTest extends TestCase
 		$this->assertSame(0, $command->execute($input, $output));
 
 		$screenOutput = $output->fetch();
-		$this->assertContains('The session table has been created.', $screenOutput);
+		$this->assertStringContainsString('The session table has been created.', $screenOutput);
 	}
 
 	public function testTheDatabaseTableIsNotCreatedWhenItAlreadyExists()
@@ -91,7 +91,7 @@ class CreateSessionTableCommandTest extends TestCase
 		$this->assertSame(0, $command->execute($input, $output));
 
 		$screenOutput = $output->fetch();
-		$this->assertContains('The session table already exists.', $screenOutput);
+		$this->assertStringContainsString('The session table already exists.', $screenOutput);
 	}
 
 	public function testTheDatabaseTableIsNotCreatedWhenTheDatabaseDriverIsNotSupported()
@@ -128,7 +128,7 @@ class CreateSessionTableCommandTest extends TestCase
 		$this->assertSame(1, $command->execute($input, $output));
 
 		$screenOutput = $output->fetch();
-		$this->assertContains('The mongodb database driver is not supported.', $screenOutput);
+		$this->assertStringContainsString('The mongodb database driver is not supported.', $screenOutput);
 	}
 
 	public function testTheDatabaseTableIsNotCreatedWhenTheDatabaseDriverThrowsAnError()
@@ -170,6 +170,6 @@ class CreateSessionTableCommandTest extends TestCase
 		$this->assertSame(1, $command->execute($input, $output));
 
 		$screenOutput = $output->fetch();
-		$this->assertContains('The session table could not be created:', $screenOutput);
+		$this->assertStringContainsString('The session table could not be created:', $screenOutput);
 	}
 }

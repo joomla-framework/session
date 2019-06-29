@@ -24,7 +24,7 @@ class RedisHandlerTest extends TestCase
 	/**
 	 * Mock Redis object for testing
 	 *
-	 * @var  \PHPUnit_Framework_MockObject_MockObject|\Redis
+	 * @var  \Redis
 	 */
 	private $redis;
 
@@ -38,7 +38,7 @@ class RedisHandlerTest extends TestCase
 	/**
 	 * {@inheritdoc}
 	 */
-	public static function setUpBeforeClass()
+	public static function setUpBeforeClass(): void
 	{
 		// Make sure the handler is supported in this environment
 		if (!RedisHandler::isSupported())
@@ -50,11 +50,18 @@ class RedisHandlerTest extends TestCase
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function setUp()
+	protected function setUp(): void
 	{
 		parent::setUp();
 
-		$this->redis   = $this->getMockBuilder('Redis')->getMock();
+		$this->redis = new \Redis();
+
+		if (!$this->redis->connect('127.0.0.1', 6379))
+		{
+			unset($this->redis);
+			$this->markTestSkipped('Cannot connect to Redis.');
+		}
+
 		$this->handler = new RedisHandler($this->redis, $this->options);
 	}
 
@@ -90,10 +97,7 @@ class RedisHandlerTest extends TestCase
 	 */
 	public function testTheHandlerReadsDataFromTheSessionCorrectly()
 	{
-		$this->redis->expects($this->once())
-			->method('get')
-			->with($this->options['prefix'] . 'id')
-			->willReturn('foo');
+		$this->handler->write('id', 'foo');
 
 		$this->assertSame('foo', $this->handler->read('id'));
 	}
@@ -103,11 +107,6 @@ class RedisHandlerTest extends TestCase
 	 */
 	public function testTheHandlerWritesDataToTheSessionCorrectlyWithATimeToLive()
 	{
-		$this->redis->expects($this->once())
-			->method('setex')
-			->with($this->options['prefix'] . 'id', $this->options['ttl'], 'data')
-			->willReturn(true);
-
 		$this->assertTrue($this->handler->write('id', 'data'));
 	}
 
@@ -118,11 +117,6 @@ class RedisHandlerTest extends TestCase
 	{
 		$handler = new RedisHandler($this->redis, ['prefix' => 'jfwtest_', 'ttl' => 0]);
 
-		$this->redis->expects($this->once())
-			->method('set')
-			->with($this->options['prefix'] . 'id', 'data')
-			->willReturn(true);
-
 		$this->assertTrue($handler->write('id', 'data'));
 	}
 
@@ -131,11 +125,6 @@ class RedisHandlerTest extends TestCase
 	 */
 	public function testTheHandlerDestroysTheSessionCorrectly()
 	{
-		$this->redis->expects($this->once())
-			->method('del')
-			->with($this->options['prefix'] . 'id')
-			->willReturn(true);
-
 		$this->assertTrue($this->handler->destroy('id'));
 	}
 
