@@ -130,7 +130,9 @@ class DatabaseHandler implements HandlerInterface
 
 		if (!is_readable($path))
 		{
-			throw new CreateSessionTableException(sprintf('Database schema could not be read from %s.  Please ensure the file exists and is readable.', $path));
+			throw new CreateSessionTableException(
+				sprintf('Database schema could not be read from %s. Please ensure the file exists and is readable.', $path)
+			);
 		}
 
 		$queries = DatabaseDriver::splitSql(file_get_contents($path));
