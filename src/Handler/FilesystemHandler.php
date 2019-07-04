@@ -28,12 +28,23 @@ class FilesystemHandler extends \SessionHandler implements HandlerInterface
 	 */
 	public function __construct(string $path = '')
 	{
-		$path = $path ?: ini_get('session.save_path');
+		$pathConfig = ini_get('session.save_path');
 
-		// If the path is still empty, then we can't use this handler
-		if (empty($path))
+		// If the paths are empty, then we can't use this handler
+		if (empty($path) && empty($pathConfig))
 		{
 			throw new \InvalidArgumentException('Invalid argument $path');
+		}
+
+		// If path is empty or equal to the the PHP configured path, set only the handler and use the PHP path directly
+		if (empty($path) || $path === $pathConfig)
+		{
+			if (!headers_sent())
+			{
+				ini_set('session.save_handler', 'files');
+			}
+
+			return;
 		}
 
 		$baseDir = $path;
