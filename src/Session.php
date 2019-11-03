@@ -233,50 +233,6 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	}
 
 	/**
-	 * Get the available session handlers
-	 *
-	 * @return  array  An array of available session handlers
-	 *
-	 * @since   __DEPLOY_VERSION__
-	 */
-	public static function getHandlers(): array
-	{
-		$connectors = [];
-
-		// Get an iterator and loop trough the handler classes.
-		$iterator = new \DirectoryIterator(__DIR__ . '/Handler');
-
-		foreach ($iterator as $file)
-		{
-			$fileName = $file->getFilename();
-
-			// Only load for PHP files.
-			if (!$file->isFile() || $file->getExtension() != 'php')
-			{
-				continue;
-			}
-
-			// Derive the class name from the type.
-			$class = str_ireplace('.php', '', __NAMESPACE__ . '\\Handler\\' . ucfirst(trim($fileName)));
-
-			// If the class doesn't exist we have nothing left to do but look at the next type. We did our best.
-			if (!class_exists($class))
-			{
-				continue;
-			}
-
-			// Sweet!  Our class exists, so now we just need to know if it passes its test method.
-			if ($class::isSupported())
-			{
-				// Connector names should not have file the handler suffix or the file extension.
-				$connectors[] = str_ireplace('Handler.php', '', $fileName);
-			}
-		}
-
-		return $connectors;
-	}
-
-	/**
 	 * Check if the session is active
 	 *
 	 * @return  boolean

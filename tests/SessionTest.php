@@ -188,15 +188,6 @@ class SessionTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Session::getHandlers()
-	 */
-	public function testValidateAListOfAvailableHandlersIsReturned()
-	{
-		// There should be at least one handler available in our test environment
-		$this->assertGreaterThan(0, Session::getHandlers());
-	}
-
-	/**
 	 * @covers  Joomla\Session\Session::getIterator()
 	 */
 	public function testValidateAnIteratorIsReturned()
