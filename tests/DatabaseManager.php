@@ -26,8 +26,9 @@ class DatabaseManager extends BaseDatabaseManager
 		{
 			$this->params = [
 				'driver'   => 'sqlite',
-				'database' => ':memory:',
 				'user'     => null,
+				'database' => ':memory:',
+				'select'   => false,
 			];
 		}
 	}
