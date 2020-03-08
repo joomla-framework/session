@@ -68,7 +68,7 @@ class MemcachedHandlerTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Handler\MemcachedHandler::isSupported()
+	 * @covers  Joomla\Session\Handler\MemcachedHandler
 	 */
 	public function testTheHandlerIsSupported()
 	{
@@ -76,7 +76,7 @@ class MemcachedHandlerTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Handler\MemcachedHandler::open()
+	 * @covers  Joomla\Session\Handler\MemcachedHandler
 	 */
 	public function testTheHandlerOpensTheSessionCorrectly()
 	{
@@ -84,7 +84,7 @@ class MemcachedHandlerTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Handler\MemcachedHandler::close()
+	 * @covers  Joomla\Session\Handler\MemcachedHandler
 	 */
 	public function testTheHandlerClosesTheSessionCorrectly()
 	{
@@ -92,7 +92,7 @@ class MemcachedHandlerTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Handler\MemcachedHandler::read()
+	 * @covers  Joomla\Session\Handler\MemcachedHandler
 	 */
 	public function testTheHandlerReadsDataFromTheSessionCorrectly()
 	{
@@ -102,7 +102,7 @@ class MemcachedHandlerTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Handler\MemcachedHandler::write()
+	 * @covers  Joomla\Session\Handler\MemcachedHandler
 	 */
 	public function testTheHandlerWritesDataToTheSessionCorrectly()
 	{
@@ -110,7 +110,7 @@ class MemcachedHandlerTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Handler\MemcachedHandler::destroy()
+	 * @covers  Joomla\Session\Handler\MemcachedHandler
 	 */
 	public function testTheHandlerDestroysTheSessionCorrectly()
 	{
@@ -118,7 +118,7 @@ class MemcachedHandlerTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Handler\MemcachedHandler::gc()
+	 * @covers  Joomla\Session\Handler\MemcachedHandler
 	 */
 	public function testTheHandlerGarbageCollectsTheSessionCorrectly()
 	{

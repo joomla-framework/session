@@ -19,6 +19,10 @@ use Symfony\Component\Console\Output\BufferedOutput;
  */
 class CreateSessionTableCommandTest extends TestCase
 {
+	/**
+	 * @covers  Joomla\Session\Command\CreateSessionTableCommand
+	 * @uses    Joomla\Session\Handler\DatabaseHandler
+	 */
 	public function testTheDatabaseTableIsCreated()
 	{
 		$db = $this->createMock(DatabaseInterface::class);
@@ -61,6 +65,10 @@ class CreateSessionTableCommandTest extends TestCase
 		$this->assertStringContainsString('The session table has been created.', $screenOutput);
 	}
 
+	/**
+	 * @covers  Joomla\Session\Command\CreateSessionTableCommand
+	 * @uses    Joomla\Session\Handler\DatabaseHandler
+	 */
 	public function testTheDatabaseTableIsNotCreatedWhenItAlreadyExists()
 	{
 		$db = $this->createMock(DatabaseInterface::class);
@@ -94,6 +102,10 @@ class CreateSessionTableCommandTest extends TestCase
 		$this->assertStringContainsString('The session table already exists.', $screenOutput);
 	}
 
+	/**
+	 * @covers  Joomla\Session\Command\CreateSessionTableCommand
+	 * @uses    Joomla\Session\Handler\DatabaseHandler
+	 */
 	public function testTheDatabaseTableIsNotCreatedWhenTheDatabaseDriverIsNotSupported()
 	{
 		$db = $this->createMock(DatabaseInterface::class);
@@ -131,6 +143,10 @@ class CreateSessionTableCommandTest extends TestCase
 		$this->assertStringContainsString('The mongodb database driver is not supported.', $screenOutput);
 	}
 
+	/**
+	 * @covers  Joomla\Session\Command\CreateSessionTableCommand
+	 * @uses    Joomla\Session\Handler\DatabaseHandler
+	 */
 	public function testTheDatabaseTableIsNotCreatedWhenTheDatabaseDriverThrowsAnError()
 	{
 		$db = $this->createMock(DatabaseInterface::class);

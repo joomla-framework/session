@@ -51,7 +51,7 @@ class ApcuHandlerTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Handler\ApcuHandler::isSupported()
+	 * @covers  Joomla\Session\Handler\ApcuHandler
 	 */
 	public function testTheHandlerIsSupported()
 	{
@@ -59,7 +59,7 @@ class ApcuHandlerTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Handler\ApcuHandler::open()
+	 * @covers  Joomla\Session\Handler\ApcuHandler
 	 */
 	public function testTheHandlerOpensTheSessionCorrectly()
 	{
@@ -67,7 +67,7 @@ class ApcuHandlerTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Handler\ApcuHandler::close()
+	 * @covers  Joomla\Session\Handler\ApcuHandler
 	 */
 	public function testTheHandlerClosesTheSessionCorrectly()
 	{
@@ -75,7 +75,7 @@ class ApcuHandlerTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Handler\ApcuHandler::read()
+	 * @covers  Joomla\Session\Handler\ApcuHandler
 	 */
 	public function testTheHandlerReadsDataFromTheSessionCorrectly()
 	{
@@ -83,7 +83,7 @@ class ApcuHandlerTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Handler\ApcuHandler::write()
+	 * @covers  Joomla\Session\Handler\ApcuHandler
 	 */
 	public function testTheHandlerWritesDataToTheSessionCorrectly()
 	{
@@ -91,7 +91,7 @@ class ApcuHandlerTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Handler\ApcuHandler::destroy()
+	 * @covers  Joomla\Session\Handler\ApcuHandler
 	 */
 	public function testTheHandlerDestroysTheSessionCorrectly()
 	{
@@ -99,7 +99,7 @@ class ApcuHandlerTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Handler\ApcuHandler::gc()
+	 * @covers  Joomla\Session\Handler\ApcuHandler
 	 */
 	public function testTheHandlerGarbageCollectsTheSessionCorrectly()
 	{

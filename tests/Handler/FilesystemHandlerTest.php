@@ -27,7 +27,7 @@ class FilesystemHandlerTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Handler\FilesystemHandler::isSupported()
+	 * @covers  Joomla\Session\Handler\FilesystemHandler
 	 */
 	public function testTheHandlerIsSupported()
 	{
@@ -35,7 +35,7 @@ class FilesystemHandlerTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Handler\FilesystemHandler::__construct()
+	 * @covers  Joomla\Session\Handler\FilesystemHandler
 	 */
 	public function testTheHandlerHandlesAnInvalidPath()
 	{
@@ -45,7 +45,7 @@ class FilesystemHandlerTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Handler\FilesystemHandler::__construct()
+	 * @covers  Joomla\Session\Handler\FilesystemHandler
 	 */
 	public function testTheHandlerIsInstantiatedCorrectly()
 	{
@@ -62,7 +62,7 @@ class FilesystemHandlerTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Handler\FilesystemHandler::__construct()
+	 * @covers  Joomla\Session\Handler\FilesystemHandler
 	 */
 	public function testTheHandlerIsInstantiatedCorrectlyAndCreatesTheSavePathIfNeeded()
 	{
@@ -80,9 +80,9 @@ class FilesystemHandlerTest extends TestCase
 	 * @param   string  $expectedSavePath  The expected save path in the PHP configuration
 	 * @param   string  $path              The expected filesystem path for the handler
 	 *
-	 * @dataProvider  savePathDataProvider
+	 * @covers  Joomla\Session\Handler\FilesystemHandler
 	 *
-	 * @covers  Joomla\Session\Handler\FilesystemHandler::__construct()
+	 * @dataProvider  savePathDataProvider
 	 */
 	public function testTheHandlerIsInstantiatedCorrectlyAndHandlesAllParametersAsExpected($savePath, $expectedSavePath, $path)
 	{

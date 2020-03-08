@@ -66,7 +66,7 @@ class RedisHandlerTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Handler\RedisHandler::isSupported()
+	 * @covers  Joomla\Session\Handler\RedisHandler
 	 */
 	public function testTheHandlerIsSupported()
 	{
@@ -77,7 +77,7 @@ class RedisHandlerTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Handler\RedisHandler::open()
+	 * @covers  Joomla\Session\Handler\RedisHandler
 	 */
 	public function testTheHandlerOpensTheSessionCorrectly()
 	{
@@ -85,7 +85,7 @@ class RedisHandlerTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Handler\RedisHandler::close()
+	 * @covers  Joomla\Session\Handler\RedisHandler
 	 */
 	public function testTheHandlerClosesTheSessionCorrectly()
 	{
@@ -93,7 +93,7 @@ class RedisHandlerTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Handler\RedisHandler::read()
+	 * @covers  Joomla\Session\Handler\RedisHandler
 	 */
 	public function testTheHandlerReadsDataFromTheSessionCorrectly()
 	{
@@ -103,7 +103,7 @@ class RedisHandlerTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Handler\RedisHandler::write()
+	 * @covers  Joomla\Session\Handler\RedisHandler
 	 */
 	public function testTheHandlerWritesDataToTheSessionCorrectlyWithATimeToLive()
 	{
@@ -111,7 +111,7 @@ class RedisHandlerTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Handler\RedisHandler::write()
+	 * @covers  Joomla\Session\Handler\RedisHandler
 	 */
 	public function testTheHandlerWritesDataToTheSessionCorrectlyWithoutATimeToLive()
 	{
@@ -121,7 +121,7 @@ class RedisHandlerTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Handler\RedisHandler::destroy()
+	 * @covers  Joomla\Session\Handler\RedisHandler
 	 */
 	public function testTheHandlerDestroysTheSessionCorrectly()
 	{
@@ -129,7 +129,7 @@ class RedisHandlerTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Handler\RedisHandler::gc()
+	 * @covers  Joomla\Session\Handler\RedisHandler
 	 */
 	public function testTheHandlerGarbageCollectsTheSessionCorrectly()
 	{

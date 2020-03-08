@@ -77,10 +77,7 @@ class NativeStorageTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Storage\NativeStorage::getId()
-	 * @covers  Joomla\Session\Storage\NativeStorage::isActive()
-	 * @covers  Joomla\Session\Storage\NativeStorage::isStarted()
-	 * @covers  Joomla\Session\Storage\NativeStorage::start()
+	 * @covers  Joomla\Session\Storage\NativeStorage
 	 */
 	public function testValidateTheStorageIsStartedCorrectly()
 	{
@@ -99,9 +96,7 @@ class NativeStorageTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Storage\NativeStorage::getId()
-	 * @covers  Joomla\Session\Storage\NativeStorage::setId()
-	 * @covers  Joomla\Session\Storage\NativeStorage::start()
+	 * @covers  Joomla\Session\Storage\NativeStorage
 	 */
 	public function testValidateAnInjectedSessionIdIsUsedWhenTheSessionStarts()
 	{
@@ -118,8 +113,7 @@ class NativeStorageTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Storage\NativeStorage::setId()
-	 * @use     Joomla\Session\Storage\NativeStorage::start()
+	 * @covers  Joomla\Session\Storage\NativeStorage
 	 */
 	public function testValidateTheSessionIdCannotBeChangedAfterTheSessionIsStarted()
 	{
@@ -133,9 +127,7 @@ class NativeStorageTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Storage\NativeStorage::getName()
-	 * @covers  Joomla\Session\Storage\NativeStorage::setName()
-	 * @covers  Joomla\Session\Storage\NativeStorage::start()
+	 * @covers  Joomla\Session\Storage\NativeStorage
 	 */
 	public function testValidateAnInjectedSessionNameIsUsedWhenTheSessionStarts()
 	{
@@ -152,8 +144,7 @@ class NativeStorageTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Storage\NativeStorage::setName()
-	 * @use     Joomla\Session\Storage\NativeStorage::start()
+	 * @covers  Joomla\Session\Storage\NativeStorage
 	 */
 	public function testValidateTheSessionNameCannotBeChangedAfterTheSessionIsStarted()
 	{
@@ -167,7 +158,7 @@ class NativeStorageTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Storage\NativeStorage::get()
+	 * @covers  Joomla\Session\Storage\NativeStorage
 	 */
 	public function testValidateTheCorrectValueIsReturnedWhenGetIsCalled()
 	{
@@ -182,10 +173,9 @@ class NativeStorageTest extends TestCase
 	 * @param   string  $key    The key to set
 	 * @param   string  $value  The value to set
 	 *
-	 * @dataProvider  setProvider
+	 * @covers  Joomla\Session\Storage\NativeStorage
 	 *
-	 * @covers  Joomla\Session\Storage\NativeStorage::set()
-	 * @uses    Joomla\Session\Storage\NativeStorage::get()
+	 * @dataProvider  setProvider
 	 */
 	public function testValidateAValueIsCorrectlyStored($key, $value)
 	{
@@ -197,10 +187,9 @@ class NativeStorageTest extends TestCase
 	 * @param   string  $key    The key to set
 	 * @param   string  $value  The value to set
 	 *
-	 * @dataProvider  setProvider
+	 * @covers  Joomla\Session\Storage\NativeStorage
 	 *
-	 * @covers  Joomla\Session\Storage\NativeStorage::has()
-	 * @uses    Joomla\Session\Storage\NativeStorage::set()
+	 * @dataProvider  setProvider
 	 */
 	public function testValidateTheKeyIsCorrectlyCheckedForExistence($key, $value)
 	{
@@ -210,9 +199,7 @@ class NativeStorageTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Storage\NativeStorage::remove()
-	 * @uses    Joomla\Session\Storage\NativeStorage::has()
-	 * @uses    Joomla\Session\Storage\NativeStorage::set()
+	 * @covers  Joomla\Session\Storage\NativeStorage
 	 */
 	public function testValidateAKeyIsCorrectlyRemovedFromTheStore()
 	{
@@ -224,9 +211,7 @@ class NativeStorageTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Storage\NativeStorage::all()
-	 * @covers  Joomla\Session\Storage\NativeStorage::clear()
-	 * @uses    Joomla\Session\Storage\NativeStorage::set()
+	 * @covers  Joomla\Session\Storage\NativeStorage
 	 */
 	public function testValidateAllDataIsReturnedFromTheStore()
 	{
@@ -248,11 +233,7 @@ class NativeStorageTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Storage\NativeStorage::regenerate()
-	 * @uses    Joomla\Session\Storage\NativeStorage::all()
-	 * @uses    Joomla\Session\Storage\NativeStorage::getId()
-	 * @uses    Joomla\Session\Storage\NativeStorage::set()
-	 * @uses    Joomla\Session\Storage\NativeStorage::start()
+	 * @covers  Joomla\Session\Storage\NativeStorage
 	 */
 	public function testValidateTheStorageIsCorrectlyRegenerated()
 	{
@@ -275,9 +256,7 @@ class NativeStorageTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Storage\NativeStorage::close()
-	 * @uses    Joomla\Session\Storage\NativeStorage::isStarted()
-	 * @uses    Joomla\Session\Storage\NativeStorage::start()
+	 * @covers  Joomla\Session\Storage\NativeStorage
 	 */
 	public function testValidateTheStorageIsCorrectlyClosed()
 	{
@@ -293,7 +272,7 @@ class NativeStorageTest extends TestCase
 	 */
 	public function testValidateTheHandlerIsCorrectlyRetrieved()
 	{
-		$this->assertInstanceOf('\\Joomla\\Session\\Handler\\FilesystemHandler', $this->storage->getHandler());
+		$this->assertInstanceOf(FilesystemHandler::class, $this->storage->getHandler());
 	}
 
 	/**

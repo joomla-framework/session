@@ -80,7 +80,7 @@ class DatabaseHandlerTest extends DatabaseTestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Handler\DatabaseHandler::isSupported()
+	 * @covers  Joomla\Session\Handler\DatabaseHandler
 	 */
 	public function testTheHandlerIsSupported()
 	{
@@ -88,12 +88,7 @@ class DatabaseHandlerTest extends DatabaseTestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Handler\DatabaseHandler::close()
-	 * @covers  Joomla\Session\Handler\DatabaseHandler::destroy()
-	 * @covers  Joomla\Session\Handler\DatabaseHandler::gc()
-	 * @covers  Joomla\Session\Handler\DatabaseHandler::read()
-	 * @covers  Joomla\Session\Handler\DatabaseHandler::open()
-	 * @covers  Joomla\Session\Handler\DatabaseHandler::write()
+	 * @covers  Joomla\Session\Handler\DatabaseHandler
 	 */
 	public function testValidateSessionDataIsCorrectlyReadWrittenAndDestroyed()
 	{

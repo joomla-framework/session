@@ -72,11 +72,9 @@ class SessionTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Session::__construct()
-	 * @covers  Joomla\Session\Session::getState()
-	 * @covers  Joomla\Session\Session::isActive()
-	 * @covers  Joomla\Session\Session::setDispatcher()
-	 * @covers  Joomla\Session\Session::setOptions()
+	 * @covers  Joomla\Session\Session
+	 * @uses    Joomla\Session\Validator\AddressValidator
+	 * @uses    Joomla\Session\Validator\ForwardedValidator
 	 */
 	public function testValidateASessionObjectIsCreatedCorrectly()
 	{
@@ -93,14 +91,10 @@ class SessionTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Session::getId()
-	 * @covers  Joomla\Session\Session::isActive()
-	 * @covers  Joomla\Session\Session::isNew()
-	 * @covers  Joomla\Session\Session::isStarted()
-	 * @covers  Joomla\Session\Session::setCounter()
-	 * @covers  Joomla\Session\Session::setTimers()
-	 * @covers  Joomla\Session\Session::start()
-	 * @covers  Joomla\Session\Session::validate()
+	 * @covers  Joomla\Session\Session
+	 * @uses    Joomla\Session\Storage\RuntimeStorage
+	 * @uses    Joomla\Session\Validator\AddressValidator
+	 * @uses    Joomla\Session\Validator\ForwardedValidator
 	 */
 	public function testValidateASessionStartsCorrectly()
 	{
@@ -122,12 +116,11 @@ class SessionTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Session::isStarted()
-	 * @covers  Joomla\Session\Session::setCounter()
-	 * @covers  Joomla\Session\Session::setDispatcher()
-	 * @covers  Joomla\Session\Session::setTimers()
-	 * @covers  Joomla\Session\Session::start()
-	 * @covers  Joomla\Session\Session::validate()
+	 * @covers  Joomla\Session\Session
+	 * @uses    Joomla\Session\SessionEvent
+	 * @uses    Joomla\Session\Storage\RuntimeStorage
+	 * @uses    Joomla\Session\Validator\AddressValidator
+	 * @uses    Joomla\Session\Validator\ForwardedValidator
 	 */
 	public function testValidateTheDispatcherIsTriggeredWhenTheSessionIsStarted()
 	{
@@ -144,12 +137,10 @@ class SessionTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Session::getId()
-	 * @covers  Joomla\Session\Session::setId()
-	 * @covers  Joomla\Session\Session::setCounter()
-	 * @covers  Joomla\Session\Session::setTimers()
-	 * @covers  Joomla\Session\Session::start()
-	 * @covers  Joomla\Session\Session::validate()
+	 * @covers  Joomla\Session\Session
+	 * @uses    Joomla\Session\Storage\RuntimeStorage
+	 * @uses    Joomla\Session\Validator\AddressValidator
+	 * @uses    Joomla\Session\Validator\ForwardedValidator
 	 */
 	public function testValidateAnInjectedSessionIdIsUsedWhenTheSessionStarts()
 	{
@@ -166,12 +157,10 @@ class SessionTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Session::getName()
-	 * @covers  Joomla\Session\Session::setName()
-	 * @covers  Joomla\Session\Session::setCounter()
-	 * @covers  Joomla\Session\Session::setTimers()
-	 * @covers  Joomla\Session\Session::start()
-	 * @covers  Joomla\Session\Session::validate()
+	 * @covers  Joomla\Session\Session
+	 * @uses    Joomla\Session\Storage\RuntimeStorage
+	 * @uses    Joomla\Session\Validator\AddressValidator
+	 * @uses    Joomla\Session\Validator\ForwardedValidator
 	 */
 	public function testValidateAnInjectedSessionNameIsUsedWhenTheSessionStarts()
 	{
@@ -188,15 +177,21 @@ class SessionTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Session::getIterator()
+	 * @covers  Joomla\Session\Session
+	 * @uses    Joomla\Session\Storage\RuntimeStorage
+	 * @uses    Joomla\Session\Validator\AddressValidator
+	 * @uses    Joomla\Session\Validator\ForwardedValidator
 	 */
 	public function testValidateAnIteratorIsReturned()
 	{
-		$this->assertInstanceOf('\\ArrayIterator', $this->session->getIterator());
+		$this->assertInstanceOf(\ArrayIterator::class, $this->session->getIterator());
 	}
 
 	/**
-	 * @covers  Joomla\Session\Session::get()
+	 * @covers  Joomla\Session\Session
+	 * @uses    Joomla\Session\Storage\RuntimeStorage
+	 * @uses    Joomla\Session\Validator\AddressValidator
+	 * @uses    Joomla\Session\Validator\ForwardedValidator
 	 */
 	public function testValidateTheCorrectValueIsReturnedWhenGetIsCalled()
 	{
@@ -211,10 +206,12 @@ class SessionTest extends TestCase
 	 * @param   string  $key    The key to set
 	 * @param   string  $value  The value to set
 	 *
-	 * @dataProvider  setProvider
+	 * @covers  Joomla\Session\Session
+	 * @uses    Joomla\Session\Storage\RuntimeStorage
+	 * @uses    Joomla\Session\Validator\AddressValidator
+	 * @uses    Joomla\Session\Validator\ForwardedValidator
 	 *
-	 * @covers  Joomla\Session\Session::set()
-	 * @uses    Joomla\Session\Session::get()
+	 * @dataProvider  setProvider
 	 */
 	public function testValidateAValueIsCorrectlyStoredToTheSession($key, $value)
 	{
@@ -226,10 +223,12 @@ class SessionTest extends TestCase
 	 * @param   string  $key    The key to set
 	 * @param   string  $value  The value to set
 	 *
-	 * @dataProvider  setProvider
+	 * @covers  Joomla\Session\Session
+	 * @uses    Joomla\Session\Storage\RuntimeStorage
+	 * @uses    Joomla\Session\Validator\AddressValidator
+	 * @uses    Joomla\Session\Validator\ForwardedValidator
 	 *
-	 * @covers  Joomla\Session\Session::has()
-	 * @uses    Joomla\Session\Session::set()
+	 * @dataProvider  setProvider
 	 */
 	public function testValidateTheKeyIsCorrectlyCheckedForExistence($key, $value)
 	{
@@ -239,9 +238,10 @@ class SessionTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Session::remove()
-	 * @uses    Joomla\Session\Session::has()
-	 * @uses    Joomla\Session\Session::set()
+	 * @covers  Joomla\Session\Session
+	 * @uses    Joomla\Session\Storage\RuntimeStorage
+	 * @uses    Joomla\Session\Validator\AddressValidator
+	 * @uses    Joomla\Session\Validator\ForwardedValidator
 	 */
 	public function testValidateAKeyIsCorrectlyRemovedFromTheStore()
 	{
@@ -253,9 +253,10 @@ class SessionTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Session::all()
-	 * @covers  Joomla\Session\Session::clear()
-	 * @uses    Joomla\Session\Session::set()
+	 * @covers  Joomla\Session\Session
+	 * @uses    Joomla\Session\Storage\RuntimeStorage
+	 * @uses    Joomla\Session\Validator\AddressValidator
+	 * @uses    Joomla\Session\Validator\ForwardedValidator
 	 */
 	public function testValidateAllDataIsReturnedFromTheSessionStore()
 	{
@@ -274,12 +275,10 @@ class SessionTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Session::destroy()
-	 * @uses    Joomla\Session\Session::fork()
-	 * @uses    Joomla\Session\Session::getId()
-	 * @uses    Joomla\Session\Session::getState()
-	 * @uses    Joomla\Session\Session::set()
-	 * @uses    Joomla\Session\Session::start()
+	 * @covers  Joomla\Session\Session
+	 * @uses    Joomla\Session\Storage\RuntimeStorage
+	 * @uses    Joomla\Session\Validator\AddressValidator
+	 * @uses    Joomla\Session\Validator\ForwardedValidator
 	 */
 	public function testValidateTheSessionIsCorrectlyDestroyed()
 	{
@@ -302,12 +301,11 @@ class SessionTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Session::restart()
-	 * @covers  Joomla\Session\Session::setDispatcher()
-	 * @covers  Joomla\Session\Session::validate()
-	 * @uses    Joomla\Session\Session::getId()
-	 * @uses    Joomla\Session\Session::set()
-	 * @uses    Joomla\Session\Session::start()
+	 * @covers  Joomla\Session\Session
+	 * @uses    Joomla\Session\SessionEvent
+	 * @uses    Joomla\Session\Storage\RuntimeStorage
+	 * @uses    Joomla\Session\Validator\AddressValidator
+	 * @uses    Joomla\Session\Validator\ForwardedValidator
 	 */
 	public function testValidateTheSessionIsCorrectlyRestarted()
 	{
@@ -335,12 +333,10 @@ class SessionTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Session::fork()
-	 * @uses    Joomla\Session\Session::all()
-	 * @uses    Joomla\Session\Session::getId()
-	 * @uses    Joomla\Session\Session::getState()
-	 * @uses    Joomla\Session\Session::set()
-	 * @uses    Joomla\Session\Session::start()
+	 * @covers  Joomla\Session\Session
+	 * @uses    Joomla\Session\Storage\RuntimeStorage
+	 * @uses    Joomla\Session\Validator\AddressValidator
+	 * @uses    Joomla\Session\Validator\ForwardedValidator
 	 */
 	public function testValidateTheSessionIsCorrectlyForkedWithoutDestruction()
 	{
@@ -365,12 +361,10 @@ class SessionTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Session::fork()
-	 * @uses    Joomla\Session\Session::all()
-	 * @uses    Joomla\Session\Session::getId()
-	 * @uses    Joomla\Session\Session::getState()
-	 * @uses    Joomla\Session\Session::set()
-	 * @uses    Joomla\Session\Session::start()
+	 * @covers  Joomla\Session\Session
+	 * @uses    Joomla\Session\Storage\RuntimeStorage
+	 * @uses    Joomla\Session\Validator\AddressValidator
+	 * @uses    Joomla\Session\Validator\ForwardedValidator
 	 */
 	public function testValidateTheSessionIsCorrectlyForkedWithDestruction()
 	{
@@ -392,9 +386,10 @@ class SessionTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Session::close()
-	 * @uses    Joomla\Session\Session::getState()
-	 * @uses    Joomla\Session\Session::start()
+	 * @covers  Joomla\Session\Session
+	 * @uses    Joomla\Session\Storage\RuntimeStorage
+	 * @uses    Joomla\Session\Validator\AddressValidator
+	 * @uses    Joomla\Session\Validator\ForwardedValidator
 	 */
 	public function testValidateTheSessionIsCorrectlyClosed()
 	{
@@ -408,9 +403,10 @@ class SessionTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Session::gc()
-	 * @uses    Joomla\Session\Session::getState()
-	 * @uses    Joomla\Session\Session::start()
+	 * @covers  Joomla\Session\Session
+	 * @uses    Joomla\Session\Storage\RuntimeStorage
+	 * @uses    Joomla\Session\Validator\AddressValidator
+	 * @uses    Joomla\Session\Validator\ForwardedValidator
 	 */
 	public function testValidateThatSessionGarbageCollectionIsPerformed()
 	{
@@ -420,9 +416,10 @@ class SessionTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Session::abort()
-	 * @uses    Joomla\Session\Session::getState()
-	 * @uses    Joomla\Session\Session::start()
+	 * @covers  Joomla\Session\Session
+	 * @uses    Joomla\Session\Storage\RuntimeStorage
+	 * @uses    Joomla\Session\Validator\AddressValidator
+	 * @uses    Joomla\Session\Validator\ForwardedValidator
 	 */
 	public function testValidateThatSessionIsAborted()
 	{

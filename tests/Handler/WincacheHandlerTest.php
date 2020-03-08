@@ -27,7 +27,7 @@ class WincacheHandlerTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Handler\WincacheHandler::isSupported()
+	 * @covers  Joomla\Session\Handler\WincacheHandler
 	 */
 	public function testTheHandlerIsSupported()
 	{
@@ -35,7 +35,7 @@ class WincacheHandlerTest extends TestCase
 	}
 
 	/**
-	 * @covers  Joomla\Session\Handler\WincacheHandler::__construct()
+	 * @covers  Joomla\Session\Handler\WincacheHandler
 	 */
 	public function testTheHandlerIsInstantiatedCorrectly()
 	{
