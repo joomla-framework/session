@@ -182,6 +182,42 @@ class SessionTest extends TestCase
 	 * @uses    Joomla\Session\Validator\AddressValidator
 	 * @uses    Joomla\Session\Validator\ForwardedValidator
 	 */
+	public function testValidateTheSessionTokenIsRetrieved()
+	{
+		$firstToken = $this->session->getToken();
+
+		$this->assertSame(32, strlen($this->session->getToken()), 'A 32-character token is generated');
+		$this->assertNotSame($firstToken, $this->session->getToken(true), 'A new token is generated');
+	}
+
+	/**
+	 * @covers  Joomla\Session\Session
+	 * @uses    Joomla\Session\Storage\RuntimeStorage
+	 * @uses    Joomla\Session\Validator\AddressValidator
+	 * @uses    Joomla\Session\Validator\ForwardedValidator
+	 */
+	public function testValidateTheSessionTokenIsValid()
+	{
+		$token = $this->session->getToken();
+
+		$this->assertTrue($this->session->hasToken($token));
+
+		// Invalid token not forcing the session to an expired state
+		$state = $this->session->getState();
+		$this->assertFalse($this->session->hasToken('not-the-token', false));
+		$this->assertSame($state, $this->session->getState());
+
+		// Invalid token forcing the session to an expired state
+		$this->assertFalse($this->session->hasToken('not-the-token', true));
+		$this->assertSame('expired', $this->session->getState());
+	}
+
+	/**
+	 * @covers  Joomla\Session\Session
+	 * @uses    Joomla\Session\Storage\RuntimeStorage
+	 * @uses    Joomla\Session\Validator\AddressValidator
+	 * @uses    Joomla\Session\Validator\ForwardedValidator
+	 */
 	public function testValidateAnIteratorIsReturned()
 	{
 		$this->assertInstanceOf(\ArrayIterator::class, $this->session->getIterator());
