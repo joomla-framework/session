@@ -25,17 +25,15 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	use DispatcherAwareTrait;
 
 	/**
-	 * Internal state.
-	 * One of 'inactive'|'active'|'expired'|'destroyed'|'closed'|'error'
+	 * Internal session state.
 	 *
 	 * @var    string
-	 * @see    getState()
 	 * @since  1.0
 	 */
-	protected $state = 'inactive';
+	protected $state = SessionState::INACTIVE;
 
 	/**
-	 * Maximum age of unused session in seconds
+	 * Maximum age of unused session in seconds.
 	 *
 	 * @var    integer
 	 * @since  1.0
@@ -51,7 +49,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	protected $store;
 
 	/**
-	 * The session store object.
+	 * Container holding session validators.
 	 *
 	 * @var    ValidatorInterface[]
 	 * @since  __DEPLOY_VERSION__
@@ -81,7 +79,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 
 		$this->setOptions($options);
 
-		$this->setState('inactive');
+		$this->setState(SessionState::INACTIVE);
 	}
 
 	/**
@@ -161,7 +159,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 
 		if (!$result && $forceExpire)
 		{
-			$this->setState('expired');
+			$this->setState(SessionState::EXPIRED);
 		}
 
 		return $result;
@@ -244,7 +242,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 */
 	public function isActive()
 	{
-		if ($this->getState() === 'active')
+		if ($this->getState() === SessionState::ACTIVE)
 		{
 			return $this->store->isActive();
 		}
@@ -406,7 +404,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 
 		$this->store->start();
 
-		$this->setState('active');
+		$this->setState(SessionState::ACTIVE);
 
 		// Initialise the session
 		$this->setCounter();
@@ -416,7 +414,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 		if (!$this->validate())
 		{
 			// If the session isn't valid because it expired try to restart it or destroy it.
-			if ($this->getState() === 'expired')
+			if ($this->getState() === SessionState::EXPIRED)
 			{
 				$this->restart();
 			}
@@ -463,7 +461,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	public function destroy()
 	{
 		// Session was already destroyed
-		if ($this->getState() === 'destroyed')
+		if ($this->getState() === SessionState::DESTROYED)
 		{
 			return true;
 		}
@@ -471,7 +469,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 		$this->clear();
 		$this->fork(true);
 
-		$this->setState('destroyed');
+		$this->setState(SessionState::DESTROYED);
 
 		return true;
 	}
@@ -491,7 +489,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 
 		$this->destroy();
 
-		if ($this->getState() !== 'destroyed')
+		if ($this->getState() !== SessionState::DESTROYED)
 		{
 			// @TODO :: generated error here
 			return false;
@@ -500,7 +498,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 		// Restart the session
 		$this->store->start();
 
-		$this->setState('active');
+		$this->setState(SessionState::ACTIVE);
 
 		// Initialise the session
 		$this->setCounter();
@@ -581,7 +579,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	public function close()
 	{
 		$this->store->close();
-		$this->setState('closed');
+		$this->setState(SessionState::CLOSED);
 	}
 
 	/**
@@ -765,7 +763,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 		// Allow to restart a session
 		if ($restart)
 		{
-			$this->setState('active');
+			$this->setState(SessionState::ACTIVE);
 		}
 
 		// Check if session has expired
@@ -777,7 +775,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 			// Empty session variables
 			if ($maxTime < $curTime)
 			{
-				$this->setState('expired');
+				$this->setState(SessionState::EXPIRED);
 
 				return false;
 			}
@@ -792,7 +790,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 		}
 		catch (Exception\InvalidSessionException $e)
 		{
-			$this->setState('error');
+			$this->setState(SessionState::ERROR);
 
 			return false;
 		}
