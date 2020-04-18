@@ -624,7 +624,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 *
 	 * @return  string  Generated token
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   1.3.1
 	 */
 	protected function createToken(int $length = 32): string
 	{
