@@ -618,17 +618,15 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	}
 
 	/**
-	 * Create a token-string
+	 * Create a token string
 	 *
-	 * @param   integer  $length  Length of string
-	 *
-	 * @return  string  Generated token
+	 * @return  string
 	 *
 	 * @since   1.3.1
 	 */
-	protected function createToken(int $length = 32): string
+	protected function createToken(): string
 	{
-		return bin2hex(random_bytes($length));
+		return bin2hex(random_bytes(32));
 	}
 
 	/**
