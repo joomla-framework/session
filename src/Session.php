@@ -626,7 +626,12 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 */
 	protected function createToken(): string
 	{
-		return bin2hex(random_bytes(32));
+		/*
+		 * We are returning a 32 character string.
+		 * The bin2hex() function will double the length of the hexadecimal value returned by random_bytes(),
+		 * so generate the token from a 16 byte random value
+		 */
+		return bin2hex(random_bytes(16));
 	}
 
 	/**
