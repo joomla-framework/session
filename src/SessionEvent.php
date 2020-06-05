@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework Session Package
  *
- * @copyright  Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -13,7 +13,7 @@ use Joomla\Event\Event;
 /**
  * Class representing a Session event
  *
- * @since  __DEPLOY_VERSION__
+ * @since  2.0.0-beta
  */
 class SessionEvent extends Event
 {
@@ -21,7 +21,7 @@ class SessionEvent extends Event
 	 * SessionInterface object for this event
 	 *
 	 * @var    SessionInterface
-	 * @since  __DEPLOY_VERSION__
+	 * @since  2.0.0-beta
 	 */
 	private $session;
 
@@ -31,7 +31,7 @@ class SessionEvent extends Event
 	 * @param   string            $name     The event name.
 	 * @param   SessionInterface  $session  The SessionInterface object for this event.
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function __construct(string $name, SessionInterface $session)
 	{
@@ -45,7 +45,7 @@ class SessionEvent extends Event
 	 *
 	 * @return  SessionInterface
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function getSession(): SessionInterface
 	{

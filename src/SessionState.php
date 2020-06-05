@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework Session Package
  *
- * @copyright  Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -11,14 +11,14 @@ namespace Joomla\Session;
 /**
  * Class defining the various states of a session
  *
- * @since  __DEPLOY_VERSION__
+ * @since  2.0.0-beta
  */
 final class SessionState
 {
 	/**
 	 * Private constructor to prevent instantiation of this class
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	private function __construct()
 	{
@@ -30,7 +30,7 @@ final class SessionState
 	 * A `SessionInterface` instance should be in this state once the session has started.
 	 *
 	 * @var    string
-	 * @since  __DEPLOY_VERSION__
+	 * @since  2.0.0-beta
 	 */
 	public const ACTIVE = 'active';
 
@@ -40,7 +40,7 @@ final class SessionState
 	 * A `SessionInterface` instance should be in this state after calling the `close()` method.
 	 *
 	 * @var    string
-	 * @since  __DEPLOY_VERSION__
+	 * @since  2.0.0-beta
 	 */
 	public const CLOSED = 'closed';
 
@@ -50,7 +50,7 @@ final class SessionState
 	 * A `SessionInterface` instance should be in this state after calling the `destroy()` method.
 	 *
 	 * @var    string
-	 * @since  __DEPLOY_VERSION__
+	 * @since  2.0.0-beta
 	 */
 	public const DESTROYED = 'destroyed';
 
@@ -60,7 +60,7 @@ final class SessionState
 	 * A `SessionInterface` instance should be in this state if the session cannot be validated after being started.
 	 *
 	 * @var    string
-	 * @since  __DEPLOY_VERSION__
+	 * @since  2.0.0-beta
 	 */
 	public const ERROR = 'error';
 
@@ -71,7 +71,7 @@ final class SessionState
 	 * A `SessionInterface` instance may be in this state if validating a session token fails.
 	 *
 	 * @var    string
-	 * @since  __DEPLOY_VERSION__
+	 * @since  2.0.0-beta
 	 */
 	public const EXPIRED = 'expired';
 
@@ -81,7 +81,7 @@ final class SessionState
 	 * A `SessionInterface` instance should begin in this state.
 	 *
 	 * @var    string
-	 * @since  __DEPLOY_VERSION__
+	 * @since  2.0.0-beta
 	 */
 	public const INACTIVE = 'inactive';
 }

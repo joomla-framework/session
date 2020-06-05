@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework Session Package
  *
- * @copyright  Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -52,7 +52,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 * Container holding session validators.
 	 *
 	 * @var    ValidatorInterface[]
-	 * @since  __DEPLOY_VERSION__
+	 * @since  2.0.0-beta
 	 */
 	protected $sessionValidators = [];
 
@@ -89,7 +89,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 *
 	 * @return  void
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function addValidator(ValidatorInterface $validator): void
 	{
@@ -196,7 +196,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 *
 	 * @return  $this
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function setName(string $name)
 	{
@@ -224,7 +224,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 *
 	 * @return  $this
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function setId(string $id)
 	{
@@ -269,7 +269,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 *
 	 * @return  boolean
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function isStarted(): bool
 	{
@@ -342,7 +342,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 *
 	 * @return  mixed   The value from session or NULL if not set
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function remove(string $name)
 	{
@@ -376,7 +376,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 *
 	 * @return  array
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function all(): array
 	{
@@ -588,7 +588,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 * @return  integer|boolean  Number of deleted sessions on success or boolean false on failure or if the function is unsupported
 	 *
 	 * @see     session_gc()
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function gc()
 	{
@@ -606,7 +606,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 * @return  boolean
 	 *
 	 * @see     session_abort()
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function abort(): bool
 	{

@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework Session Package
  *
- * @copyright  Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -20,7 +20,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 /**
  * Command used to create the session database table.
  *
- * @since  __DEPLOY_VERSION__
+ * @since  2.0.0-beta
  */
 class CreateSessionTableCommand extends AbstractCommand
 {
@@ -28,7 +28,7 @@ class CreateSessionTableCommand extends AbstractCommand
 	 * The default command name
 	 *
 	 * @var    string
-	 * @since  __DEPLOY_VERSION__
+	 * @since  2.0.0-beta
 	 */
 	protected static $defaultName = 'session:create-table';
 
@@ -36,7 +36,7 @@ class CreateSessionTableCommand extends AbstractCommand
 	 * Database connector
 	 *
 	 * @var    DatabaseInterface
-	 * @since  __DEPLOY_VERSION__
+	 * @since  2.0.0-beta
 	 */
 	private $db;
 
@@ -45,7 +45,7 @@ class CreateSessionTableCommand extends AbstractCommand
 	 *
 	 * @param   DatabaseInterface  $db  Database connector
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function __construct(DatabaseInterface $db)
 	{
@@ -59,7 +59,7 @@ class CreateSessionTableCommand extends AbstractCommand
 	 *
 	 * @return  void
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	protected function configure(): void
 	{
@@ -74,7 +74,7 @@ class CreateSessionTableCommand extends AbstractCommand
 	 *
 	 * @return  integer  The command exit code
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	protected function doExecute(InputInterface $input, OutputInterface $output): int
 	{

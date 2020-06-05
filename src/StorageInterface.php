@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework Session Package
  *
- * @copyright  Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -11,7 +11,7 @@ namespace Joomla\Session;
 /**
  * Interface defining a Joomla! session storage object
  *
- * @since  __DEPLOY_VERSION__
+ * @since  2.0.0-beta
  */
 interface StorageInterface
 {
@@ -20,7 +20,7 @@ interface StorageInterface
 	 *
 	 * @return  string  The session name
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function getName(): string;
 
@@ -31,7 +31,7 @@ interface StorageInterface
 	 *
 	 * @return  $this
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function setName(string $name);
 
@@ -40,7 +40,7 @@ interface StorageInterface
 	 *
 	 * @return  string  The session ID
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function getId(): string;
 
@@ -51,7 +51,7 @@ interface StorageInterface
 	 *
 	 * @return  $this
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function setId(string $id);
 
@@ -60,7 +60,7 @@ interface StorageInterface
 	 *
 	 * @return  boolean
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function isActive(): bool;
 
@@ -69,7 +69,7 @@ interface StorageInterface
 	 *
 	 * @return  boolean
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function isStarted(): bool;
 
@@ -81,7 +81,7 @@ interface StorageInterface
 	 *
 	 * @return  mixed  Value of a variable
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function get(string $name, $default);
 
@@ -93,7 +93,7 @@ interface StorageInterface
 	 *
 	 * @return  mixed  Old value of a variable
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function set(string $name, $value);
 
@@ -104,7 +104,7 @@ interface StorageInterface
 	 *
 	 * @return  boolean
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function has(string $name): bool;
 
@@ -115,7 +115,7 @@ interface StorageInterface
 	 *
 	 * @return  mixed   The value from session or NULL if not set
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function remove(string $name);
 
@@ -124,7 +124,7 @@ interface StorageInterface
 	 *
 	 * @return  void
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function clear(): void;
 
@@ -133,7 +133,7 @@ interface StorageInterface
 	 *
 	 * @return  array
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function all(): array;
 
@@ -142,7 +142,7 @@ interface StorageInterface
 	 *
 	 * @return  void
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function start(): void;
 
@@ -157,7 +157,7 @@ interface StorageInterface
 	 * @return  boolean  True on success
 	 *
 	 * @see     session_regenerate_id()
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function regenerate(bool $destroy = false): bool;
 
@@ -167,7 +167,7 @@ interface StorageInterface
 	 * @return  void
 	 *
 	 * @see     session_write_close()
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function close(): void;
 
@@ -177,7 +177,7 @@ interface StorageInterface
 	 * @return  integer|boolean  Number of deleted sessions on success or boolean false on failure or if the function is unsupported
 	 *
 	 * @see     session_gc()
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function gc();
 
@@ -187,7 +187,7 @@ interface StorageInterface
 	 * @return  boolean
 	 *
 	 * @see     session_abort()
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function abort(): bool;
 }

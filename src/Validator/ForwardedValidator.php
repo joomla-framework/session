@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework Session Package
  *
- * @copyright  Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -15,7 +15,7 @@ use Joomla\Session\ValidatorInterface;
 /**
  * Interface for validating a part of the session
  *
- * @since  __DEPLOY_VERSION__
+ * @since  2.0.0-beta
  */
 class ForwardedValidator implements ValidatorInterface
 {
@@ -23,7 +23,7 @@ class ForwardedValidator implements ValidatorInterface
 	 * The Input object.
 	 *
 	 * @var    Input
-	 * @since  __DEPLOY_VERSION__
+	 * @since  2.0.0-beta
 	 */
 	private $input;
 
@@ -31,7 +31,7 @@ class ForwardedValidator implements ValidatorInterface
 	 * The session object.
 	 *
 	 * @var    SessionInterface
-	 * @since  __DEPLOY_VERSION__
+	 * @since  2.0.0-beta
 	 */
 	private $session;
 
@@ -41,7 +41,7 @@ class ForwardedValidator implements ValidatorInterface
 	 * @param   Input             $input    The input object
 	 * @param   SessionInterface  $session  DispatcherInterface for the session to use.
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function __construct(Input $input, SessionInterface $session)
 	{
@@ -56,7 +56,7 @@ class ForwardedValidator implements ValidatorInterface
 	 *
 	 * @return  void
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function validate(bool $restart = false): void
 	{

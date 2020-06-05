@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework Session Package
  *
- * @copyright  Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -13,14 +13,14 @@ use Joomla\Session\HandlerInterface;
 /**
  * Wincache session storage handler
  *
- * @since  __DEPLOY_VERSION__
+ * @since  2.0.0-beta
  */
 class WincacheHandler extends \SessionHandler implements HandlerInterface
 {
 	/**
 	 * Constructor
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function __construct()
 	{
@@ -35,7 +35,7 @@ class WincacheHandler extends \SessionHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public static function isSupported(): bool
 	{

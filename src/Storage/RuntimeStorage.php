@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright  Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -12,7 +12,7 @@ use Joomla\Session\StorageInterface;
  * Session storage object that stores objects in Runtime memory. This is designed for use in CLI Apps, including
  * unit testing applications in PHPUnit.
  *
- * @since  __DEPLOY_VERSION__
+ * @since  2.0.0-beta
  */
 class RuntimeStorage implements StorageInterface
 {
@@ -20,7 +20,7 @@ class RuntimeStorage implements StorageInterface
 	 * Flag if the session is active
 	 *
 	 * @var    boolean
-	 * @since  __DEPLOY_VERSION__
+	 * @since  2.0.0-beta
 	 */
 	private $active = false;
 
@@ -28,7 +28,7 @@ class RuntimeStorage implements StorageInterface
 	 * Internal flag identifying whether the session has been closed
 	 *
 	 * @var    boolean
-	 * @since  __DEPLOY_VERSION__
+	 * @since  2.0.0-beta
 	 */
 	private $closed = false;
 
@@ -36,7 +36,7 @@ class RuntimeStorage implements StorageInterface
 	 * Internal data store
 	 *
 	 * @var    array
-	 * @since  __DEPLOY_VERSION__
+	 * @since  2.0.0-beta
 	 */
 	private $data = [];
 
@@ -44,7 +44,7 @@ class RuntimeStorage implements StorageInterface
 	 * Session ID
 	 *
 	 * @var    string
-	 * @since  __DEPLOY_VERSION__
+	 * @since  2.0.0-beta
 	 */
 	private $id = '';
 
@@ -52,7 +52,7 @@ class RuntimeStorage implements StorageInterface
 	 * Session Name
 	 *
 	 * @var    string
-	 * @since  __DEPLOY_VERSION__
+	 * @since  2.0.0-beta
 	 */
 	private $name = 'MockSession';
 
@@ -60,7 +60,7 @@ class RuntimeStorage implements StorageInterface
 	 * Internal flag identifying whether the session has been started
 	 *
 	 * @var    boolean
-	 * @since  __DEPLOY_VERSION__
+	 * @since  2.0.0-beta
 	 */
 	private $started = false;
 
@@ -79,7 +79,7 @@ class RuntimeStorage implements StorageInterface
 	 *
 	 * @return  void
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function clear(): void
 	{
@@ -92,7 +92,7 @@ class RuntimeStorage implements StorageInterface
 	 * @return  void
 	 *
 	 * @see     session_write_close()
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function close(): void
 	{
@@ -106,7 +106,7 @@ class RuntimeStorage implements StorageInterface
 	 * @return  integer|boolean  Number of deleted sessions on success or boolean false on failure or if the function is unsupported
 	 *
 	 * @see     session_gc()
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function gc()
 	{
@@ -119,7 +119,7 @@ class RuntimeStorage implements StorageInterface
 	 * @return  boolean
 	 *
 	 * @see     session_abort()
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function abort(): bool
 	{
@@ -134,7 +134,7 @@ class RuntimeStorage implements StorageInterface
 	 *
 	 * @return  string
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	private function generateId(): string
 	{
@@ -149,7 +149,7 @@ class RuntimeStorage implements StorageInterface
 	 *
 	 * @return  mixed  Value of a variable
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function get(string $name, $default)
 	{
@@ -171,7 +171,7 @@ class RuntimeStorage implements StorageInterface
 	 *
 	 * @return  string  The session ID
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function getId(): string
 	{
@@ -183,7 +183,7 @@ class RuntimeStorage implements StorageInterface
 	 *
 	 * @return  string  The session name
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function getName(): string
 	{
@@ -197,7 +197,7 @@ class RuntimeStorage implements StorageInterface
 	 *
 	 * @return  boolean
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function has(string $name): bool
 	{
@@ -214,7 +214,7 @@ class RuntimeStorage implements StorageInterface
 	 *
 	 * @return  boolean
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function isActive(): bool
 	{
@@ -226,7 +226,7 @@ class RuntimeStorage implements StorageInterface
 	 *
 	 * @return  boolean
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function isStarted(): bool
 	{
@@ -240,7 +240,7 @@ class RuntimeStorage implements StorageInterface
 	 *
 	 * @return  mixed  The value from session or NULL if not set
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function remove(string $name)
 	{
@@ -267,7 +267,7 @@ class RuntimeStorage implements StorageInterface
 	 * @return  boolean  True on success
 	 *
 	 * @see     session_regenerate_id()
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function regenerate(bool $destroy = false): bool
 	{
@@ -292,7 +292,7 @@ class RuntimeStorage implements StorageInterface
 	 *
 	 * @return  mixed  Old value of a variable
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function set(string $name, $value = null)
 	{
@@ -315,7 +315,7 @@ class RuntimeStorage implements StorageInterface
 	 *
 	 * @return  $this
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 * @throws  \LogicException
 	 */
 	public function setId(string $id)
@@ -337,7 +337,7 @@ class RuntimeStorage implements StorageInterface
 	 *
 	 * @return  $this
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 * @throws  \LogicException
 	 */
 	public function setName(string $name)
@@ -357,7 +357,7 @@ class RuntimeStorage implements StorageInterface
 	 *
 	 * @return  void
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function start(): void
 	{

@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework Session Package
  *
- * @copyright  Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -19,7 +19,7 @@ use Joomla\Session\HandlerInterface;
 /**
  * Database session storage handler
  *
- * @since  __DEPLOY_VERSION__
+ * @since  2.0.0-beta
  */
 class DatabaseHandler implements HandlerInterface
 {
@@ -27,7 +27,7 @@ class DatabaseHandler implements HandlerInterface
 	 * Database connector
 	 *
 	 * @var    DatabaseInterface
-	 * @since  __DEPLOY_VERSION__
+	 * @since  2.0.0-beta
 	 */
 	private $db;
 
@@ -35,7 +35,7 @@ class DatabaseHandler implements HandlerInterface
 	 * Flag whether gc() has been called
 	 *
 	 * @var    boolean
-	 * @since  __DEPLOY_VERSION__
+	 * @since  2.0.0-beta
 	 */
 	private $gcCalled = false;
 
@@ -43,7 +43,7 @@ class DatabaseHandler implements HandlerInterface
 	 * Lifetime for garbage collection
 	 *
 	 * @var    integer
-	 * @since  __DEPLOY_VERSION__
+	 * @since  2.0.0-beta
 	 */
 	private $gcLifetime;
 
@@ -52,7 +52,7 @@ class DatabaseHandler implements HandlerInterface
 	 *
 	 * @param   DatabaseInterface  $db  Database connector
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function __construct(DatabaseInterface $db)
 	{
@@ -64,7 +64,7 @@ class DatabaseHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function close()
 	{
@@ -92,7 +92,7 @@ class DatabaseHandler implements HandlerInterface
 	 *
 	 * @return  boolean
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 * @throws  CreateSessionTableException
 	 * @throws  UnsupportedDatabaseDriverException
 	 */
@@ -164,7 +164,7 @@ class DatabaseHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function destroy($session_id)
 	{
@@ -192,7 +192,7 @@ class DatabaseHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function gc($maxlifetime)
 	{
@@ -208,7 +208,7 @@ class DatabaseHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public static function isSupported(): bool
 	{
@@ -223,7 +223,7 @@ class DatabaseHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function open($save_path, $session_id)
 	{
@@ -239,7 +239,7 @@ class DatabaseHandler implements HandlerInterface
 	 *
 	 * @return  string  The session data
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function read($session_id)
 	{
@@ -270,7 +270,7 @@ class DatabaseHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   2.0.0-beta
 	 */
 	public function write($session_id, $session_data)
 	{
