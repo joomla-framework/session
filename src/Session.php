@@ -428,12 +428,11 @@ class Session implements SessionInterface, DispatcherAwareInterface
 		{
 			if (!empty($this->dispatcher->getListeners('onAfterSessionStart')))
 			{
-				@trigger_error(
-					sprintf(
-						'The `onAfterSessionStart` event is deprecated and will be removed in 3.0, use the %s::START event instead.',
-						SessionEvents::class
-					),
-					E_USER_DEPRECATED
+				trigger_deprecation(
+					'joomla/session',
+					'2.0.0',
+					'The `onAfterSessionStart` event is deprecated and will be removed in 3.0, use the %s::START event instead.',
+					SessionEvents::class
 				);
 
 				// Dispatch deprecated event
@@ -520,12 +519,11 @@ class Session implements SessionInterface, DispatcherAwareInterface
 		{
 			if (!empty($this->dispatcher->getListeners('onAfterSessionRestart')))
 			{
-				@trigger_error(
-					sprintf(
-						'The `onAfterSessionRestart` event is deprecated and will be removed in 3.0, use the %s::RESTART event instead.',
-						SessionEvents::class
-					),
-					E_USER_DEPRECATED
+				trigger_deprecation(
+					'joomla/session',
+					'2.0.0',
+					'The `onAfterSessionRestart` event is deprecated and will be removed in 3.0, use the %s::RESTART event instead.',
+					SessionEvents::class
 				);
 
 				// Dispatch deprecated event
