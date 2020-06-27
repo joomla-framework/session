@@ -11,7 +11,7 @@ namespace Joomla\Session\Exception;
 /**
  * Exception thrown when a session validator fails
  *
- * @since  2.0.0-beta
+ * @since  2.0.0
  */
 class InvalidSessionException extends \RuntimeException
 {

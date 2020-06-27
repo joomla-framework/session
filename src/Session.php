@@ -52,7 +52,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 * Container holding session validators.
 	 *
 	 * @var    ValidatorInterface[]
-	 * @since  2.0.0-beta
+	 * @since  2.0.0
 	 */
 	protected $sessionValidators = [];
 
@@ -89,7 +89,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 *
 	 * @return  void
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function addValidator(ValidatorInterface $validator): void
 	{
@@ -196,7 +196,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 *
 	 * @return  $this
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function setName(string $name)
 	{
@@ -224,7 +224,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 *
 	 * @return  $this
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function setId(string $id)
 	{
@@ -269,7 +269,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 *
 	 * @return  boolean
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function isStarted(): bool
 	{
@@ -342,7 +342,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 *
 	 * @return  mixed   The value from session or NULL if not set
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function remove(string $name)
 	{
@@ -376,7 +376,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 *
 	 * @return  array
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function all(): array
 	{
@@ -586,7 +586,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 * @return  integer|boolean  Number of deleted sessions on success or boolean false on failure or if the function is unsupported
 	 *
 	 * @see     session_gc()
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function gc()
 	{
@@ -604,7 +604,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 * @return  boolean
 	 *
 	 * @see     session_abort()
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function abort(): bool
 	{

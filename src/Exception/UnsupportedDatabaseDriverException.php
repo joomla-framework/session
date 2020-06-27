@@ -11,7 +11,7 @@ namespace Joomla\Session\Exception;
 /**
  * Exception thrown when the database driver is unsupported
  *
- * @since  2.0.0-beta
+ * @since  2.0.0
  */
 class UnsupportedDatabaseDriverException extends \UnexpectedValueException
 {

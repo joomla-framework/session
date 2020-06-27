@@ -14,7 +14,7 @@ use Joomla\Session\StorageInterface;
 /**
  * Base class providing a session store
  *
- * @since  2.0.0-beta
+ * @since  2.0.0
  */
 class NativeStorage implements StorageInterface
 {
@@ -22,7 +22,7 @@ class NativeStorage implements StorageInterface
 	 * Flag if the session is active
 	 *
 	 * @var    boolean
-	 * @since  2.0.0-beta
+	 * @since  2.0.0
 	 */
 	private $active = false;
 
@@ -30,7 +30,7 @@ class NativeStorage implements StorageInterface
 	 * Internal flag identifying whether the session has been closed
 	 *
 	 * @var    boolean
-	 * @since  2.0.0-beta
+	 * @since  2.0.0
 	 */
 	private $closed = false;
 
@@ -38,7 +38,7 @@ class NativeStorage implements StorageInterface
 	 * Session save handler
 	 *
 	 * @var    \SessionHandlerInterface
-	 * @since  2.0.0-beta
+	 * @since  2.0.0
 	 */
 	private $handler;
 
@@ -46,7 +46,7 @@ class NativeStorage implements StorageInterface
 	 * Internal flag identifying whether the session has been started
 	 *
 	 * @var    boolean
-	 * @since  2.0.0-beta
+	 * @since  2.0.0
 	 */
 	private $started = false;
 
@@ -82,7 +82,7 @@ class NativeStorage implements StorageInterface
 	 *
 	 * @return  array
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function all(): array
 	{
@@ -94,7 +94,7 @@ class NativeStorage implements StorageInterface
 	 *
 	 * @return  void
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function clear(): void
 	{
@@ -107,7 +107,7 @@ class NativeStorage implements StorageInterface
 	 * @return  void
 	 *
 	 * @see     session_write_close()
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function close(): void
 	{
@@ -123,7 +123,7 @@ class NativeStorage implements StorageInterface
 	 * @return  integer|boolean  Number of deleted sessions on success or boolean false on failure or if the function is unsupported
 	 *
 	 * @see     session_gc()
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function gc()
 	{
@@ -141,7 +141,7 @@ class NativeStorage implements StorageInterface
 	 * @return  boolean
 	 *
 	 * @see     session_abort()
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function abort(): bool
 	{
@@ -161,7 +161,7 @@ class NativeStorage implements StorageInterface
 	 *
 	 * @return  mixed  Value of a variable
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function get(string $name, $default)
 	{
@@ -183,7 +183,7 @@ class NativeStorage implements StorageInterface
 	 *
 	 * @return  \SessionHandlerInterface|null
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function getHandler(): ?\SessionHandlerInterface
 	{
@@ -195,7 +195,7 @@ class NativeStorage implements StorageInterface
 	 *
 	 * @return  string  The session ID
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function getId(): string
 	{
@@ -207,7 +207,7 @@ class NativeStorage implements StorageInterface
 	 *
 	 * @return  string  The session name
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function getName(): string
 	{
@@ -221,7 +221,7 @@ class NativeStorage implements StorageInterface
 	 *
 	 * @return  boolean
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function has(string $name): bool
 	{
@@ -238,7 +238,7 @@ class NativeStorage implements StorageInterface
 	 *
 	 * @return  boolean
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function isActive(): bool
 	{
@@ -250,7 +250,7 @@ class NativeStorage implements StorageInterface
 	 *
 	 * @return  boolean
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function isStarted(): bool
 	{
@@ -264,7 +264,7 @@ class NativeStorage implements StorageInterface
 	 *
 	 * @return  mixed  The value from session or NULL if not set
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function remove(string $name)
 	{
@@ -291,7 +291,7 @@ class NativeStorage implements StorageInterface
 	 * @return  boolean  True on success
 	 *
 	 * @see     session_regenerate_id()
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function regenerate(bool $destroy = false): bool
 	{
@@ -311,7 +311,7 @@ class NativeStorage implements StorageInterface
 	 *
 	 * @return  mixed  Old value of a variable
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function set(string $name, $value = null)
 	{
@@ -334,7 +334,7 @@ class NativeStorage implements StorageInterface
 	 *
 	 * @return  $this
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 * @throws  \RuntimeException
 	 */
 	public function setHandler(?\SessionHandlerInterface $handler = null): self
@@ -370,7 +370,7 @@ class NativeStorage implements StorageInterface
 	 *
 	 * @return  $this
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 * @throws  \LogicException
 	 */
 	public function setId(string $id)
@@ -392,7 +392,7 @@ class NativeStorage implements StorageInterface
 	 *
 	 * @return  $this
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 * @throws  \LogicException
 	 */
 	public function setName(string $name)
@@ -419,7 +419,7 @@ class NativeStorage implements StorageInterface
 	 *
 	 * @note    Based on \Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage::setOptions()
 	 * @see     http://php.net/session.configuration
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function setOptions(array $options): self
 	{
@@ -454,7 +454,7 @@ class NativeStorage implements StorageInterface
 	 *
 	 * @return  void
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function start(): void
 	{

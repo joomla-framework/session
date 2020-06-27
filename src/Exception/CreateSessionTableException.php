@@ -11,7 +11,7 @@ namespace Joomla\Session\Exception;
 /**
  * Exception thrown when the database session table cannot be created
  *
- * @since  2.0.0-beta
+ * @since  2.0.0
  */
 class CreateSessionTableException extends \RuntimeException
 {

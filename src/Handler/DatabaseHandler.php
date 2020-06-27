@@ -19,7 +19,7 @@ use Joomla\Session\HandlerInterface;
 /**
  * Database session storage handler
  *
- * @since  2.0.0-beta
+ * @since  2.0.0
  */
 class DatabaseHandler implements HandlerInterface
 {
@@ -27,7 +27,7 @@ class DatabaseHandler implements HandlerInterface
 	 * Database connector
 	 *
 	 * @var    DatabaseInterface
-	 * @since  2.0.0-beta
+	 * @since  2.0.0
 	 */
 	private $db;
 
@@ -35,7 +35,7 @@ class DatabaseHandler implements HandlerInterface
 	 * Flag whether gc() has been called
 	 *
 	 * @var    boolean
-	 * @since  2.0.0-beta
+	 * @since  2.0.0
 	 */
 	private $gcCalled = false;
 
@@ -43,7 +43,7 @@ class DatabaseHandler implements HandlerInterface
 	 * Lifetime for garbage collection
 	 *
 	 * @var    integer
-	 * @since  2.0.0-beta
+	 * @since  2.0.0
 	 */
 	private $gcLifetime;
 
@@ -52,7 +52,7 @@ class DatabaseHandler implements HandlerInterface
 	 *
 	 * @param   DatabaseInterface  $db  Database connector
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function __construct(DatabaseInterface $db)
 	{
@@ -64,7 +64,7 @@ class DatabaseHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function close()
 	{
@@ -92,7 +92,7 @@ class DatabaseHandler implements HandlerInterface
 	 *
 	 * @return  boolean
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 * @throws  CreateSessionTableException
 	 * @throws  UnsupportedDatabaseDriverException
 	 */
@@ -164,7 +164,7 @@ class DatabaseHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function destroy($session_id)
 	{
@@ -192,7 +192,7 @@ class DatabaseHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function gc($maxlifetime)
 	{
@@ -208,7 +208,7 @@ class DatabaseHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public static function isSupported(): bool
 	{
@@ -223,7 +223,7 @@ class DatabaseHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function open($save_path, $session_id)
 	{
@@ -239,7 +239,7 @@ class DatabaseHandler implements HandlerInterface
 	 *
 	 * @return  string  The session data
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function read($session_id)
 	{
@@ -270,7 +270,7 @@ class DatabaseHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function write($session_id, $session_data)
 	{

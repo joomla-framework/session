@@ -11,7 +11,7 @@ namespace Joomla\Session;
 /**
  * Interface defining a Joomla! Session object
  *
- * @since  2.0.0-beta
+ * @since  2.0.0
  */
 interface SessionInterface extends \IteratorAggregate
 {
@@ -20,7 +20,7 @@ interface SessionInterface extends \IteratorAggregate
 	 *
 	 * @return  integer  The session expiration time in seconds
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function getExpire();
 
@@ -29,7 +29,7 @@ interface SessionInterface extends \IteratorAggregate
 	 *
 	 * @return  string  The session name
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function getName();
 
@@ -40,7 +40,7 @@ interface SessionInterface extends \IteratorAggregate
 	 *
 	 * @return  $this
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function setName(string $name);
 
@@ -49,7 +49,7 @@ interface SessionInterface extends \IteratorAggregate
 	 *
 	 * @return  string  The session ID
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function getId();
 
@@ -60,7 +60,7 @@ interface SessionInterface extends \IteratorAggregate
 	 *
 	 * @return  $this
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function setId(string $id);
 
@@ -69,7 +69,7 @@ interface SessionInterface extends \IteratorAggregate
 	 *
 	 * @return  boolean
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function isActive();
 
@@ -78,7 +78,7 @@ interface SessionInterface extends \IteratorAggregate
 	 *
 	 * @return  boolean
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function isNew();
 
@@ -87,7 +87,7 @@ interface SessionInterface extends \IteratorAggregate
 	 *
 	 * @return  boolean
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function isStarted();
 
@@ -101,7 +101,7 @@ interface SessionInterface extends \IteratorAggregate
 	 *
 	 * @return  string
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function getToken($forceNew = false);
 
@@ -113,7 +113,7 @@ interface SessionInterface extends \IteratorAggregate
 	 *
 	 * @return  boolean
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function hasToken($token, $forceExpire = true);
 
@@ -125,7 +125,7 @@ interface SessionInterface extends \IteratorAggregate
 	 *
 	 * @return  mixed  Value of a variable
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function get($name, $default = null);
 
@@ -137,7 +137,7 @@ interface SessionInterface extends \IteratorAggregate
 	 *
 	 * @return  mixed  Old value of a variable.
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function set($name, $value = null);
 
@@ -148,7 +148,7 @@ interface SessionInterface extends \IteratorAggregate
 	 *
 	 * @return  boolean  True if the variable exists
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function has($name);
 
@@ -159,7 +159,7 @@ interface SessionInterface extends \IteratorAggregate
 	 *
 	 * @return  mixed   The value from session or NULL if not set
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function remove(string $name);
 
@@ -168,7 +168,7 @@ interface SessionInterface extends \IteratorAggregate
 	 *
 	 * @return  void
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function clear();
 
@@ -177,7 +177,7 @@ interface SessionInterface extends \IteratorAggregate
 	 *
 	 * @return  array
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function all(): array;
 
@@ -186,7 +186,7 @@ interface SessionInterface extends \IteratorAggregate
 	 *
 	 * @return  void
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function start();
 
@@ -201,7 +201,7 @@ interface SessionInterface extends \IteratorAggregate
 	 *
 	 * @see     session_destroy()
 	 * @see     session_unset()
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function destroy();
 
@@ -211,7 +211,7 @@ interface SessionInterface extends \IteratorAggregate
 	 * @return  boolean  True on success
 	 *
 	 * @see     destroy
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function restart();
 
@@ -220,7 +220,7 @@ interface SessionInterface extends \IteratorAggregate
 	 *
 	 * @return  boolean
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function fork();
 
@@ -238,7 +238,7 @@ interface SessionInterface extends \IteratorAggregate
 	 * @return  void
 	 *
 	 * @see     session_write_close()
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function close();
 
@@ -248,7 +248,7 @@ interface SessionInterface extends \IteratorAggregate
 	 * @return  integer|boolean  Number of deleted sessions on success or boolean false on failure or if the function is unsupported
 	 *
 	 * @see     session_gc()
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function gc();
 
@@ -258,7 +258,7 @@ interface SessionInterface extends \IteratorAggregate
 	 * @return  boolean
 	 *
 	 * @see     session_abort()
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function abort(): bool;
 }

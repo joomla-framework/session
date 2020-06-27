@@ -13,7 +13,7 @@ use Joomla\Session\HandlerInterface;
 /**
  * Memcached session storage handler
  *
- * @since  2.0.0-beta
+ * @since  2.0.0
  */
 class MemcachedHandler implements HandlerInterface
 {
@@ -21,7 +21,7 @@ class MemcachedHandler implements HandlerInterface
 	 * Memcached driver
 	 *
 	 * @var    \Memcached
-	 * @since  2.0.0-beta
+	 * @since  2.0.0
 	 */
 	private $memcached;
 
@@ -29,7 +29,7 @@ class MemcachedHandler implements HandlerInterface
 	 * Session ID prefix to avoid naming conflicts
 	 *
 	 * @var    string
-	 * @since  2.0.0-beta
+	 * @since  2.0.0
 	 */
 	private $prefix;
 
@@ -37,7 +37,7 @@ class MemcachedHandler implements HandlerInterface
 	 * Time to live in seconds
 	 *
 	 * @var    integer
-	 * @since  2.0.0-beta
+	 * @since  2.0.0
 	 */
 	private $ttl;
 
@@ -47,7 +47,7 @@ class MemcachedHandler implements HandlerInterface
 	 * @param   \Memcached  $memcached  A Memcached instance
 	 * @param   array       $options    Associative array of options to configure the handler
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function __construct(\Memcached $memcached, array $options = [])
 	{
@@ -65,7 +65,7 @@ class MemcachedHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function close()
 	{
@@ -79,7 +79,7 @@ class MemcachedHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function destroy($session_id)
 	{
@@ -93,7 +93,7 @@ class MemcachedHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function gc($maxlifetime)
 	{
@@ -106,7 +106,7 @@ class MemcachedHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public static function isSupported(): bool
 	{
@@ -125,7 +125,7 @@ class MemcachedHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function open($save_path, $session_id)
 	{
@@ -139,7 +139,7 @@ class MemcachedHandler implements HandlerInterface
 	 *
 	 * @return  string  The session data
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function read($session_id)
 	{
@@ -154,7 +154,7 @@ class MemcachedHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function write($session_id, $session_data)
 	{

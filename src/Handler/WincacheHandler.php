@@ -13,14 +13,14 @@ use Joomla\Session\HandlerInterface;
 /**
  * Wincache session storage handler
  *
- * @since  2.0.0-beta
+ * @since  2.0.0
  */
 class WincacheHandler extends \SessionHandler implements HandlerInterface
 {
 	/**
 	 * Constructor
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function __construct()
 	{
@@ -35,7 +35,7 @@ class WincacheHandler extends \SessionHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public static function isSupported(): bool
 	{

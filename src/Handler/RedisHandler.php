@@ -13,7 +13,7 @@ use Joomla\Session\HandlerInterface;
 /**
  * Redis session storage handler
  *
- * @since  2.0.0-beta
+ * @since  2.0.0
  */
 class RedisHandler implements HandlerInterface
 {
@@ -21,7 +21,7 @@ class RedisHandler implements HandlerInterface
 	 * Session ID prefix to avoid naming conflicts
 	 *
 	 * @var    string
-	 * @since  2.0.0-beta
+	 * @since  2.0.0
 	 */
 	private $prefix;
 
@@ -29,7 +29,7 @@ class RedisHandler implements HandlerInterface
 	 * Redis driver
 	 *
 	 * @var    \Redis
-	 * @since  2.0.0-beta
+	 * @since  2.0.0
 	 */
 	private $redis;
 
@@ -37,7 +37,7 @@ class RedisHandler implements HandlerInterface
 	 * Time to live in seconds
 	 *
 	 * @var    integer
-	 * @since  2.0.0-beta
+	 * @since  2.0.0
 	 */
 	private $ttl;
 
@@ -47,7 +47,7 @@ class RedisHandler implements HandlerInterface
 	 * @param   \Redis  $redis    A Redis instance
 	 * @param   array   $options  Associative array of options to configure the handler
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function __construct(\Redis $redis, array $options = [])
 	{
@@ -65,7 +65,7 @@ class RedisHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function close()
 	{
@@ -81,7 +81,7 @@ class RedisHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function destroy($session_id)
 	{
@@ -97,7 +97,7 @@ class RedisHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function gc($maxlifetime)
 	{
@@ -109,7 +109,7 @@ class RedisHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public static function isSupported(): bool
 	{
@@ -124,7 +124,7 @@ class RedisHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function open($save_path, $session_id)
 	{
@@ -138,7 +138,7 @@ class RedisHandler implements HandlerInterface
 	 *
 	 * @return  string  The session data
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function read($session_id)
 	{
@@ -153,7 +153,7 @@ class RedisHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function write($session_id, $session_data)
 	{

@@ -11,7 +11,7 @@ namespace Joomla\Session;
 /**
  * Interface defining Joomla! session handlers
  *
- * @since  2.0.0-beta
+ * @since  2.0.0
  */
 interface HandlerInterface extends \SessionHandlerInterface
 {
@@ -20,7 +20,7 @@ interface HandlerInterface extends \SessionHandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise.
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public static function isSupported(): bool;
 }

@@ -13,7 +13,7 @@ use Joomla\Session\HandlerInterface;
 /**
  * Filesystem session storage handler
  *
- * @since  2.0.0-beta
+ * @since  2.0.0
  */
 class FilesystemHandler extends \SessionHandler implements HandlerInterface
 {
@@ -22,7 +22,7 @@ class FilesystemHandler extends \SessionHandler implements HandlerInterface
 	 *
 	 * @param   string  $path  Path of directory to save session files.  Leave null to use the PHP configured path.
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 * @throws  \InvalidArgumentException
 	 * @throws  \RuntimeException
 	 */
@@ -81,7 +81,7 @@ class FilesystemHandler extends \SessionHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public static function isSupported(): bool
 	{

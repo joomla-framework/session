@@ -15,7 +15,7 @@ use Joomla\Session\ValidatorInterface;
 /**
  * Interface for validating a part of the session
  *
- * @since  2.0.0-beta
+ * @since  2.0.0
  */
 class ForwardedValidator implements ValidatorInterface
 {
@@ -23,7 +23,7 @@ class ForwardedValidator implements ValidatorInterface
 	 * The Input object.
 	 *
 	 * @var    Input
-	 * @since  2.0.0-beta
+	 * @since  2.0.0
 	 */
 	private $input;
 
@@ -31,7 +31,7 @@ class ForwardedValidator implements ValidatorInterface
 	 * The session object.
 	 *
 	 * @var    SessionInterface
-	 * @since  2.0.0-beta
+	 * @since  2.0.0
 	 */
 	private $session;
 
@@ -41,7 +41,7 @@ class ForwardedValidator implements ValidatorInterface
 	 * @param   Input             $input    The input object
 	 * @param   SessionInterface  $session  DispatcherInterface for the session to use.
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function __construct(Input $input, SessionInterface $session)
 	{
@@ -56,7 +56,7 @@ class ForwardedValidator implements ValidatorInterface
 	 *
 	 * @return  void
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function validate(bool $restart = false): void
 	{

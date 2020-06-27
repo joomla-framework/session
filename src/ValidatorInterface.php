@@ -11,7 +11,7 @@ namespace Joomla\Session;
 /**
  * Interface for validating a part of the session
  *
- * @since  2.0.0-beta
+ * @since  2.0.0
  */
 interface ValidatorInterface
 {
@@ -22,7 +22,7 @@ interface ValidatorInterface
 	 *
 	 * @return  void
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 * @throws  Exception\InvalidSessionException
 	 */
 	public function validate(bool $restart = false): void;

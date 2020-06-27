@@ -20,7 +20,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 /**
  * Command used to create the session database table.
  *
- * @since  2.0.0-beta
+ * @since  2.0.0
  */
 class CreateSessionTableCommand extends AbstractCommand
 {
@@ -28,7 +28,7 @@ class CreateSessionTableCommand extends AbstractCommand
 	 * The default command name
 	 *
 	 * @var    string
-	 * @since  2.0.0-beta
+	 * @since  2.0.0
 	 */
 	protected static $defaultName = 'session:create-table';
 
@@ -36,7 +36,7 @@ class CreateSessionTableCommand extends AbstractCommand
 	 * Database connector
 	 *
 	 * @var    DatabaseInterface
-	 * @since  2.0.0-beta
+	 * @since  2.0.0
 	 */
 	private $db;
 
@@ -45,7 +45,7 @@ class CreateSessionTableCommand extends AbstractCommand
 	 *
 	 * @param   DatabaseInterface  $db  Database connector
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	public function __construct(DatabaseInterface $db)
 	{
@@ -59,7 +59,7 @@ class CreateSessionTableCommand extends AbstractCommand
 	 *
 	 * @return  void
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	protected function configure(): void
 	{
@@ -74,7 +74,7 @@ class CreateSessionTableCommand extends AbstractCommand
 	 *
 	 * @return  integer  The command exit code
 	 *
-	 * @since   2.0.0-beta
+	 * @since   2.0.0
 	 */
 	protected function doExecute(InputInterface $input, OutputInterface $output): int
 	{
