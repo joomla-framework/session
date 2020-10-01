@@ -38,25 +38,47 @@ class RedisHandlerTest extends TestCase
 	/**
 	 * {@inheritdoc}
 	 */
-	public static function setUpBeforeClass(): void
+	protected function setUp(): void
 	{
 		// Make sure the handler is supported in this environment
 		if (!RedisHandler::isSupported())
 		{
 			static::markTestSkipped('The RedisHandler is unsupported in this environment.');
 		}
-	}
 
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function setUp(): void
-	{
 		parent::setUp();
+
+		// Parse the DSN details for the test server
+		$dsn = defined('JTEST_REDIS_DSN') ? JTEST_REDIS_DSN : getenv('JTEST_REDIS_DSN');
+
+		if ($dsn)
+		{
+			// First let's trim the redis: part off the front of the DSN if it exists.
+			if (strpos($dsn, 'redis:') === 0)
+			{
+				$dsn = substr($dsn, 6);
+			}
+
+			$options = [];
+
+			// Split the DSN into its parts over semicolons.
+			$parts = explode(';', $dsn);
+
+			// Parse each part and populate the options array.
+			foreach ($parts as $part)
+			{
+				list ($k, $v) = explode('=', $part, 2);
+				$options[$k] = $v;
+			}
+		}
+		else
+		{
+			$this->markTestSkipped('No configuration for Redis given');
+		}
 
 		$this->redis = new \Redis();
 
-		if (!$this->redis->connect('127.0.0.1', 6379))
+		if (!$this->redis->connect($options['host'], $options['port']))
 		{
 			unset($this->redis);
 			$this->markTestSkipped('Cannot connect to Redis.');
