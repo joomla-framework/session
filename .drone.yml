@@ -79,6 +79,13 @@ steps:
   commands:
   - vendor/bin/phpunit
 
+services:
+- name: memcached
+  image: memcached:alpine
+
+- name: redis
+  image: redis:alpine
+
 volumes:
 - name: composer-cache
   host:
@@ -106,6 +113,13 @@ steps:
   image: joomlaprojects/docker-images:php7.2
   commands:
   - vendor/bin/phpunit
+
+services:
+- name: memcached
+  image: memcached:alpine
+
+- name: redis
+  image: redis:alpine
 
 volumes:
 - name: composer-cache
@@ -135,6 +149,13 @@ steps:
   commands:
   - vendor/bin/phpunit
 
+services:
+- name: memcached
+  image: memcached:alpine
+
+- name: redis
+  image: redis:alpine
+
 volumes:
 - name: composer-cache
   host:
@@ -162,6 +183,13 @@ steps:
   image: joomlaprojects/docker-images:php7.4
   commands:
   - vendor/bin/phpunit
+
+services:
+- name: memcached
+  image: memcached:alpine
+
+- name: redis
+  image: redis:alpine
 
 volumes:
 - name: composer-cache
@@ -192,6 +220,13 @@ steps:
   - vendor/bin/phpunit
   failure: ignore
 
+services:
+- name: memcached
+  image: memcached:alpine
+
+- name: redis
+  image: redis:alpine
+
 volumes:
 - name: composer-cache
   host:
@@ -199,6 +234,6 @@ volumes:
 
 ---
 kind: signature
-hmac: dd79e48a1d4ab3c9358a5272cad2ca44f25e17c080331b615062c8547a46e8a6
+hmac: d23ec5cdaa8376c273acf2f6ced99e75a620c268a668adec54f20d57e06c4e79
 
 ...
