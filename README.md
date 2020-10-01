@@ -1,4 +1,4 @@
-# The Session Package [![Build Status](https://travis-ci.org/joomla-framework/session.png?branch=master)](https://travis-ci.org/joomla-framework/session) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/joomla-framework/session/badges/quality-score.png?b=2.0-dev)](https://scrutinizer-ci.com/g/joomla-framework/session/?branch=2.0-dev)
+# The Session Package [![Build Status](https://ci.joomla.org/api/badges/joomla-framework/session/status.svg?ref=refs/heads/2.0-dev)](https://ci.joomla.org/joomla-framework/session)
 
 [![Latest Stable Version](https://poser.pugx.org/joomla/session/v/stable)](https://packagist.org/packages/joomla/session)
 [![Total Downloads](https://poser.pugx.org/joomla/session/downloads)](https://packagist.org/packages/joomla/session)

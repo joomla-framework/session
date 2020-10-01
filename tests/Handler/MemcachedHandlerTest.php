@@ -38,27 +38,49 @@ class MemcachedHandlerTest extends TestCase
 	/**
 	 * {@inheritdoc}
 	 */
-	public static function setUpBeforeClass(): void
+	protected function setUp(): void
 	{
 		// Make sure the handler is supported in this environment
 		if (!MemcachedHandler::isSupported())
 		{
 			static::markTestSkipped('The MemcachedHandler is unsupported in this environment.');
 		}
-	}
 
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function setUp(): void
-	{
 		parent::setUp();
+
+		// Parse the DSN details for the test server
+		$dsn = defined('JTEST_MEMCACHED_DSN') ? JTEST_MEMCACHED_DSN : getenv('JTEST_MEMCACHED_DSN');
+
+		if ($dsn)
+		{
+			// First let's trim the memcached: part off the front of the DSN if it exists.
+			if (strpos($dsn, 'memcached:') === 0)
+			{
+				$dsn = substr($dsn, 10);
+			}
+
+			$options = [];
+
+			// Split the DSN into its parts over semicolons.
+			$parts = explode(';', $dsn);
+
+			// Parse each part and populate the options array.
+			foreach ($parts as $part)
+			{
+				list ($k, $v) = explode('=', $part, 2);
+				$options[$k] = $v;
+			}
+		}
+		else
+		{
+			$this->markTestSkipped('No configuration for Redis given');
+		}
 
 		$this->memcached = new \Memcached;
 		$this->memcached->setOption(\Memcached::OPT_COMPRESSION, false);
-		$this->memcached->addServer('127.0.0.1', 11211);
+		$this->memcached->addServer($options['host'], $options['port']);
 
-		if (@fsockopen('127.0.0.1', 11211) === false)
+		if (@fsockopen($options['host'], $options['port']) === false)
 		{
 			unset($this->memcached);
 			$this->markTestSkipped('Cannot connect to Memcached.');
