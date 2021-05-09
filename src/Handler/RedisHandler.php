@@ -61,20 +61,6 @@ class RedisHandler implements HandlerInterface
 	}
 
 	/**
-	 * Close the session
-	 *
-	 * @return  boolean  True on success, false otherwise
-	 *
-	 * @since   2.0.0
-	 */
-	public function close()
-	{
-		$this->redis->close();
-
-		return true;
-	}
-
-	/**
 	 * Destroy a session
 	 *
 	 * @param   integer  $session_id  The session ID being destroyed
@@ -86,8 +72,6 @@ class RedisHandler implements HandlerInterface
 	public function destroy($session_id)
 	{
 		$this->redis->del($this->prefix . $session_id);
-
-		return $this->close();
 	}
 
 	/**
@@ -114,21 +98,6 @@ class RedisHandler implements HandlerInterface
 	public static function isSupported(): bool
 	{
 		return \extension_loaded('redis') && class_exists('Redis');
-	}
-
-	/**
-	 * Initialize session
-	 *
-	 * @param   string  $save_path   The path where to store/retrieve the session
-	 * @param   string  $session_id  The session id
-	 *
-	 * @return  boolean  True on success, false otherwise
-	 *
-	 * @since   2.0.0
-	 */
-	public function open($save_path, $session_id)
-	{
-		return true;
 	}
 
 	/**
