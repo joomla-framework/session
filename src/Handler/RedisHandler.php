@@ -13,7 +13,7 @@ use Joomla\Session\HandlerInterface;
 /**
  * Redis session storage handler
  *
- * @since  2.0.0
+ * @since  2.0.0-beta
  */
 class RedisHandler implements HandlerInterface
 {
@@ -21,7 +21,7 @@ class RedisHandler implements HandlerInterface
 	 * Session ID prefix to avoid naming conflicts
 	 *
 	 * @var    string
-	 * @since  2.0.0
+	 * @since  2.0.0-beta
 	 */
 	private $prefix;
 
@@ -29,7 +29,7 @@ class RedisHandler implements HandlerInterface
 	 * Redis driver
 	 *
 	 * @var    \Redis
-	 * @since  2.0.0
+	 * @since  2.0.0-beta
 	 */
 	private $redis;
 
@@ -37,7 +37,7 @@ class RedisHandler implements HandlerInterface
 	 * Time to live in seconds
 	 *
 	 * @var    integer
-	 * @since  2.0.0
+	 * @since  2.0.0-beta
 	 */
 	private $ttl;
 
@@ -47,7 +47,7 @@ class RedisHandler implements HandlerInterface
 	 * @param   \Redis  $redis    A Redis instance
 	 * @param   array   $options  Associative array of options to configure the handler
 	 *
-	 * @since   2.0.0
+	 * @since   2.0.0-beta
 	 */
 	public function __construct(\Redis $redis, array $options = [])
 	{
@@ -61,17 +61,31 @@ class RedisHandler implements HandlerInterface
 	}
 
 	/**
+	 * Close the session
+	 *
+	 * @return  boolean  True on success, false otherwise
+	 *
+	 * @since   2.0.0-beta
+	 */
+	public function close()
+	{
+		return true;
+	}
+
+	/**
 	 * Destroy a session
 	 *
 	 * @param   integer  $session_id  The session ID being destroyed
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0
+	 * @since   2.0.0-beta
 	 */
 	public function destroy($session_id)
 	{
 		$this->redis->del($this->prefix . $session_id);
+
+		return $this->close();
 	}
 
 	/**
@@ -81,7 +95,7 @@ class RedisHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0
+	 * @since   2.0.0-beta
 	 */
 	public function gc($maxlifetime)
 	{
@@ -93,11 +107,26 @@ class RedisHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0
+	 * @since   2.0.0-beta
 	 */
 	public static function isSupported(): bool
 	{
 		return \extension_loaded('redis') && class_exists('Redis');
+	}
+
+	/**
+	 * Initialize session
+	 *
+	 * @param   string  $save_path   The path where to store/retrieve the session
+	 * @param   string  $session_id  The session id
+	 *
+	 * @return  boolean  True on success, false otherwise
+	 *
+	 * @since   2.0.0-beta
+	 */
+	public function open($save_path, $session_id)
+	{
+		return true;
 	}
 
 	/**
@@ -107,7 +136,7 @@ class RedisHandler implements HandlerInterface
 	 *
 	 * @return  string  The session data
 	 *
-	 * @since   2.0.0
+	 * @since   2.0.0-beta
 	 */
 	public function read($session_id)
 	{
@@ -122,7 +151,7 @@ class RedisHandler implements HandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise
 	 *
-	 * @since   2.0.0
+	 * @since   2.0.0-beta
 	 */
 	public function write($session_id, $session_data)
 	{
