@@ -69,8 +69,6 @@ class RedisHandler implements HandlerInterface
 	 */
 	public function close()
 	{
-		$this->redis->close();
-
 		return true;
 	}
 
