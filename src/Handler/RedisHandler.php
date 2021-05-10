@@ -69,13 +69,12 @@ class RedisHandler implements HandlerInterface
 	 */
 	public function close()
 	{
-		$this->redis->close();
-
+		// No need to close the connection to Redis server manually.
 		return true;
 	}
 
 	/**
-	 * Destroy a session
+	 * Destroy a session, called automatically when running session_regenerate_id().
 	 *
 	 * @param   integer  $session_id  The session ID being destroyed
 	 *
@@ -83,11 +82,12 @@ class RedisHandler implements HandlerInterface
 	 *
 	 * @since   2.0.0
 	 */
-	public function destroy($session_id)
+	public function destroy($session_id): bool
 	{
 		$this->redis->del($this->prefix . $session_id);
 
-		return $this->close();
+		// Session callback must have a return value of type bool when session_regenerate_id() is called.
+		return true;
 	}
 
 	/**
