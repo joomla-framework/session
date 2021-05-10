@@ -81,7 +81,7 @@ class MemcachedHandler implements HandlerInterface
 	 *
 	 * @since   2.0.0
 	 */
-	public function destroy($session_id)
+	public function destroy($session_id): bool
 	{
 		return $this->memcached->delete($this->prefix . $session_id);
 	}
