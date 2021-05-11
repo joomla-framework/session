@@ -166,7 +166,7 @@ class DatabaseHandler implements HandlerInterface
 	 *
 	 * @since   2.0.0
 	 */
-	public function destroy($session_id)
+	public function destroy($session_id): bool
 	{
 		try
 		{
