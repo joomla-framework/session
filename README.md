@@ -16,5 +16,5 @@ The Session package provides an interface for managing sessions within an applic
 To install the package, you can simply run the following from the command line:
            
 ```sh
-composer require joomla/session
+composer require joomla/session "~2.0"
 ```
