@@ -68,7 +68,7 @@ The `hasToken()` method is used to determine if the current session token matche
  * @param   string   $token        Hashed token to be verified
  * @param   boolean  $forceExpire  If true, expires the session
  *
- * @return  boolea
+ * @return  boolean
  */
 public function hasToken($token, $forceExpire = true);
 ```
