@@ -53,8 +53,6 @@ The `getToken()` method is used to fetch the current session token. This token i
  * @param   boolean  $forceNew  If true, forces a new token to be created
  *
  * @return  string
- *
- * @since   __DEPLOY_VERSION__
  */
 public function getToken($forceNew = false);
 ```
@@ -70,9 +68,7 @@ The `hasToken()` method is used to determine if the current session token matche
  * @param   string   $token        Hashed token to be verified
  * @param   boolean  $forceExpire  If true, expires the session
  *
- * @return  boolean
- *
- * @since   __DEPLOY_VERSION__
+ * @return  boolea
  */
 public function hasToken($token, $forceExpire = true);
 ```
