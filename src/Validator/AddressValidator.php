@@ -12,6 +12,7 @@ use Joomla\Input\Input;
 use Joomla\Session\Exception\InvalidSessionException;
 use Joomla\Session\SessionInterface;
 use Joomla\Session\ValidatorInterface;
+use Joomla\Utilities\IpHelper;
 
 /**
  * Interface for validating a part of the session
@@ -67,7 +68,7 @@ class AddressValidator implements ValidatorInterface
 			$this->session->set('session.client.address', null);
 		}
 
-		$remoteAddr = $this->input->server->getString('REMOTE_ADDR', '');
+		$remoteAddr = IpHelper::getIp();
 
 		// Check for client address
 		if (!empty($remoteAddr) && filter_var($remoteAddr, FILTER_VALIDATE_IP) !== false)
