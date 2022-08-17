@@ -181,7 +181,7 @@ volumes:
   name: composer-cache
 ---
 kind: pipeline
-name: PHP 8.0
+name: PHP 8.1
 services:
 - image: memcached:alpine
   name: memcached
@@ -206,7 +206,7 @@ volumes:
   name: composer-cache
 ---
 kind: pipeline
-name: PHP 8.0
+name: PHP 8.2
 services:
 - image: memcached:alpine
   name: memcached
@@ -232,6 +232,6 @@ volumes:
   name: composer-cache
 ---
 kind: signature
-hmac: 479f44e580eacbe1c3319e8e2e9add9cd5254478e78d0db56086f0c18c68a621
+hmac: cbd53fdbc4b2346211b3129c1e8f6a1998dd3957fa9eedd48be93210ee4b30f7
 
 ...
