@@ -91,6 +91,16 @@
 {
    "kind": "pipeline",
    "name": "PHP 7.2 lowest",
+   "services": [
+      {
+         "image": "memcached:alpine",
+         "name": "memcached"
+      },
+      {
+         "image": "redis:alpine",
+         "name": "redis"
+      }
+   ],
    "steps": [
       {
          "commands": [
@@ -127,6 +137,16 @@
 {
    "kind": "pipeline",
    "name": "PHP 7.2",
+   "services": [
+      {
+         "image": "memcached:alpine",
+         "name": "memcached"
+      },
+      {
+         "image": "redis:alpine",
+         "name": "redis"
+      }
+   ],
    "steps": [
       {
          "commands": [
@@ -163,6 +183,16 @@
 {
    "kind": "pipeline",
    "name": "PHP 7.3",
+   "services": [
+      {
+         "image": "memcached:alpine",
+         "name": "memcached"
+      },
+      {
+         "image": "redis:alpine",
+         "name": "redis"
+      }
+   ],
    "steps": [
       {
          "commands": [
@@ -199,6 +229,16 @@
 {
    "kind": "pipeline",
    "name": "PHP 7.4",
+   "services": [
+      {
+         "image": "memcached:alpine",
+         "name": "memcached"
+      },
+      {
+         "image": "redis:alpine",
+         "name": "redis"
+      }
+   ],
    "steps": [
       {
          "commands": [
@@ -235,6 +275,16 @@
 {
    "kind": "pipeline",
    "name": "PHP 8.0",
+   "services": [
+      {
+         "image": "memcached:alpine",
+         "name": "memcached"
+      },
+      {
+         "image": "redis:alpine",
+         "name": "redis"
+      }
+   ],
    "steps": [
       {
          "commands": [
@@ -271,6 +321,16 @@
 {
    "kind": "pipeline",
    "name": "PHP 8.1",
+   "services": [
+      {
+         "image": "memcached:alpine",
+         "name": "memcached"
+      },
+      {
+         "image": "redis:alpine",
+         "name": "redis"
+      }
+   ],
    "steps": [
       {
          "commands": [
@@ -307,6 +367,16 @@
 {
    "kind": "pipeline",
    "name": "PHP 8.2",
+   "services": [
+      {
+         "image": "memcached:alpine",
+         "name": "memcached"
+      },
+      {
+         "image": "redis:alpine",
+         "name": "redis"
+      }
+   ],
    "steps": [
       {
          "commands": [
@@ -342,6 +412,6 @@
 }
 ---
 kind: signature
-hmac: ed8ff411fc764636a8562251f7bd3f12b7ca967f62554ab241ea0cd32f3c2197
+hmac: 7b4c99661032efaac3aa1e3012dbb078a5c838693cfe069901f74f55faabcc56
 
 ...
