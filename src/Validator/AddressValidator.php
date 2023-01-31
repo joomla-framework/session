@@ -21,68 +21,63 @@ use Joomla\Utilities\IpHelper;
  */
 class AddressValidator implements ValidatorInterface
 {
-	/**
-	 * The Input object.
-	 *
-	 * @var    Input
-	 * @since  2.0.0
-	 */
-	private $input;
+    /**
+     * The Input object.
+     *
+     * @var    Input
+     * @since  2.0.0
+     */
+    private $input;
 
-	/**
-	 * The session object.
-	 *
-	 * @var    SessionInterface
-	 * @since  2.0.0
-	 */
-	private $session;
+    /**
+     * The session object.
+     *
+     * @var    SessionInterface
+     * @since  2.0.0
+     */
+    private $session;
 
-	/**
-	 * Constructor
-	 *
-	 * @param   Input             $input    The input object
-	 * @param   SessionInterface  $session  DispatcherInterface for the session to use.
-	 *
-	 * @since   2.0.0
-	 */
-	public function __construct(Input $input, SessionInterface $session)
-	{
-		$this->input   = $input;
-		$this->session = $session;
-	}
+    /**
+     * Constructor
+     *
+     * @param   Input             $input    The input object
+     * @param   SessionInterface  $session  DispatcherInterface for the session to use.
+     *
+     * @since   2.0.0
+     */
+    public function __construct(Input $input, SessionInterface $session)
+    {
+        $this->input   = $input;
+        $this->session = $session;
+    }
 
-	/**
-	 * Validates the session
-	 *
-	 * @param   boolean  $restart  Flag if the session should be restarted
-	 *
-	 * @return  void
-	 *
-	 * @since   2.0.0
-	 * @throws  InvalidSessionException
-	 */
-	public function validate(bool $restart = false): void
-	{
-		if ($restart)
-		{
-			$this->session->set('session.client.address', null);
-		}
+    /**
+     * Validates the session
+     *
+     * @param   boolean  $restart  Flag if the session should be restarted
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     * @throws  InvalidSessionException
+     */
+    public function validate(bool $restart = false): void
+    {
+        if ($restart) {
+            $this->session->set('session.client.address', null);
+        }
 
-		$remoteAddr = IpHelper::getIp();
+        $remoteAddr = IpHelper::getIp();
 
-		// Check for client address
-		if (!empty($remoteAddr) && filter_var($remoteAddr, FILTER_VALIDATE_IP) !== false)
-		{
-			$ip = $this->session->get('session.client.address');
+        // Check for client address
+        if (!empty($remoteAddr) && filter_var($remoteAddr, FILTER_VALIDATE_IP) !== false) {
+            $ip = $this->session->get('session.client.address');
 
-			if ($ip === null)
-			{
-				$this->session->set('session.client.address', $remoteAddr);
-			}
-			elseif ($remoteAddr !== $ip)
-			{
-				throw new InvalidSessionException('Invalid client IP');
-			}
-		}
-	}
+            if ($ip === null) {
+                $this->session->set('session.client.address', $remoteAddr);
+            } elseif ($remoteAddr !== $ip) {
+                throw new InvalidSessionException('Invalid client IP');
+            }
+        }
+    }
 }

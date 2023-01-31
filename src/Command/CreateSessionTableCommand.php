@@ -24,91 +24,85 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 class CreateSessionTableCommand extends AbstractCommand
 {
-	/**
-	 * The default command name
-	 *
-	 * @var    string
-	 * @since  2.0.0
-	 */
-	protected static $defaultName = 'session:create-table';
+    /**
+     * The default command name
+     *
+     * @var    string
+     * @since  2.0.0
+     */
+    protected static $defaultName = 'session:create-table';
 
-	/**
-	 * Database connector
-	 *
-	 * @var    DatabaseInterface
-	 * @since  2.0.0
-	 */
-	private $db;
+    /**
+     * Database connector
+     *
+     * @var    DatabaseInterface
+     * @since  2.0.0
+     */
+    private $db;
 
-	/**
-	 * Instantiate the command.
-	 *
-	 * @param   DatabaseInterface  $db  Database connector
-	 *
-	 * @since   2.0.0
-	 */
-	public function __construct(DatabaseInterface $db)
-	{
-		$this->db = $db;
+    /**
+     * Instantiate the command.
+     *
+     * @param   DatabaseInterface  $db  Database connector
+     *
+     * @since   2.0.0
+     */
+    public function __construct(DatabaseInterface $db)
+    {
+        $this->db = $db;
 
-		parent::__construct();
-	}
+        parent::__construct();
+    }
 
-	/**
-	 * Configure the command.
-	 *
-	 * @return  void
-	 *
-	 * @since   2.0.0
-	 */
-	protected function configure(): void
-	{
-		$this->setDescription('Creates the session database table if not already present');
-	}
+    /**
+     * Configure the command.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    protected function configure(): void
+    {
+        $this->setDescription('Creates the session database table if not already present');
+    }
 
-	/**
-	 * Internal function to execute the command.
-	 *
-	 * @param   InputInterface   $input   The input to inject into the command.
-	 * @param   OutputInterface  $output  The output to inject into the command.
-	 *
-	 * @return  integer  The command exit code
-	 *
-	 * @since   2.0.0
-	 */
-	protected function doExecute(InputInterface $input, OutputInterface $output): int
-	{
-		$io = new SymfonyStyle($input, $output);
+    /**
+     * Internal function to execute the command.
+     *
+     * @param   InputInterface   $input   The input to inject into the command.
+     * @param   OutputInterface  $output  The output to inject into the command.
+     *
+     * @return  integer  The command exit code
+     *
+     * @since   2.0.0
+     */
+    protected function doExecute(InputInterface $input, OutputInterface $output): int
+    {
+        $io = new SymfonyStyle($input, $output);
 
-		$io->title('Create Session Table');
+        $io->title('Create Session Table');
 
-		// Check if the table exists
-		if (\in_array($this->db->replacePrefix('#__session'), $this->db->getTableList()))
-		{
-			$io->success('The session table already exists.');
+        // Check if the table exists
+        if (\in_array($this->db->replacePrefix('#__session'), $this->db->getTableList())) {
+            $io->success('The session table already exists.');
 
-			return 0;
-		}
+            return 0;
+        }
 
-		try
-		{
-			(new DatabaseHandler($this->db))->createDatabaseTable();
-		}
-		catch (UnsupportedDatabaseDriverException $exception)
-		{
-			$io->error($exception->getMessage());
+        try {
+            (new DatabaseHandler($this->db))->createDatabaseTable();
+        } catch (UnsupportedDatabaseDriverException $exception) {
+            $io->error($exception->getMessage());
 
-			return 1;
-		}
-		catch (CreateSessionTableException $exception)
-		{
-			$io->error(\sprintf('The session table could not be created: %s', $exception->getMessage()));
+            return 1;
+        } catch (CreateSessionTableException $exception) {
+            $io->error(\sprintf('The session table could not be created: %s', $exception->getMessage()));
 
-			return 1;
-		}
+            return 1;
+        }
 
-		$io->success('The session table has been created.');
+        $io->success('The session table has been created.');
 
-		return 0;
-	}
+        return 0;
+    }
 }

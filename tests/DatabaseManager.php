@@ -13,23 +13,22 @@ use Joomla\Test\DatabaseManager as BaseDatabaseManager;
  */
 class DatabaseManager extends BaseDatabaseManager
 {
-	/**
-	 * Initialize the parameter storage for the database connection
-	 *
-	 * Overrides the behavior of the parent class to force an in-memory SQLite database for testing
-	 *
-	 * @return  void
-	 */
-	protected function initialiseParams(): void
-	{
-		if (empty($this->params))
-		{
-			$this->params = [
-				'driver'   => 'sqlite',
-				'user'     => null,
-				'database' => ':memory:',
-				'select'   => false,
-			];
-		}
-	}
+    /**
+     * Initialize the parameter storage for the database connection
+     *
+     * Overrides the behavior of the parent class to force an in-memory SQLite database for testing
+     *
+     * @return  void
+     */
+    protected function initialiseParams(): void
+    {
+        if (empty($this->params)) {
+            $this->params = [
+                'driver'   => 'sqlite',
+                'user'     => null,
+                'database' => ':memory:',
+                'select'   => false,
+            ];
+        }
+    }
 }

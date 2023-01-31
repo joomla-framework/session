@@ -15,12 +15,12 @@ namespace Joomla\Session;
  */
 interface HandlerInterface extends \SessionHandlerInterface
 {
-	/**
-	 * Test to see if the HandlerInterface is available.
-	 *
-	 * @return  boolean  True on success, false otherwise.
-	 *
-	 * @since   2.0.0
-	 */
-	public static function isSupported(): bool;
+    /**
+     * Test to see if the HandlerInterface is available.
+     *
+     * @return  boolean  True on success, false otherwise.
+     *
+     * @since   2.0.0
+     */
+    public static function isSupported(): bool;
 }

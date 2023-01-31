@@ -15,15 +15,15 @@ namespace Joomla\Session;
  */
 interface ValidatorInterface
 {
-	/**
-	 * Validates the session
-	 *
-	 * @param   boolean  $restart  Flag if the session should be restarted
-	 *
-	 * @return  void
-	 *
-	 * @since   2.0.0
-	 * @throws  Exception\InvalidSessionException
-	 */
-	public function validate(bool $restart = false): void;
+    /**
+     * Validates the session
+     *
+     * @param   boolean  $restart  Flag if the session should be restarted
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     * @throws  Exception\InvalidSessionException
+     */
+    public function validate(bool $restart = false): void;
 }

@@ -19,173 +19,173 @@ use Symfony\Component\Console\Output\BufferedOutput;
  */
 class CreateSessionTableCommandTest extends TestCase
 {
-	/**
-	 * @covers  Joomla\Session\Command\CreateSessionTableCommand
-	 * @uses    Joomla\Session\Handler\DatabaseHandler
-	 */
-	public function testTheDatabaseTableIsCreated()
-	{
-		$db = $this->createMock(DatabaseInterface::class);
-		$db->expects($this->once())
-			->method('replacePrefix')
-			->with('#__session')
-			->willReturn('jos_session');
+    /**
+     * @covers  Joomla\Session\Command\CreateSessionTableCommand
+     * @uses    Joomla\Session\Handler\DatabaseHandler
+     */
+    public function testTheDatabaseTableIsCreated()
+    {
+        $db = $this->createMock(DatabaseInterface::class);
+        $db->expects($this->once())
+            ->method('replacePrefix')
+            ->with('#__session')
+            ->willReturn('jos_session');
 
-		$db->expects($this->once())
-			->method('getTableList')
-			->willReturn([]);
+        $db->expects($this->once())
+            ->method('getTableList')
+            ->willReturn([]);
 
-		$db->expects($this->once())
-			->method('getName')
-			->willReturn('mysql');
+        $db->expects($this->once())
+            ->method('getName')
+            ->willReturn('mysql');
 
-		$db->expects($this->once())
-			->method('setQuery')
-			->willReturnSelf();
+        $db->expects($this->once())
+            ->method('setQuery')
+            ->willReturnSelf();
 
-		$db->expects($this->once())
-			->method('execute')
-			->willReturn(true);
+        $db->expects($this->once())
+            ->method('execute')
+            ->willReturn(true);
 
-		$input  = new ArrayInput(
-			[
-				'command' => 'session:create-table',
-			]
-		);
-		$output = new BufferedOutput;
+        $input  = new ArrayInput(
+            [
+                'command' => 'session:create-table',
+            ]
+        );
+        $output = new BufferedOutput();
 
-		$application = new Application($input, $output);
+        $application = new Application($input, $output);
 
-		$command = new CreateSessionTableCommand($db);
-		$command->setApplication($application);
+        $command = new CreateSessionTableCommand($db);
+        $command->setApplication($application);
 
-		$this->assertSame(0, $command->execute($input, $output));
+        $this->assertSame(0, $command->execute($input, $output));
 
-		$screenOutput = $output->fetch();
-		$this->assertStringContainsString('The session table has been created.', $screenOutput);
-	}
+        $screenOutput = $output->fetch();
+        $this->assertStringContainsString('The session table has been created.', $screenOutput);
+    }
 
-	/**
-	 * @covers  Joomla\Session\Command\CreateSessionTableCommand
-	 * @uses    Joomla\Session\Handler\DatabaseHandler
-	 */
-	public function testTheDatabaseTableIsNotCreatedWhenItAlreadyExists()
-	{
-		$db = $this->createMock(DatabaseInterface::class);
-		$db->expects($this->once())
-			->method('replacePrefix')
-			->with('#__session')
-			->willReturn('jos_session');
+    /**
+     * @covers  Joomla\Session\Command\CreateSessionTableCommand
+     * @uses    Joomla\Session\Handler\DatabaseHandler
+     */
+    public function testTheDatabaseTableIsNotCreatedWhenItAlreadyExists()
+    {
+        $db = $this->createMock(DatabaseInterface::class);
+        $db->expects($this->once())
+            ->method('replacePrefix')
+            ->with('#__session')
+            ->willReturn('jos_session');
 
-		$db->expects($this->once())
-			->method('getTableList')
-			->willReturn(['jos_session']);
+        $db->expects($this->once())
+            ->method('getTableList')
+            ->willReturn(['jos_session']);
 
-		$db->expects($this->never())
-			->method('execute');
+        $db->expects($this->never())
+            ->method('execute');
 
-		$input  = new ArrayInput(
-			[
-				'command' => 'session:create-table',
-			]
-		);
-		$output = new BufferedOutput;
+        $input  = new ArrayInput(
+            [
+                'command' => 'session:create-table',
+            ]
+        );
+        $output = new BufferedOutput();
 
-		$application = new Application($input, $output);
+        $application = new Application($input, $output);
 
-		$command = new CreateSessionTableCommand($db);
-		$command->setApplication($application);
+        $command = new CreateSessionTableCommand($db);
+        $command->setApplication($application);
 
-		$this->assertSame(0, $command->execute($input, $output));
+        $this->assertSame(0, $command->execute($input, $output));
 
-		$screenOutput = $output->fetch();
-		$this->assertStringContainsString('The session table already exists.', $screenOutput);
-	}
+        $screenOutput = $output->fetch();
+        $this->assertStringContainsString('The session table already exists.', $screenOutput);
+    }
 
-	/**
-	 * @covers  Joomla\Session\Command\CreateSessionTableCommand
-	 * @uses    Joomla\Session\Handler\DatabaseHandler
-	 */
-	public function testTheDatabaseTableIsNotCreatedWhenTheDatabaseDriverIsNotSupported()
-	{
-		$db = $this->createMock(DatabaseInterface::class);
-		$db->expects($this->once())
-			->method('replacePrefix')
-			->with('#__session')
-			->willReturn('jos_session');
+    /**
+     * @covers  Joomla\Session\Command\CreateSessionTableCommand
+     * @uses    Joomla\Session\Handler\DatabaseHandler
+     */
+    public function testTheDatabaseTableIsNotCreatedWhenTheDatabaseDriverIsNotSupported()
+    {
+        $db = $this->createMock(DatabaseInterface::class);
+        $db->expects($this->once())
+            ->method('replacePrefix')
+            ->with('#__session')
+            ->willReturn('jos_session');
 
-		$db->expects($this->once())
-			->method('getTableList')
-			->willReturn([]);
+        $db->expects($this->once())
+            ->method('getTableList')
+            ->willReturn([]);
 
-		$db->expects($this->exactly(2))
-			->method('getName')
-			->willReturn('mongodb');
+        $db->expects($this->exactly(2))
+            ->method('getName')
+            ->willReturn('mongodb');
 
-		$db->expects($this->never())
-			->method('execute');
+        $db->expects($this->never())
+            ->method('execute');
 
-		$input  = new ArrayInput(
-			[
-				'command' => 'session:create-table',
-			]
-		);
-		$output = new BufferedOutput;
+        $input  = new ArrayInput(
+            [
+                'command' => 'session:create-table',
+            ]
+        );
+        $output = new BufferedOutput();
 
-		$application = new Application($input, $output);
+        $application = new Application($input, $output);
 
-		$command = new CreateSessionTableCommand($db);
-		$command->setApplication($application);
+        $command = new CreateSessionTableCommand($db);
+        $command->setApplication($application);
 
-		$this->assertSame(1, $command->execute($input, $output));
+        $this->assertSame(1, $command->execute($input, $output));
 
-		$screenOutput = $output->fetch();
-		$this->assertStringContainsString('The mongodb database driver is not supported.', $screenOutput);
-	}
+        $screenOutput = $output->fetch();
+        $this->assertStringContainsString('The mongodb database driver is not supported.', $screenOutput);
+    }
 
-	/**
-	 * @covers  Joomla\Session\Command\CreateSessionTableCommand
-	 * @uses    Joomla\Session\Handler\DatabaseHandler
-	 */
-	public function testTheDatabaseTableIsNotCreatedWhenTheDatabaseDriverThrowsAnError()
-	{
-		$db = $this->createMock(DatabaseInterface::class);
-		$db->expects($this->once())
-			->method('replacePrefix')
-			->with('#__session')
-			->willReturn('jos_session');
+    /**
+     * @covers  Joomla\Session\Command\CreateSessionTableCommand
+     * @uses    Joomla\Session\Handler\DatabaseHandler
+     */
+    public function testTheDatabaseTableIsNotCreatedWhenTheDatabaseDriverThrowsAnError()
+    {
+        $db = $this->createMock(DatabaseInterface::class);
+        $db->expects($this->once())
+            ->method('replacePrefix')
+            ->with('#__session')
+            ->willReturn('jos_session');
 
-		$db->expects($this->once())
-			->method('getTableList')
-			->willReturn([]);
+        $db->expects($this->once())
+            ->method('getTableList')
+            ->willReturn([]);
 
-		$db->expects($this->once())
-			->method('getName')
-			->willReturn('mysql');
+        $db->expects($this->once())
+            ->method('getName')
+            ->willReturn('mysql');
 
-		$db->expects($this->once())
-			->method('setQuery')
-			->willReturnSelf();
+        $db->expects($this->once())
+            ->method('setQuery')
+            ->willReturnSelf();
 
-		$db->expects($this->once())
-			->method('execute')
-			->willThrowException(new ExecutionFailureException('CREATE TABLE #__session', 'Test failure'));
+        $db->expects($this->once())
+            ->method('execute')
+            ->willThrowException(new ExecutionFailureException('CREATE TABLE #__session', 'Test failure'));
 
-		$input  = new ArrayInput(
-			[
-				'command' => 'session:create-table',
-			]
-		);
-		$output = new BufferedOutput;
+        $input  = new ArrayInput(
+            [
+                'command' => 'session:create-table',
+            ]
+        );
+        $output = new BufferedOutput();
 
-		$application = new Application($input, $output);
+        $application = new Application($input, $output);
 
-		$command = new CreateSessionTableCommand($db);
-		$command->setApplication($application);
+        $command = new CreateSessionTableCommand($db);
+        $command->setApplication($application);
 
-		$this->assertSame(1, $command->execute($input, $output));
+        $this->assertSame(1, $command->execute($input, $output));
 
-		$screenOutput = $output->fetch();
-		$this->assertStringContainsString('The session table could not be created:', $screenOutput);
-	}
+        $screenOutput = $output->fetch();
+        $this->assertStringContainsString('The session table could not be created:', $screenOutput);
+    }
 }

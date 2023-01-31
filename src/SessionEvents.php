@@ -15,32 +15,32 @@ namespace Joomla\Session;
  */
 final class SessionEvents
 {
-	/**
-	 * Private constructor to prevent instantiation of this class
-	 *
-	 * @since   2.0.0
-	 */
-	private function __construct()
-	{
-	}
+    /**
+     * Private constructor to prevent instantiation of this class
+     *
+     * @since   2.0.0
+     */
+    private function __construct()
+    {
+    }
 
-	/**
-	 * Session event which is dispatched after the session has been started.
-	 *
-	 * Listeners to this event receive a `Joomla\Session\SessionEvent` object.
-	 *
-	 * @var    string
-	 * @since  2.0.0
-	 */
-	public const START = 'session.start';
+    /**
+     * Session event which is dispatched after the session has been started.
+     *
+     * Listeners to this event receive a `Joomla\Session\SessionEvent` object.
+     *
+     * @var    string
+     * @since  2.0.0
+     */
+    public const START = 'session.start';
 
-	/**
-	 * Session event which is dispatched after the session has been restarted.
-	 *
-	 * Listeners to this event receive a `Joomla\Session\SessionEvent` object.
-	 *
-	 * @var    string
-	 * @since  2.0.0
-	 */
-	public const RESTART = 'session.restart';
+    /**
+     * Session event which is dispatched after the session has been restarted.
+     *
+     * Listeners to this event receive a `Joomla\Session\SessionEvent` object.
+     *
+     * @var    string
+     * @since  2.0.0
+     */
+    public const RESTART = 'session.restart';
 }

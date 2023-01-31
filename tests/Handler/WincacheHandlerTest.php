@@ -14,35 +14,34 @@ use PHPUnit\Framework\TestCase;
  */
 class WincacheHandlerTest extends TestCase
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	public static function setUpBeforeClass(): void
-	{
-		// Make sure the handler is supported in this environment
-		if (!WincacheHandler::isSupported())
-		{
-			static::markTestSkipped('The WincacheHandler is unsupported in this environment.');
-		}
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public static function setUpBeforeClass(): void
+    {
+        // Make sure the handler is supported in this environment
+        if (!WincacheHandler::isSupported()) {
+            static::markTestSkipped('The WincacheHandler is unsupported in this environment.');
+        }
+    }
 
-	/**
-	 * @covers  Joomla\Session\Handler\WincacheHandler
-	 */
-	public function testTheHandlerIsSupported()
-	{
-		$this->assertTrue(WincacheHandler::isSupported());
-	}
+    /**
+     * @covers  Joomla\Session\Handler\WincacheHandler
+     */
+    public function testTheHandlerIsSupported()
+    {
+        $this->assertTrue(WincacheHandler::isSupported());
+    }
 
-	/**
-	 * @covers  Joomla\Session\Handler\WincacheHandler
-	 */
-	public function testTheHandlerIsInstantiatedCorrectly()
-	{
-		$handler = new WincacheHandler;
+    /**
+     * @covers  Joomla\Session\Handler\WincacheHandler
+     */
+    public function testTheHandlerIsInstantiatedCorrectly()
+    {
+        $handler = new WincacheHandler();
 
-		$expected = headers_sent() ? ini_get('session.save_handler') : 'wincache';
+        $expected = headers_sent() ? ini_get('session.save_handler') : 'wincache';
 
-		$this->assertSame($expected, ini_get('session.save_handler'));
-	}
+        $this->assertSame($expected, ini_get('session.save_handler'));
+    }
 }

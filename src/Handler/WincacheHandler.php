@@ -17,28 +17,27 @@ use Joomla\Session\HandlerInterface;
  */
 class WincacheHandler extends \SessionHandler implements HandlerInterface
 {
-	/**
-	 * Constructor
-	 *
-	 * @since   2.0.0
-	 */
-	public function __construct()
-	{
-		if (!headers_sent())
-		{
-			ini_set('session.save_handler', 'wincache');
-		}
-	}
+    /**
+     * Constructor
+     *
+     * @since   2.0.0
+     */
+    public function __construct()
+    {
+        if (!headers_sent()) {
+            ini_set('session.save_handler', 'wincache');
+        }
+    }
 
-	/**
-	 * Test to see if the HandlerInterface is available
-	 *
-	 * @return  boolean  True on success, false otherwise
-	 *
-	 * @since   2.0.0
-	 */
-	public static function isSupported(): bool
-	{
-		return \extension_loaded('wincache') && \function_exists('wincache_ucache_get') && !strcmp(ini_get('wincache.ucenabled'), '1');
-	}
+    /**
+     * Test to see if the HandlerInterface is available
+     *
+     * @return  boolean  True on success, false otherwise
+     *
+     * @since   2.0.0
+     */
+    public static function isSupported(): bool
+    {
+        return \extension_loaded('wincache') && \function_exists('wincache_ucache_get') && !strcmp(ini_get('wincache.ucenabled'), '1');
+    }
 }
