@@ -9,7 +9,7 @@
             "composer update",
             "composer require phpmd/phpmd phpstan/phpstan"
          ],
-         "image": "joomlaprojects/docker-images:php7.4",
+         "image": "joomlaprojects/docker-images:php8.1",
          "name": "composer",
          "volumes": [
             {
@@ -20,13 +20,12 @@
       },
       {
          "commands": [
-            "vendor/bin/phpcs --config-set installed_paths vendor/joomla/coding-standards",
             "vendor/bin/phpcs --standard=ruleset.xml src/"
          ],
          "depends": [
             "composer"
          ],
-         "image": "joomlaprojects/docker-images:php7.4",
+         "image": "joomlaprojects/docker-images:php8.1",
          "name": "phpcs"
       },
       {
@@ -41,7 +40,7 @@
             "composer"
          ],
          "failure": "ignore",
-         "image": "joomlaprojects/docker-images:php7.4",
+         "image": "joomlaprojects/docker-images:php8.1",
          "name": "phpmd"
       },
       {
@@ -52,7 +51,7 @@
             "composer"
          ],
          "failure": "ignore",
-         "image": "joomlaprojects/docker-images:php7.4",
+         "image": "joomlaprojects/docker-images:php8.1",
          "name": "phpstan"
       },
       {
@@ -63,7 +62,7 @@
             "composer"
          ],
          "failure": "ignore",
-         "image": "joomlaprojects/docker-images:php7.4",
+         "image": "joomlaprojects/docker-images:php8.1",
          "name": "phploc"
       },
       {
@@ -74,7 +73,7 @@
             "composer"
          ],
          "failure": "ignore",
-         "image": "joomlaprojects/docker-images:php7.4",
+         "image": "joomlaprojects/docker-images:php8.1",
          "name": "phpcpd"
       }
    ],
@@ -90,7 +89,7 @@
 ---
 {
    "kind": "pipeline",
-   "name": "PHP 7.2 lowest",
+   "name": "PHP 8.1 lowest",
    "services": [
       {
          "image": "memcached:alpine",
@@ -107,7 +106,7 @@
             "php -v",
             "composer update --prefer-stable --prefer-lowest"
          ],
-         "image": "joomlaprojects/docker-images:php7.2",
+         "image": "joomlaprojects/docker-images:php8.1",
          "name": "composer",
          "volumes": [
             {
@@ -120,191 +119,7 @@
          "commands": [
             "vendor/bin/phpunit"
          ],
-         "image": "joomlaprojects/docker-images:php7.2",
-         "name": "PHPUnit"
-      }
-   ],
-   "volumes": [
-      {
-         "host": {
-            "path": "/tmp/composer-cache"
-         },
-         "name": "composer-cache"
-      }
-   ]
-}
----
-{
-   "kind": "pipeline",
-   "name": "PHP 7.2",
-   "services": [
-      {
-         "image": "memcached:alpine",
-         "name": "memcached"
-      },
-      {
-         "image": "redis:alpine",
-         "name": "redis"
-      }
-   ],
-   "steps": [
-      {
-         "commands": [
-            "php -v",
-            "composer update --prefer-stable"
-         ],
-         "image": "joomlaprojects/docker-images:php7.2",
-         "name": "composer",
-         "volumes": [
-            {
-               "name": "composer-cache",
-               "path": "/tmp/composer-cache"
-            }
-         ]
-      },
-      {
-         "commands": [
-            "vendor/bin/phpunit"
-         ],
-         "image": "joomlaprojects/docker-images:php7.2",
-         "name": "PHPUnit"
-      }
-   ],
-   "volumes": [
-      {
-         "host": {
-            "path": "/tmp/composer-cache"
-         },
-         "name": "composer-cache"
-      }
-   ]
-}
----
-{
-   "kind": "pipeline",
-   "name": "PHP 7.3",
-   "services": [
-      {
-         "image": "memcached:alpine",
-         "name": "memcached"
-      },
-      {
-         "image": "redis:alpine",
-         "name": "redis"
-      }
-   ],
-   "steps": [
-      {
-         "commands": [
-            "php -v",
-            "composer update --prefer-stable"
-         ],
-         "image": "joomlaprojects/docker-images:php7.3",
-         "name": "composer",
-         "volumes": [
-            {
-               "name": "composer-cache",
-               "path": "/tmp/composer-cache"
-            }
-         ]
-      },
-      {
-         "commands": [
-            "vendor/bin/phpunit"
-         ],
-         "image": "joomlaprojects/docker-images:php7.3",
-         "name": "PHPUnit"
-      }
-   ],
-   "volumes": [
-      {
-         "host": {
-            "path": "/tmp/composer-cache"
-         },
-         "name": "composer-cache"
-      }
-   ]
-}
----
-{
-   "kind": "pipeline",
-   "name": "PHP 7.4",
-   "services": [
-      {
-         "image": "memcached:alpine",
-         "name": "memcached"
-      },
-      {
-         "image": "redis:alpine",
-         "name": "redis"
-      }
-   ],
-   "steps": [
-      {
-         "commands": [
-            "php -v",
-            "composer update --prefer-stable"
-         ],
-         "image": "joomlaprojects/docker-images:php7.4",
-         "name": "composer",
-         "volumes": [
-            {
-               "name": "composer-cache",
-               "path": "/tmp/composer-cache"
-            }
-         ]
-      },
-      {
-         "commands": [
-            "vendor/bin/phpunit"
-         ],
-         "image": "joomlaprojects/docker-images:php7.4",
-         "name": "PHPUnit"
-      }
-   ],
-   "volumes": [
-      {
-         "host": {
-            "path": "/tmp/composer-cache"
-         },
-         "name": "composer-cache"
-      }
-   ]
-}
----
-{
-   "kind": "pipeline",
-   "name": "PHP 8.0",
-   "services": [
-      {
-         "image": "memcached:alpine",
-         "name": "memcached"
-      },
-      {
-         "image": "redis:alpine",
-         "name": "redis"
-      }
-   ],
-   "steps": [
-      {
-         "commands": [
-            "php -v",
-            "composer update --prefer-stable"
-         ],
-         "image": "joomlaprojects/docker-images:php8.0",
-         "name": "composer",
-         "volumes": [
-            {
-               "name": "composer-cache",
-               "path": "/tmp/composer-cache"
-            }
-         ]
-      },
-      {
-         "commands": [
-            "vendor/bin/phpunit"
-         ],
-         "image": "joomlaprojects/docker-images:php8.0",
+         "image": "joomlaprojects/docker-images:php8.1",
          "name": "PHPUnit"
       }
    ],
@@ -412,6 +227,6 @@
 }
 ---
 kind: signature
-hmac: 7b4c99661032efaac3aa1e3012dbb078a5c838693cfe069901f74f55faabcc56
+hmac: 49131626b340b45be70c590ac3ed907ed6b0413cfd3657b4f1096d5e09c80a17
 
 ...
