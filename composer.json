@@ -16,7 +16,7 @@
         "joomla/event": "3.0.x-dev",
         "joomla/input": "3.0.x-dev",
         "joomla/test": "3.0.x-dev",
-        "phpunit/phpunit": "^9.0",
+        "phpunit/phpunit": "^9.5.28",
         "squizlabs/php_codesniffer": "~3.7.1"
     },
     "conflict": {
