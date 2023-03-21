@@ -84,9 +84,9 @@ class RedisHandler implements HandlerInterface
      *
      * @since   2.0.0
      */
-    public function destroy($session_id): bool
+    public function destroy(string $id): bool
     {
-        $this->redis->del($this->prefix . $session_id);
+        $this->redis->del($this->prefix . $id);
 
         // Session callback must have a return value of type bool when session_regenerate_id() is called.
         return true;
