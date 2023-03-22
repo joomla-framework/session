@@ -154,18 +154,18 @@ class DatabaseHandler implements HandlerInterface
     /**
      * Destroy a session
      *
-     * @param   integer  $session_id  The session ID being destroyed
+     * @param   string  $session_id  The session ID being destroyed
      *
      * @return  boolean  True on success, false otherwise
      *
      * @since   2.0.0
      */
-    public function destroy($session_id): bool
+    public function destroy(string $id): bool
     {
         try {
             $query = $this->db->getQuery(true)
                 ->delete($this->db->quoteName('#__session'))
-                ->where($this->db->quoteName('session_id') . ' = ' . $this->db->quote($session_id));
+                ->where($this->db->quoteName('session_id') . ' = ' . $this->db->quote($id));
 
             // Remove a session from the database.
             $this->db->setQuery($query)->execute();
