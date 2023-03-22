@@ -51,6 +51,11 @@ volumes:
 ---
 kind: pipeline
 name: PHP 8.1 lowest
+services:
+- image: memcached:alpine
+  name: memcached
+- image: redis:alpine
+  name: redis
 steps:
 - commands:
   - php -v
@@ -71,6 +76,11 @@ volumes:
 ---
 kind: pipeline
 name: PHP 8.1
+services:
+- image: memcached:alpine
+  name: memcached
+- image: redis:alpine
+  name: redis
 steps:
 - commands:
   - php -v
@@ -91,6 +101,11 @@ volumes:
 ---
 kind: pipeline
 name: PHP 8.2
+services:
+- image: memcached:alpine
+  name: memcached
+- image: redis:alpine
+  name: redis
 steps:
 - commands:
   - php -v
@@ -110,6 +125,6 @@ volumes:
   name: composer-cache
 ---
 kind: signature
-hmac: f9e3aa1f0c910b7325a23a85e2e18614e2c41975788ecbfb11bf270263bda3ad
+hmac: 1c6bac6f08e700bf838ea12bf43aafe8fea392b1b77b1856ba0ff6e43fcde847
 
 ...
