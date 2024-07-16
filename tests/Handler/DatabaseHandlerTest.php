@@ -7,7 +7,6 @@
 
 namespace Joomla\Session\Tests\Handler;
 
-use Joomla\Database\DatabaseDriver;
 use Joomla\Database\Sqlite\SqliteDriver;
 use Joomla\Session\Handler\DatabaseHandler;
 use Joomla\Session\Tests\DatabaseManager;
