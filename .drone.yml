@@ -124,6 +124,31 @@ volumes:
     path: /tmp/composer-cache
   name: composer-cache
 ---
+kind: pipeline
+name: PHP 8.3
+services:
+- image: memcached:alpine
+  name: memcached
+- image: redis:alpine
+  name: redis
+steps:
+- commands:
+  - php -v
+  - composer update --prefer-stable
+  image: joomlaprojects/docker-images:php8.3
+  name: composer
+  volumes:
+  - name: composer-cache
+    path: /tmp/composer-cache
+- commands:
+  - vendor/bin/phpunit
+  image: joomlaprojects/docker-images:php8.3
+  name: PHPUnit
+volumes:
+- host:
+    path: /tmp/composer-cache
+  name: composer-cache
+---
 kind: signature
 hmac: 1c6bac6f08e700bf838ea12bf43aafe8fea392b1b77b1856ba0ff6e43fcde847
 
