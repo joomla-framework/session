@@ -54,8 +54,8 @@ class NativeStorage implements StorageInterface
     /**
      * Constructor
      *
-     * @param   \SessionHandlerInterface  $handler  Session save handler
-     * @param   array                     $options  Session options
+     * @param   ?\SessionHandlerInterface  $handler  Session save handler
+     * @param   array                      $options  Session options
      *
      * @since   1.0
      */
@@ -322,7 +322,7 @@ class NativeStorage implements StorageInterface
     /**
      * Registers session save handler as a PHP session handler
      *
-     * @param   \SessionHandlerInterface  $handler  The save handler to use
+     * @param   ?\SessionHandlerInterface  $handler  The save handler to use
      *
      * @return  $this
      *
