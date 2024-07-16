@@ -60,16 +60,16 @@ class Session implements SessionInterface, DispatcherAwareInterface
     /**
      * Constructor
      *
-     * @param   StorageInterface     $store       A StorageInterface implementation.
-     * @param   DispatcherInterface  $dispatcher  DispatcherInterface for the session to use.
-     * @param   array                $options     Optional parameters. Supported keys include:
-     *                                            - name: The session name
-     *                                            - id: The session ID
-     *                                            - expire: The session lifetime in seconds
+     * @param   ?StorageInterface     $store       A StorageInterface implementation.
+     * @param   ?DispatcherInterface  $dispatcher  DispatcherInterface for the session to use.
+     * @param   array                 $options     Optional parameters. Supported keys include:
+     *                                             - name: The session name
+     *                                             - id: The session ID
+     *                                             - expire: The session lifetime in seconds
      *
      * @since   1.0
      */
-    public function __construct(StorageInterface $store = null, DispatcherInterface $dispatcher = null, array $options = [])
+    public function __construct(?StorageInterface $store = null, ?DispatcherInterface $dispatcher = null, array $options = [])
     {
         $this->store = $store ?: new Storage\NativeStorage(new Handler\FilesystemHandler());
 
