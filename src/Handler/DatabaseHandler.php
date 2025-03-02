@@ -71,7 +71,7 @@ class DatabaseHandler implements HandlerInterface
     public function close()
     {
         if ($this->gcCalled) {
-            $query = $this->db->getQuery(true)
+            $query = $this->db->createQuery()
                 ->delete($this->db->quoteName('#__session'))
                 ->where($this->db->quoteName('time') . ' < ?')
                 ->bind(1, $this->gcLifetime, ParameterType::INTEGER);
@@ -163,7 +163,7 @@ class DatabaseHandler implements HandlerInterface
     public function destroy(string $id): bool
     {
         try {
-            $query = $this->db->getQuery(true)
+            $query = $this->db->createQuery()
                 ->delete($this->db->quoteName('#__session'))
                 ->where($this->db->quoteName('session_id') . ' = ' . $this->db->quote($id));
 
@@ -239,7 +239,7 @@ class DatabaseHandler implements HandlerInterface
     {
         try {
             // Get the session data from the database table.
-            $query = $this->db->getQuery(true)
+            $query = $this->db->createQuery()
                 ->select($this->db->quoteName('data'))
                 ->from($this->db->quoteName('#__session'))
                 ->where($this->db->quoteName('session_id') . ' = ?')
@@ -268,7 +268,7 @@ class DatabaseHandler implements HandlerInterface
     {
         try {
             // Figure out if a row exists for the session ID
-            $query = $this->db->getQuery(true)
+            $query = $this->db->createQuery()
                 ->select($this->db->quoteName('session_id'))
                 ->from($this->db->quoteName('#__session'))
                 ->where($this->db->quoteName('session_id') . ' = ?')
@@ -276,7 +276,7 @@ class DatabaseHandler implements HandlerInterface
 
             $idExists = $this->db->setQuery($query)->loadResult();
 
-            $query = $this->db->getQuery(true);
+            $query = $this->db->createQuery();
 
             $time = time();
 
