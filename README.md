@@ -1,4 +1,4 @@
-# The Session Package [![Build Status](https://ci.joomla.org/api/badges/joomla-framework/session/status.svg?ref=refs/heads/3.x-dev)](https://ci.joomla.org/joomla-framework/session)
+# The Session Package [![Build Status](https://github.com/joomla-framework/session/actions/workflows/ci.yml/badge.svg?branch=3.x-dev)](https://github.com/joomla-framework/session)
 
 [![Latest Stable Version](https://poser.pugx.org/joomla/session/v/stable)](https://packagist.org/packages/joomla/session)
 [![Total Downloads](https://poser.pugx.org/joomla/session/downloads)](https://packagist.org/packages/joomla/session)
