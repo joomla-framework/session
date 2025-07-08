@@ -136,7 +136,7 @@ To retrieve all the data from the session storage you can call `all()`
 
 To clear all the data in the session storage you can call `clear()`
 
-To remove a piece of data in the session storage you can call `remove()` with a parmeter of the name of the variable you wish to remove. If that variable is set then it's value will be returned. If the variable is not set then null will be returned.
+To remove a piece of data in the session storage you can call `remove()` with a parameter of the name of the variable you wish to remove. If that variable is set then it's value will be returned. If the variable is not set then null will be returned.
 
 To check if a piece of data is present in the session storage you can call `has()` with a parameter of the variable you wish to check. This returns a boolean depending on if the data is set.
 
