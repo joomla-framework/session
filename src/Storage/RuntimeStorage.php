@@ -26,14 +26,6 @@ class RuntimeStorage implements StorageInterface
     private $active = false;
 
     /**
-     * Internal flag identifying whether the session has been closed
-     *
-     * @var    boolean
-     * @since  2.0.0
-     */
-    private $closed = false;
-
-    /**
      * Internal data store
      *
      * @var    array
@@ -97,7 +89,6 @@ class RuntimeStorage implements StorageInterface
      */
     public function close(): void
     {
-        $this->closed  = true;
         $this->started = false;
     }
 
@@ -124,7 +115,6 @@ class RuntimeStorage implements StorageInterface
      */
     public function abort(): bool
     {
-        $this->closed  = true;
         $this->started = false;
 
         return true;
@@ -139,7 +129,7 @@ class RuntimeStorage implements StorageInterface
      */
     private function generateId(): string
     {
-        return hash('sha256', uniqid(mt_rand()));
+        return hash('sha256', uniqid((string)mt_rand()));
     }
 
     /**
@@ -216,7 +206,9 @@ class RuntimeStorage implements StorageInterface
      */
     public function isActive(): bool
     {
-        return $this->active = $this->started;
+        $this->active = $this->started;
+
+        return $this->active;
     }
 
     /**
@@ -365,7 +357,6 @@ class RuntimeStorage implements StorageInterface
             $this->setId($this->generateId());
         }
 
-        $this->closed  = false;
         $this->started = true;
         $this->isActive();
     }

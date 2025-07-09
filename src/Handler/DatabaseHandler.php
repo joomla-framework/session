@@ -80,7 +80,7 @@ class DatabaseHandler implements HandlerInterface
             $this->db->setQuery($query)->execute();
 
             $this->gcCalled   = false;
-            $this->gcLifetime = null;
+            $this->gcLifetime = 0;
         }
 
         $this->db->disconnect();
@@ -154,7 +154,7 @@ class DatabaseHandler implements HandlerInterface
     /**
      * Destroy a session
      *
-     * @param   string  $session_id  The session ID being destroyed
+     * @param   string  $id  The session ID being destroyed
      *
      * @return  boolean  True on success, false otherwise
      *

@@ -55,7 +55,7 @@ class ApcuHandler implements HandlerInterface
     /**
      * Destroy a session
      *
-     * @param   string  $session_id  The session ID being destroyed
+     * @param   string  $id  The session ID being destroyed
      *
      * @return  boolean  True on success, false otherwise
      *
@@ -145,6 +145,8 @@ class ApcuHandler implements HandlerInterface
     #[\ReturnTypeWillChange]
     public function write($session_id, $session_data)
     {
-        return apcu_store($this->prefix . $session_id, $session_data, ini_get('session.gc_maxlifetime'));
+        $gcMaxlifetime = (int)ini_get('session.gc_maxlifetime');
+
+        return apcu_store($this->prefix . $session_id, $session_data, $gcMaxlifetime);
     }
 }

@@ -14,6 +14,7 @@ use Joomla\Session\Storage\RuntimeStorage;
 use Joomla\Session\Validator\AddressValidator;
 use Joomla\Session\Validator\ForwardedValidator;
 use Joomla\Test\TestHelper;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -64,13 +65,15 @@ class SessionTest extends TestCase
     /**
      * Data provider for set tests
      *
-     * @return  \Generator
+     * @return  array
      */
-    public function setProvider(): \Generator
+    public static function setProvider(): array
     {
-        yield ['joomla', 'rocks'];
-        yield ['joomla.framework', 'too much awesomeness'];
-    }
+        return [
+            ['joomla', 'rocks'],
+            ['joomla.framework', 'too much awesomeness']
+        ];
+   }
 
     /**
      * @covers  Joomla\Session\Session
@@ -247,9 +250,8 @@ class SessionTest extends TestCase
      * @uses    Joomla\Session\Storage\RuntimeStorage
      * @uses    Joomla\Session\Validator\AddressValidator
      * @uses    Joomla\Session\Validator\ForwardedValidator
-     *
-     * @dataProvider  setProvider
      */
+    #[DataProvider('setProvider')]
     public function testValidateAValueIsCorrectlyStoredToTheSession($key, $value)
     {
         $this->session->set($key, $value);
@@ -264,9 +266,8 @@ class SessionTest extends TestCase
      * @uses    Joomla\Session\Storage\RuntimeStorage
      * @uses    Joomla\Session\Validator\AddressValidator
      * @uses    Joomla\Session\Validator\ForwardedValidator
-     *
-     * @dataProvider  setProvider
      */
+    #[DataProvider('setProvider')]
     public function testValidateTheKeyIsCorrectlyCheckedForExistence($key, $value)
     {
         $this->session->set($key, $value);

@@ -77,7 +77,7 @@ class MemcachedHandler implements HandlerInterface
     /**
      * Destroy a session
      *
-     * @param   string  $session_id  The session ID being destroyed
+     * @param   string  $id  The session ID being destroyed
      *
      * @return  boolean  True on success, false otherwise
      *
