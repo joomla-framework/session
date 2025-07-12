@@ -14,6 +14,7 @@ use Joomla\Session\Storage\RuntimeStorage;
 use Joomla\Session\Validator\AddressValidator;
 use Joomla\Session\Validator\ForwardedValidator;
 use Joomla\Test\TestHelper;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -40,37 +41,25 @@ class SessionTest extends TestCase
      */
     protected function setUp(): void
     {
-        $mockInput = $this->getMockBuilder(Input::class)
-            ->setMethods(['get'])
-            ->getMock();
-
-        // Mock the Input object internals
-        $mockServerInput = $this->getMockBuilder(Input::class)
-            ->setMethods(['get', 'set'])
-            ->getMock();
-
-        $inputInternals = [
-            'server' => $mockServerInput,
-        ];
-
-        TestHelper::setValue($mockInput, 'inputs', $inputInternals);
+        $mockInput = $this->createMock(Input::class);
 
         $this->storage = new RuntimeStorage();
         $this->session = new Session($this->storage);
         $this->session->addValidator(new AddressValidator($mockInput, $this->session));
-        $this->session->addValidator(new ForwardedValidator($mockInput, $this->session));
     }
 
     /**
      * Data provider for set tests
      *
-     * @return  \Generator
+     * @return  array
      */
-    public function setProvider(): \Generator
+    public static function setProvider(): array
     {
-        yield ['joomla', 'rocks'];
-        yield ['joomla.framework', 'too much awesomeness'];
-    }
+        return [
+            ['joomla', 'rocks'],
+            ['joomla.framework', 'too much awesomeness']
+        ];
+   }
 
     /**
      * @covers  Joomla\Session\Session
@@ -80,7 +69,7 @@ class SessionTest extends TestCase
     public function testValidateASessionObjectIsCreatedCorrectly()
     {
         // Build a mock event dispatcher
-        $mockDispatcher = $this->getMockBuilder(DispatcherInterface::class)->getMock();
+        $mockDispatcher = $this->createMock(DispatcherInterface::class);
 
         $session = new Session($this->storage, $mockDispatcher);
 
@@ -126,7 +115,8 @@ class SessionTest extends TestCase
     public function testValidateTheDispatcherIsTriggeredWhenTheSessionIsStarted()
     {
         // Build a mock event dispatcher
-        $mockDispatcher = $this->getMockBuilder(DispatcherInterface::class)->getMock();
+        $mockDispatcher = $this->createMock(DispatcherInterface::class);
+
         $mockDispatcher->expects($this->once())
             ->method('dispatch');
 
@@ -247,9 +237,8 @@ class SessionTest extends TestCase
      * @uses    Joomla\Session\Storage\RuntimeStorage
      * @uses    Joomla\Session\Validator\AddressValidator
      * @uses    Joomla\Session\Validator\ForwardedValidator
-     *
-     * @dataProvider  setProvider
      */
+    #[DataProvider('setProvider')]
     public function testValidateAValueIsCorrectlyStoredToTheSession($key, $value)
     {
         $this->session->set($key, $value);
@@ -264,9 +253,8 @@ class SessionTest extends TestCase
      * @uses    Joomla\Session\Storage\RuntimeStorage
      * @uses    Joomla\Session\Validator\AddressValidator
      * @uses    Joomla\Session\Validator\ForwardedValidator
-     *
-     * @dataProvider  setProvider
      */
+    #[DataProvider('setProvider')]
     public function testValidateTheKeyIsCorrectlyCheckedForExistence($key, $value)
     {
         $this->session->set($key, $value);

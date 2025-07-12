@@ -8,6 +8,7 @@
 namespace Joomla\Session\Tests\Handler;
 
 use Joomla\Session\Handler\FilesystemHandler;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -80,9 +81,8 @@ class FilesystemHandlerTest extends TestCase
      * @param   string  $path              The expected filesystem path for the handler
      *
      * @covers  Joomla\Session\Handler\FilesystemHandler
-     *
-     * @dataProvider  savePathDataProvider
      */
+    #[DataProvider('savePathDataProvider')]
     public function testTheHandlerIsInstantiatedCorrectlyAndHandlesAllParametersAsExpected($savePath, $expectedSavePath, $path)
     {
         $handler = new FilesystemHandler($savePath);
@@ -97,14 +97,16 @@ class FilesystemHandlerTest extends TestCase
     /**
      * Data provider with expected paths for handler construction
      *
-     * @return  \Generator
+     * @return  array
      */
-    public function savePathDataProvider(): \Generator
+    public static function savePathDataProvider(): array
     {
         $base = sys_get_temp_dir();
 
-        yield ["$base/savepath", "$base/savepath", "$base/savepath"];
-        yield ["5;$base/savepath", "5;$base/savepath", "$base/savepath"];
-        yield ["5;0600;$base/savepath", "5;0600;$base/savepath", "$base/savepath"];
+        return [
+            ["$base/savepath", "$base/savepath", "$base/savepath"],
+            ["5;$base/savepath", "5;$base/savepath", "$base/savepath"],
+            ["5;0600;$base/savepath", "5;0600;$base/savepath", "$base/savepath"],
+        ];
     }
 }

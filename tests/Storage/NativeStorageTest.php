@@ -9,6 +9,7 @@ namespace Joomla\Session\Tests\Handler;
 
 use Joomla\Session\Handler\FilesystemHandler;
 use Joomla\Session\Storage\NativeStorage;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -34,14 +35,31 @@ class NativeStorageTest extends TestCase
     private $storage;
 
     /**
+     * Save the current set value
+     *
+     * @var   string
+     */
+    private $iniSaveHandler;
+
+    /**
+     * Save the current set value
+     *
+     * @var   string
+     */
+    private $iniSavePath;
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp(): void
     {
         $this->savePath = sys_get_temp_dir() . '/jfw-test';
 
-        $this->iniSet('session.save_handler', 'files');
-        $this->iniSet('session.save_path', $this->savePath);
+        $this->iniSaveHandler = ini_get('session.save_handler');
+        $this->iniSavePath = ini_get('session.save_path');
+
+        ini_set('session.save_handler', 'files');
+        ini_set('session.save_path', $this->savePath);
 
         if (!is_dir($this->savePath)) {
             mkdir($this->savePath, 0755);
@@ -62,17 +80,23 @@ class NativeStorageTest extends TestCase
         if (is_dir($this->savePath)) {
             rmdir($this->savePath);
         }
+
+        ini_set('session.save_handler', $this->iniSaveHandler);
+        ini_set('session.save_path', $this->iniSavePath);
+
     }
 
     /**
      * Data provider for set tests
      *
-     * @return  \Generator
+     * @return  array
      */
-    public function setProvider(): \Generator
+    public static function setProvider(): array
     {
-        yield ['joomla', 'rocks'];
-        yield ['joomla.framework', 'too much awesomeness'];
+        return [
+            ['joomla', 'rocks'],
+            ['joomla.framework', 'too much awesomeness'],
+        ];
     }
 
     /**
@@ -173,9 +197,8 @@ class NativeStorageTest extends TestCase
      * @param   string  $value  The value to set
      *
      * @covers  Joomla\Session\Storage\NativeStorage
-     *
-     * @dataProvider  setProvider
      */
+    #[DataProvider('setProvider')]
     public function testValidateAValueIsCorrectlyStored($key, $value)
     {
         $this->storage->set($key, $value);
@@ -187,9 +210,8 @@ class NativeStorageTest extends TestCase
      * @param   string  $value  The value to set
      *
      * @covers  Joomla\Session\Storage\NativeStorage
-     *
-     * @dataProvider  setProvider
      */
+    #[DataProvider('setProvider')]
     public function testValidateTheKeyIsCorrectlyCheckedForExistence($key, $value)
     {
         $this->storage->set($key, $value);

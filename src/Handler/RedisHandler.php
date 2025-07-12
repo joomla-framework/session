@@ -78,7 +78,7 @@ class RedisHandler implements HandlerInterface
     /**
      * Destroy a session, called automatically when running session_regenerate_id().
      *
-     * @param   integer  $session_id  The session ID being destroyed
+     * @param   string  $id  The session ID being destroyed
      *
      * @return  boolean  True on success, false otherwise
      *
