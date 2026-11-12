@@ -315,7 +315,7 @@ class NativeStorage implements StorageInterface
     /**
      * Registers session save handler as a PHP session handler
      *
-     * @param   ?\SessionHandlerInterface  $handler  The save handler to use
+     * @param   ?\SessionHandlerInterface  $handler  The save handler to use, null to use the save handler configured in PHP
      *
      * @return  $this
      *
@@ -338,7 +338,7 @@ class NativeStorage implements StorageInterface
 
         $this->handler = $handler;
 
-        if (!headers_sent() && !$this->isActive()) {
+        if ($this->handler !== null && !headers_sent() && !$this->isActive()) {
             session_set_save_handler($this->handler, false);
         }
 

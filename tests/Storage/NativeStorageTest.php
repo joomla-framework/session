@@ -307,4 +307,15 @@ class NativeStorageTest extends TestCase
 
         $this->assertSame($handler, $this->storage->getHandler());
     }
+
+    public function testValidateTheStorageCanBeUsedWithoutAHandler()
+    {
+        $storage = new NativeStorage(null, []);
+
+        $this->assertNull($storage->getHandler());
+
+        // PHP's configured save handler is used
+        $storage->start();
+        $this->assertTrue($storage->isActive());
+    }
 }
