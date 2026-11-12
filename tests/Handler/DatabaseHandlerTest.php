@@ -98,7 +98,7 @@ class DatabaseHandlerTest extends DatabaseTestCase
         $this->assertTrue($this->handler->write($sessionId, json_encode($sessionData)));
         $this->assertSame($sessionData, json_decode($this->handler->read($sessionId), true));
         $this->assertTrue($this->handler->destroy($sessionId));
-        $this->assertTrue($this->handler->gc(900));
+        $this->assertSame(0, $this->handler->gc(900));
         $this->assertTrue($this->handler->close());
     }
 }

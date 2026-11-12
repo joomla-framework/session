@@ -23,7 +23,7 @@ interface SessionInterface extends \IteratorAggregate
      *
      * @since   2.0.0
      */
-    public function getExpire();
+    public function getExpire(): int;
 
     /**
      * Get the session name
@@ -32,7 +32,7 @@ interface SessionInterface extends \IteratorAggregate
      *
      * @since   2.0.0
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Set the session name
@@ -43,7 +43,7 @@ interface SessionInterface extends \IteratorAggregate
      *
      * @since   2.0.0
      */
-    public function setName(string $name);
+    public function setName(string $name): static;
 
     /**
      * Get the session ID
@@ -52,7 +52,7 @@ interface SessionInterface extends \IteratorAggregate
      *
      * @since   2.0.0
      */
-    public function getId();
+    public function getId(): string;
 
     /**
      * Set the session ID
@@ -63,7 +63,7 @@ interface SessionInterface extends \IteratorAggregate
      *
      * @since   2.0.0
      */
-    public function setId(string $id);
+    public function setId(string $id): static;
 
     /**
      * Check if the session is active
@@ -72,7 +72,7 @@ interface SessionInterface extends \IteratorAggregate
      *
      * @since   2.0.0
      */
-    public function isActive();
+    public function isActive(): bool;
 
     /**
      * Check whether this session is newly created
@@ -81,7 +81,7 @@ interface SessionInterface extends \IteratorAggregate
      *
      * @since   2.0.0
      */
-    public function isNew();
+    public function isNew(): bool;
 
     /**
      * Check if the session is started
@@ -90,7 +90,7 @@ interface SessionInterface extends \IteratorAggregate
      *
      * @since   2.0.0
      */
-    public function isStarted();
+    public function isStarted(): bool;
 
     /**
      * Get a session token.
@@ -104,19 +104,19 @@ interface SessionInterface extends \IteratorAggregate
      *
      * @since   2.0.0
      */
-    public function getToken($forceNew = false);
+    public function getToken(bool $forceNew = false): string;
 
     /**
      * Check if the session has the given token.
      *
-     * @param   string   $token        Hashed token to be verified
+     * @param   ?string  $token        Hashed token to be verified
      * @param   boolean  $forceExpire  If true, expires the session
      *
      * @return  boolean
      *
      * @since   2.0.0
      */
-    public function hasToken($token, $forceExpire = true);
+    public function hasToken(?string $token, bool $forceExpire = true): bool;
 
     /**
      * Get data from the session store
@@ -128,7 +128,7 @@ interface SessionInterface extends \IteratorAggregate
      *
      * @since   2.0.0
      */
-    public function get($name, $default = null);
+    public function get(string $name, mixed $default = null): mixed;
 
     /**
      * Set data into the session store
@@ -140,7 +140,7 @@ interface SessionInterface extends \IteratorAggregate
      *
      * @since   2.0.0
      */
-    public function set($name, $value = null);
+    public function set(string $name, mixed $value = null): mixed;
 
     /**
      * Check whether data exists in the session store
@@ -151,7 +151,7 @@ interface SessionInterface extends \IteratorAggregate
      *
      * @since   2.0.0
      */
-    public function has($name);
+    public function has(string $name): bool;
 
     /**
      * Unset a variable from the session store
@@ -162,7 +162,7 @@ interface SessionInterface extends \IteratorAggregate
      *
      * @since   2.0.0
      */
-    public function remove(string $name);
+    public function remove(string $name): mixed;
 
     /**
      * Clears all variables from the session store
@@ -171,7 +171,7 @@ interface SessionInterface extends \IteratorAggregate
      *
      * @since   2.0.0
      */
-    public function clear();
+    public function clear(): void;
 
     /**
      * Retrieves all variables from the session store
@@ -189,7 +189,7 @@ interface SessionInterface extends \IteratorAggregate
      *
      * @since   2.0.0
      */
-    public function start();
+    public function start(): void;
 
     /**
      * Frees all session variables and destroys all data registered to a session
@@ -204,7 +204,7 @@ interface SessionInterface extends \IteratorAggregate
      * @see     session_unset()
      * @since   2.0.0
      */
-    public function destroy();
+    public function destroy(): bool;
 
     /**
      * Restart an expired or locked session
@@ -214,7 +214,7 @@ interface SessionInterface extends \IteratorAggregate
      * @see     destroy
      * @since   2.0.0
      */
-    public function restart();
+    public function restart(): bool;
 
     /**
      * Create a new session and copy variables from the old one
@@ -223,7 +223,7 @@ interface SessionInterface extends \IteratorAggregate
      *
      * @since   2.0.0
      */
-    public function fork();
+    public function fork(): bool;
 
     /**
      * Writes session data and ends session
@@ -241,17 +241,17 @@ interface SessionInterface extends \IteratorAggregate
      * @see     session_write_close()
      * @since   2.0.0
      */
-    public function close();
+    public function close(): void;
 
     /**
      * Perform session data garbage collection
      *
-     * @return  integer|boolean  Number of deleted sessions on success or boolean false on failure or if the function is unsupported
+     * @return  integer|false  Number of deleted sessions on success or false on failure or if the function is unsupported
      *
      * @see     session_gc()
      * @since   2.0.0
      */
-    public function gc();
+    public function gc(): int|false;
 
     /**
      * Aborts the current session

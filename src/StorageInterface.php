@@ -34,7 +34,7 @@ interface StorageInterface
      *
      * @since   2.0.0
      */
-    public function setName(string $name);
+    public function setName(string $name): static;
 
     /**
      * Get the session ID
@@ -54,7 +54,7 @@ interface StorageInterface
      *
      * @since   2.0.0
      */
-    public function setId(string $id);
+    public function setId(string $id): static;
 
     /**
      * Check if the session is active
@@ -84,7 +84,7 @@ interface StorageInterface
      *
      * @since   2.0.0
      */
-    public function get(string $name, $default);
+    public function get(string $name, mixed $default): mixed;
 
     /**
      * Set data into the session store
@@ -96,7 +96,7 @@ interface StorageInterface
      *
      * @since   2.0.0
      */
-    public function set(string $name, $value);
+    public function set(string $name, mixed $value): mixed;
 
     /**
      * Check whether data exists in the session store
@@ -118,7 +118,7 @@ interface StorageInterface
      *
      * @since   2.0.0
      */
-    public function remove(string $name);
+    public function remove(string $name): mixed;
 
     /**
      * Clears all variables from the session store
@@ -175,12 +175,12 @@ interface StorageInterface
     /**
      * Perform session data garbage collection
      *
-     * @return  integer|boolean  Number of deleted sessions on success or boolean false on failure or if the function is unsupported
+     * @return  integer|false  Number of deleted sessions on success or false on failure or if the function is unsupported
      *
      * @see     session_gc()
      * @since   2.0.0
      */
-    public function gc();
+    public function gc(): int|false;
 
     /**
      * Aborts the current session

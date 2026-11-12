@@ -68,8 +68,7 @@ class MemcachedHandler implements HandlerInterface
      *
      * @since   2.0.0
      */
-    #[\ReturnTypeWillChange]
-    public function close()
+    public function close(): bool
     {
         return true;
     }
@@ -93,15 +92,14 @@ class MemcachedHandler implements HandlerInterface
      *
      * @param   integer  $maxlifetime  Sessions that have not updated for the last maxlifetime seconds will be removed
      *
-     * @return  boolean  True on success, false otherwise
+     * @return  integer|false  The number of deleted sessions, false on failure
      *
      * @since   2.0.0
      */
-    #[\ReturnTypeWillChange]
-    public function gc($maxlifetime)
+    public function gc(int $maxlifetime): int|false
     {
         // Memcached manages garbage collection on its own
-        return true;
+        return 0;
     }
 
     /**
@@ -130,8 +128,7 @@ class MemcachedHandler implements HandlerInterface
      *
      * @since   2.0.0
      */
-    #[\ReturnTypeWillChange]
-    public function open($save_path, $session_id)
+    public function open(string $save_path, string $session_id): bool
     {
         return true;
     }
@@ -145,8 +142,7 @@ class MemcachedHandler implements HandlerInterface
      *
      * @since   2.0.0
      */
-    #[\ReturnTypeWillChange]
-    public function read($session_id)
+    public function read(string $session_id): string|false
     {
         return $this->memcached->get($this->prefix . $session_id) ?: '';
     }
@@ -161,8 +157,7 @@ class MemcachedHandler implements HandlerInterface
      *
      * @since   2.0.0
      */
-    #[\ReturnTypeWillChange]
-    public function write($session_id, $session_data)
+    public function write(string $session_id, string $session_data): bool
     {
         return $this->memcached->set($this->prefix . $session_id, $session_data, time() + $this->ttl);
     }

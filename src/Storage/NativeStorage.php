@@ -111,12 +111,12 @@ class NativeStorage implements StorageInterface
     /**
      * Perform session data garbage collection
      *
-     * @return  integer|boolean  Number of deleted sessions on success or boolean false on failure or if the function is unsupported
+     * @return  integer|false  Number of deleted sessions on success or false on failure or if the function is unsupported
      *
      * @see     session_gc()
      * @since   2.0.0
      */
-    public function gc()
+    public function gc(): int|false
     {
         if (!$this->isStarted()) {
             $this->start();
@@ -152,7 +152,7 @@ class NativeStorage implements StorageInterface
      *
      * @since   2.0.0
      */
-    public function get(string $name, $default)
+    public function get(string $name, mixed $default): mixed
     {
         if (!$this->isStarted()) {
             $this->start();
@@ -254,7 +254,7 @@ class NativeStorage implements StorageInterface
      *
      * @since   2.0.0
      */
-    public function remove(string $name)
+    public function remove(string $name): mixed
     {
         if (!$this->isStarted()) {
             $this->start();
@@ -299,7 +299,7 @@ class NativeStorage implements StorageInterface
      *
      * @since   2.0.0
      */
-    public function set(string $name, $value = null)
+    public function set(string $name, mixed $value = null): mixed
     {
         if (!$this->isStarted()) {
             $this->start();
@@ -355,7 +355,7 @@ class NativeStorage implements StorageInterface
      * @since   2.0.0
      * @throws  \LogicException
      */
-    public function setId(string $id)
+    public function setId(string $id): static
     {
         if ($this->isActive()) {
             throw new \LogicException('Cannot change the ID of an active session');
@@ -376,7 +376,7 @@ class NativeStorage implements StorageInterface
      * @since   2.0.0
      * @throws  \LogicException
      */
-    public function setName(string $name)
+    public function setName(string $name): static
     {
         if ($this->isActive()) {
             throw new \LogicException('Cannot change the name of an active session');
