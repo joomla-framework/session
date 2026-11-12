@@ -73,9 +73,23 @@ class RedisHandlerTest extends TestCase
 
         $this->redis = new \Redis();
 
-        if (!$this->redis->connect($options['host'], $options['port'])) {
+        /*
+         * connect() throws a RedisException when the host cannot be resolved, so a missing Redis
+         * server would fail the suite instead of skipping it. phpunit.xml.dist points at the host
+         * name "redis", which only resolves inside the CI container. The PHP warning connect()
+         * emits alongside the exception is suppressed, as the failure is handled here.
+         */
+        try {
+            $connected = @$this->redis->connect($options['host'], $options['port']);
+        } catch (\RedisException $exception) {
+            $connected = false;
+        }
+
+        if (!$connected) {
             unset($this->redis);
-            $this->markTestSkipped('Cannot connect to Redis.');
+            $this->markTestSkipped(
+                sprintf('Cannot connect to Redis at %s:%s.', $options['host'], $options['port'])
+            );
         }
 
         $this->handler = new RedisHandler($this->redis, $this->options);
