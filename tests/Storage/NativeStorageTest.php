@@ -321,18 +321,26 @@ class NativeStorageTest extends TestCase
         }
     }
 
-    public function testValidateAnUnknownOptionTriggersANotice()
+    public static function unsupportedOptionProvider(): array
     {
-        $errors = $this->captureErrors(fn () => $this->storage->setOptions(['cookie_samesitee' => 'Lax', 'url_rewriter.tags' => 'a=href']));
+        return [
+            'misspelled'             => ['cookie_samesitee', 'Lax'],
+            'url_rewriter.tags'      => ['url_rewriter.tags', 'a=href'],
+            'sid_length'             => ['sid_length', 32],
+            'sid_bits_per_character' => ['sid_bits_per_character', 5],
+            'trans_sid_tags'         => ['trans_sid_tags', 'a=href'],
+            'trans_sid_hosts'        => ['trans_sid_hosts', 'example.com'],
+            'referer_check'          => ['referer_check', 'example.com'],
+        ];
+    }
 
-        $this->assertContains(
-            [E_USER_NOTICE, 'The session option "cookie_samesitee" is not supported and was ignored.'],
-            $errors
-        );
-        $this->assertContains(
-            [E_USER_NOTICE, 'The session option "url_rewriter.tags" is not supported and was ignored.'],
-            $errors
-        );
+    #[DataProvider('unsupportedOptionProvider')]
+    public function testValidateAnUnsupportedOptionIsRejected(string $key, $value)
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(sprintf('The session option "%s" is not supported.', $key));
+
+        $this->storage->setOptions([$key => $value]);
     }
 
     public function testValidateOptionsForAnActiveSessionTriggerANotice()
@@ -347,39 +355,27 @@ class NativeStorageTest extends TestCase
         );
     }
 
-    public static function deprecatedOptionProvider(): array
+    public static function urlSessionIdOptionProvider(): array
     {
         return [
-            'sid_length'             => ['sid_length', 32, true],
-            'sid_bits_per_character' => ['sid_bits_per_character', 5, true],
-            'trans_sid_tags'         => ['trans_sid_tags', 'a=href', true],
-            'trans_sid_hosts'        => ['trans_sid_hosts', 'example.com', true],
-            'referer_check set'      => ['referer_check', 'example.com', true],
-            'referer_check empty'    => ['referer_check', '', false],
-            'use_only_cookies off'   => ['use_only_cookies', 0, true],
-            'use_only_cookies on'    => ['use_only_cookies', 1, false],
-            'use_trans_sid on'       => ['use_trans_sid', 1, true],
-            'use_trans_sid off'      => ['use_trans_sid', 0, false],
+            'use_only_cookies off' => ['use_only_cookies', 0, true],
+            'use_only_cookies on'  => ['use_only_cookies', 1, false],
+            'use_trans_sid on'     => ['use_trans_sid', 1, true],
+            'use_trans_sid off'    => ['use_trans_sid', 0, false],
         ];
     }
 
-    #[DataProvider('deprecatedOptionProvider')]
-    public function testValidateOptionsDeprecatedInPhp84TriggerADeprecation(string $key, $value, bool $deprecated)
+    #[DataProvider('urlSessionIdOptionProvider')]
+    public function testValidateSessionIdsInUrlsAreRejected(string $key, int $value, bool $rejected)
     {
-        $previous = ini_get('session.' . $key);
-
-        try {
-            $errors = $this->captureErrors(fn () => $this->storage->setOptions([$key => $value]));
-        } finally {
-            ini_set('session.' . $key, $previous);
+        if ($rejected) {
+            $this->expectException(\InvalidArgumentException::class);
+            $this->expectExceptionMessage(sprintf('The session option "%s" does not support the value %d.', $key, $value));
         }
 
-        $packageDeprecations = array_filter(
-            $errors,
-            static fn (array $error) => $error[0] === E_USER_DEPRECATED && str_contains($error[1], '"' . $key . '"')
-        );
+        $this->storage->setOptions([$key => $value]);
 
-        $this->assertCount($deprecated ? 1 : 0, $packageDeprecations);
+        $this->assertSame((string) $value, ini_get('session.' . $key));
     }
 
     /**

@@ -391,8 +391,7 @@ class NativeStorage implements StorageInterface
      * Sets session.* ini variables.
      *
      * For convenience we omit 'session.' from the beginning of the keys.
-     * Other ini keys are ignored with an E_USER_NOTICE, as are all options when headers have already been sent or the session is
-     * active.
+     * Options are ignored with an E_USER_NOTICE when headers have already been sent or the session is active.
      *
      * @param   array  $options  Session ini directives array(key => value).
      *
@@ -401,9 +400,32 @@ class NativeStorage implements StorageInterface
      * @note    Based on \Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage::setOptions()
      * @see     http://php.net/session.configuration
      * @since   2.0.0
+     * @throws  \InvalidArgumentException  If an option is not supported or has a value PHP no longer supports
      */
     public function setOptions(array $options): self
     {
+        $validOptions = array_flip(
+            [
+                'cache_limiter', 'cache_expire', 'cookie_domain', 'cookie_httponly', 'cookie_lifetime', 'cookie_path', 'cookie_samesite',
+                'cookie_secure', 'gc_divisor', 'gc_maxlifetime', 'gc_probability', 'lazy_write', 'name', 'serialize_handler',
+                'use_strict_mode', 'use_cookies', 'use_only_cookies', 'use_trans_sid', 'upload_progress.enabled', 'upload_progress.cleanup',
+                'upload_progress.prefix', 'upload_progress.name', 'upload_progress.freq', 'upload_progress.min-freq',
+            ]
+        );
+
+        foreach ($options as $key => $value) {
+            if (!isset($validOptions[$key])) {
+                throw new \InvalidArgumentException(sprintf('The session option "%s" is not supported.', $key));
+            }
+
+            // Session IDs in URLs are deprecated as of PHP 8.4
+            if (($key === 'use_only_cookies' && !$value) || ($key === 'use_trans_sid' && $value)) {
+                throw new \InvalidArgumentException(
+                    sprintf('The session option "%s" does not support the value %s.', $key, var_export($value, true))
+                );
+            }
+        }
+
         if (headers_sent() || $this->isActive()) {
             if ($options !== []) {
                 trigger_error(
@@ -419,60 +441,13 @@ class NativeStorage implements StorageInterface
             return $this;
         }
 
-        $validOptions = array_flip(
-            [
-                'cache_limiter', 'cache_expire', 'cookie_domain', 'cookie_httponly', 'cookie_lifetime', 'cookie_path', 'cookie_samesite',
-                'cookie_secure', 'gc_divisor', 'gc_maxlifetime', 'gc_probability', 'lazy_write', 'name', 'referer_check', 'serialize_handler',
-                'use_strict_mode', 'use_cookies', 'use_only_cookies', 'use_trans_sid', 'upload_progress.enabled', 'upload_progress.cleanup',
-                'upload_progress.prefix', 'upload_progress.name', 'upload_progress.freq', 'upload_progress.min-freq', 'sid_length',
-                'sid_bits_per_character', 'trans_sid_hosts', 'trans_sid_tags',
-            ]
-        );
-
         foreach ($options as $key => $value) {
-            if (!isset($validOptions[$key])) {
-                trigger_error(sprintf('The session option "%s" is not supported and was ignored.', $key), E_USER_NOTICE);
-
-                continue;
-            }
-
-            if ($this->isDeprecatedOption($key, $value)) {
-                trigger_deprecation(
-                    'joomla/session',
-                    '__DEPLOY_VERSION__',
-                    'Setting the session option "%s" to %s is deprecated as of PHP 8.4 and will not be supported in 5.0.',
-                    $key,
-                    var_export($value, true)
-                );
-            }
-
             if (ini_set('session.' . $key, $value) === false) {
                 trigger_error(sprintf('The session option "%s" could not be applied.', $key), E_USER_NOTICE);
             }
         }
 
         return $this;
-    }
-
-    /**
-     * Checks whether an option value is deprecated as of PHP 8.4
-     *
-     * @param   string  $key    The option name without the "session." prefix
-     * @param   mixed   $value  The option value
-     *
-     * @return  boolean
-     *
-     * @since   __DEPLOY_VERSION__
-     */
-    private function isDeprecatedOption(string $key, mixed $value): bool
-    {
-        return match ($key) {
-            'sid_length', 'sid_bits_per_character', 'trans_sid_tags', 'trans_sid_hosts' => true,
-            'referer_check'                                                            => (string) $value !== '',
-            'use_only_cookies'                                                         => !$value,
-            'use_trans_sid'                                                            => (bool) $value,
-            default                                                                    => false,
-        };
     }
 
     /**

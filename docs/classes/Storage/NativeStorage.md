@@ -19,8 +19,6 @@ $storage = new NativeStorage(new FilesystemHandler(), [
 ]);
 ```
 
-Supported keys: `cache_limiter`, `cache_expire`, `cookie_domain`, `cookie_httponly`, `cookie_lifetime`, `cookie_path`, `cookie_samesite`, `cookie_secure`, `gc_divisor`, `gc_maxlifetime`, `gc_probability`, `lazy_write`, `name`, `referer_check`, `serialize_handler`, `use_strict_mode`, `use_cookies`, `use_only_cookies`, `use_trans_sid`, `upload_progress.enabled`, `upload_progress.cleanup`, `upload_progress.prefix`, `upload_progress.name`, `upload_progress.freq`, `upload_progress.min-freq`, `sid_length`, `sid_bits_per_character`, `trans_sid_hosts` and `trans_sid_tags`.
+Supported keys: `cache_limiter`, `cache_expire`, `cookie_domain`, `cookie_httponly`, `cookie_lifetime`, `cookie_path`, `cookie_samesite`, `cookie_secure`, `gc_divisor`, `gc_maxlifetime`, `gc_probability`, `lazy_write`, `name`, `serialize_handler`, `use_strict_mode`, `use_cookies`, `use_only_cookies`, `use_trans_sid`, `upload_progress.enabled`, `upload_progress.cleanup`, `upload_progress.prefix`, `upload_progress.name`, `upload_progress.freq`, `upload_progress.min-freq`.
 
-An unknown key, a value PHP rejects, and any option passed after headers have been sent or while the session is active are ignored with an `E_USER_NOTICE`.
-
-The following settings are deprecated as of PHP 8.4 and trigger a deprecation when passed; they will not be supported in 5.0: `sid_length`, `sid_bits_per_character`, `trans_sid_tags`, `trans_sid_hosts`, a non-empty `referer_check`, `use_only_cookies` set to `0` and `use_trans_sid` set to `1`.
+An unknown key throws an `InvalidArgumentException`, as do `use_only_cookies` set to `0` and `use_trans_sid` set to `1`: session IDs in URLs are deprecated as of PHP 8.4. A value PHP rejects, and any option passed after headers have been sent or while the session is active, are ignored with an `E_USER_NOTICE`.
