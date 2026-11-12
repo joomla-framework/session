@@ -63,6 +63,8 @@ public function getToken($forceNew = false);
 
 The `hasToken()` method is used to determine if the current session token matches the specified token.
 
+In `Joomla\Session\Session`, the comparison is timing-safe (`hash_equals()`), and only a non-empty string can match: if no token has been generated yet, or the given token is `null`, empty or not a string, `hasToken()` returns `false` (and expires the session when `$forceExpire` is `true`).
+
 ```php
 /**
  * Check if the session has the given token.

@@ -145,7 +145,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
     /**
      * Check if the session has the given token.
      *
-     * @param   string   $token        Hashed token to be verified
+     * @param   ?string  $token        Hashed token to be verified
      * @param   boolean  $forceExpire  If true, expires the session
      *
      * @return  boolean
@@ -154,7 +154,8 @@ class Session implements SessionInterface, DispatcherAwareInterface
      */
     public function hasToken($token, $forceExpire = true)
     {
-        $result = $this->get('session.token') === $token;
+        $stored = $this->get('session.token');
+        $result = \is_string($stored) && \is_string($token) && $token !== '' && hash_equals($stored, $token);
 
         if (!$result && $forceExpire) {
             $this->setState(SessionState::EXPIRED);

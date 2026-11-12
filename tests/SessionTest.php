@@ -203,6 +203,28 @@ class SessionTest extends TestCase
         $this->assertSame('expired', $this->session->getState());
     }
 
+    public static function emptyTokenProvider(): array
+    {
+        return [
+            'null'         => [null],
+            'empty string' => [''],
+        ];
+    }
+
+    #[DataProvider('emptyTokenProvider')]
+    public function testValidateAnEmptyTokenIsNotValidWhenNoTokenWasGenerated($token)
+    {
+        $this->assertFalse($this->session->hasToken($token, false));
+    }
+
+    public function testValidateANonStringTokenIsNotValid()
+    {
+        $token = $this->session->getToken();
+
+        $this->assertFalse($this->session->hasToken([$token], false));
+        $this->assertTrue($this->session->hasToken($token, false));
+    }
+
     /**
      * @covers  Joomla\Session\Session
      * @uses    Joomla\Session\Storage\RuntimeStorage
