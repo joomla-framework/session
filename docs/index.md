@@ -10,3 +10,4 @@
     * [ValidatorInterface](classes/ValidatorInterface.md)
     * [Session](classes/Session.md)
     * [SessionEvent](classes/SessionEvent.md)
+    * [FilesystemHandler](classes/Handler/FilesystemHandler.md)

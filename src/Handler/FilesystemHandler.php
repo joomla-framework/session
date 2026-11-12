@@ -56,16 +56,17 @@ class FilesystemHandler extends \SessionHandler implements HandlerInterface
             $baseDir = ltrim(strrchr($path, ';'), ';');
         }
 
-        // Create the directory if it doesn't exist
+        // Create the directory if it doesn't exist; it must not be readable by other users, as the file names contain the session IDs
         if (!is_dir($baseDir)) {
-            if (!mkdir($baseDir, 0755)) {
+            if (!mkdir($baseDir, 0700, true)) {
                 throw new \RuntimeException(sprintf('Could not create session directory "%s"', $baseDir));
             }
         }
 
         if (!headers_sent()) {
-            ini_set('session.save_path', $path);
-            ini_set('session.save_handler', 'files');
+            if (ini_set('session.save_path', $path) === false || ini_set('session.save_handler', 'files') === false) {
+                trigger_error(sprintf('The session save path could not be set to "%s".', $path), E_USER_WARNING);
+            }
         }
     }
 

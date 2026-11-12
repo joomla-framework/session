@@ -94,6 +94,70 @@ class FilesystemHandlerTest extends TestCase
         rmdir($path);
     }
 
+    public function testTheHandlerCreatesANestedSavePath()
+    {
+        $base = sys_get_temp_dir() . '/jfw-session-nested';
+        $path = $base . '/sub/dir';
+
+        try {
+            new FilesystemHandler($path);
+
+            $this->assertDirectoryExists($path);
+        } finally {
+            @rmdir($path);
+            @rmdir($base . '/sub');
+            @rmdir($base);
+        }
+    }
+
+    public function testTheHandlerCreatesTheSavePathOnlyAccessibleToTheOwner()
+    {
+        if (PHP_OS_FAMILY === 'Windows') {
+            $this->markTestSkipped('Unix file permissions are not available on Windows.');
+        }
+
+        $path = sys_get_temp_dir() . '/jfw-session-mode';
+
+        try {
+            new FilesystemHandler($path);
+
+            clearstatcache();
+            $this->assertSame('0700', substr(sprintf('%o', fileperms($path)), -4));
+        } finally {
+            @rmdir($path);
+        }
+    }
+
+    public function testTheHandlerWarnsWhenTheSavePathCannotBeSet()
+    {
+        $savePath = ini_get('session.save_path');
+        $path     = sys_get_temp_dir() . '/jfw-session-active';
+        $errors   = [];
+
+        ini_set('session.save_path', sys_get_temp_dir());
+        session_start();
+
+        set_error_handler(
+            static function (int $level, string $message) use (&$errors): bool {
+                $errors[] = [$level, $message];
+
+                return true;
+            }
+        );
+
+        try {
+            new FilesystemHandler($path);
+        } finally {
+            restore_error_handler();
+            session_abort();
+            session_id('');
+            ini_set('session.save_path', $savePath);
+            @rmdir($path);
+        }
+
+        $this->assertContains([E_USER_WARNING, sprintf('The session save path could not be set to "%s".', $path)], $errors);
+    }
+
     /**
      * Data provider with expected paths for handler construction
      *
