@@ -308,6 +308,90 @@ class NativeStorageTest extends TestCase
         $this->assertSame($handler, $this->storage->getHandler());
     }
 
+    public function testValidateSecureDefaultsAreApplied()
+    {
+        $this->withSessionIni(
+            function () {
+                unset($_SERVER['HTTPS']);
+                ini_set('session.cookie_secure', '0');
+
+                new NativeStorage(new FilesystemHandler($this->savePath));
+
+                $this->assertSame('1', ini_get('session.use_only_cookies'));
+                $this->assertSame('1', ini_get('session.use_strict_mode'));
+                $this->assertSame('1', ini_get('session.cookie_httponly'));
+                $this->assertSame('Lax', ini_get('session.cookie_samesite'));
+                $this->assertSame('0', ini_get('session.cookie_secure'), 'The secure flag is only set for HTTPS requests');
+            }
+        );
+    }
+
+    public function testValidateTheSecureCookieDefaultIsAppliedForHttpsRequests()
+    {
+        $this->withSessionIni(
+            function () {
+                $_SERVER['HTTPS'] = 'on';
+                ini_set('session.cookie_secure', '0');
+
+                new NativeStorage(new FilesystemHandler($this->savePath));
+
+                $this->assertSame('1', ini_get('session.cookie_secure'));
+            }
+        );
+    }
+
+    public function testValidateExplicitOptionsOverrideTheSecureDefaults()
+    {
+        $this->withSessionIni(
+            function () {
+                $_SERVER['HTTPS'] = 'on';
+
+                new NativeStorage(
+                    new FilesystemHandler($this->savePath),
+                    ['use_strict_mode' => 0, 'cookie_httponly' => 0, 'cookie_samesite' => 'Strict', 'cookie_secure' => 0]
+                );
+
+                $this->assertSame('0', ini_get('session.use_strict_mode'));
+                $this->assertSame('0', ini_get('session.cookie_httponly'));
+                $this->assertSame('Strict', ini_get('session.cookie_samesite'));
+                $this->assertSame('0', ini_get('session.cookie_secure'));
+            }
+        );
+    }
+
+    /**
+     * Runs a callback and restores the session ini settings and $_SERVER['HTTPS'] it may change
+     *
+     * @param   callable  $callback  The callback
+     *
+     * @return  void
+     */
+    private function withSessionIni(callable $callback): void
+    {
+        $keys     = ['use_only_cookies', 'use_strict_mode', 'cookie_httponly', 'cookie_samesite', 'cookie_secure'];
+        $previous = [];
+
+        foreach ($keys as $key) {
+            $previous[$key] = ini_get('session.' . $key);
+        }
+
+        $https = $_SERVER['HTTPS'] ?? null;
+
+        try {
+            $callback();
+        } finally {
+            foreach ($previous as $key => $value) {
+                ini_set('session.' . $key, $value);
+            }
+
+            if ($https === null) {
+                unset($_SERVER['HTTPS']);
+            } else {
+                $_SERVER['HTTPS'] = $https;
+            }
+        }
+    }
+
     public function testValidateTheSameSiteCookieOptionIsApplied()
     {
         $previous = ini_get('session.cookie_samesite');

@@ -47,17 +47,26 @@ class NativeStorage implements StorageInterface
      * Constructor
      *
      * @param   ?\SessionHandlerInterface  $handler  Session save handler
-     * @param   array                      $options  Session options
+     * @param   array                      $options  Session options; secure defaults apply to the keys you do not set
      *
      * @since   1.0
      */
     public function __construct(?\SessionHandlerInterface $handler = null, array $options = [])
     {
-        // Disable transparent sid support and default use cookies
+        // Session IDs only in cookies that scripts cannot read, and no adoption of uninitialised, client-supplied IDs
         $options += [
-            'use_cookies'   => 1,
-            'use_trans_sid' => 0,
+            'use_cookies'      => 1,
+            'use_only_cookies' => 1,
+            'use_trans_sid'    => 0,
+            'use_strict_mode'  => 1,
+            'cookie_httponly'  => 1,
+            'cookie_samesite'  => 'Lax',
         ];
+
+        // Only send the session cookie over HTTPS when the request came in over HTTPS
+        if (!isset($options['cookie_secure']) && self::isHttpsRequest()) {
+            $options['cookie_secure'] = 1;
+        }
 
         if (!headers_sent()) {
             session_cache_limiter('none');
@@ -504,5 +513,17 @@ class NativeStorage implements StorageInterface
 
         $this->isActive();
         $this->started = true;
+    }
+
+    /**
+     * Checks whether the current request was made over HTTPS
+     *
+     * @return  boolean
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private static function isHttpsRequest(): bool
+    {
+        return isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== '' && strtolower((string) $_SERVER['HTTPS']) !== 'off';
     }
 }
