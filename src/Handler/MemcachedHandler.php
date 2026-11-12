@@ -113,11 +113,7 @@ class MemcachedHandler implements HandlerInterface
      */
     public static function isSupported(): bool
     {
-        /*
-         * GAE and HHVM have both had instances where Memcached the class was defined but no extension was loaded.
-         * If the class is there, we can assume it works.
-         */
-        return class_exists('Memcached');
+        return \extension_loaded('memcached');
     }
 
     /**
