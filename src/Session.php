@@ -412,19 +412,6 @@ class Session implements SessionInterface, DispatcherAwareInterface
         }
 
         if ($this->dispatcher) {
-            if (!empty($this->dispatcher->getListeners('onAfterSessionStart'))) {
-                trigger_deprecation(
-                    'joomla/session',
-                    '2.0.0',
-                    'The `onAfterSessionStart` event is deprecated and will be removed in 3.0, use the %s::START event instead.',
-                    SessionEvents::class
-                );
-
-                // Dispatch deprecated event
-                $this->dispatcher->dispatch('onAfterSessionStart', new SessionEvent('onAfterSessionStart', $this));
-            }
-
-            // Dispatch new event
             $this->dispatcher->dispatch(SessionEvents::START, new SessionEvent(SessionEvents::START, $this));
         }
     }
@@ -497,19 +484,6 @@ class Session implements SessionInterface, DispatcherAwareInterface
         }
 
         if ($this->dispatcher) {
-            if (!empty($this->dispatcher->getListeners('onAfterSessionRestart'))) {
-                trigger_deprecation(
-                    'joomla/session',
-                    '2.0.0',
-                    'The `onAfterSessionRestart` event is deprecated and will be removed in 3.0, use the %s::RESTART event instead.',
-                    SessionEvents::class
-                );
-
-                // Dispatch deprecated event
-                $this->dispatcher->dispatch('onAfterSessionRestart', new SessionEvent('onAfterSessionRestart', $this));
-            }
-
-            // Dispatch new event
             $this->dispatcher->dispatch(SessionEvents::RESTART, new SessionEvent(SessionEvents::RESTART, $this));
         }
 
