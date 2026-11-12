@@ -38,10 +38,10 @@ public function getState();
 
 When a session is started, the `Session` class dispatches the `SessionEvents::START` event to allow event listeners to perform extra actions after a session has been started. A [`Joomla\Session\SessionEvent`](SessionEvent.md) instance is provided to listeners with the current `Session` instance.
 
-Note, for backward compatibility the `onAfterSessionStart` event is also dispatched if any listeners are subscribed to that event, however this event is deprecated and will not be supported in the Joomla! Framework 3.0 release.
+Note, for backward compatibility the `onAfterSessionStart` event is also dispatched if any listeners are subscribed to that event, however this event is deprecated and will be removed in the Joomla! Framework 5.0 release.
 
 #### Session Restarted
 
 When a session is restarted, the `Session` class dispatches the `SessionEvents::RESTART` event to allow event listeners to perform extra actions after a session has been restarted. A [`Joomla\Session\SessionEvent`](SessionEvent.md) instance is provided to listeners with the current `Session` instance.
 
-Note, for backward compatibility the `onAfterSessionRestart` event is also dispatched if any listeners are subscribed to that event, however this event is deprecated and will not be supported in the Joomla! Framework 3.0 release.
+Note, for backward compatibility the `onAfterSessionRestart` event is also dispatched if any listeners are subscribed to that event, however this event is deprecated and will be removed in the Joomla! Framework 5.0 release.

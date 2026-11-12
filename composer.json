@@ -30,7 +30,7 @@
         "ext-memcached": "To use a Memcached server as a session handler",
         "ext-redis": "To use a Redis server as a session handler",
         "ext-session": "To use the Joomla\\Session\\Storage\\NativeStorage storage class.",
-        "ext-wincache": "To use WinCache as a session handler"
+        "ext-wincache": "To use WinCache as a session handler (deprecated, the WincacheHandler will be removed in 5.0)"
     },
     "autoload": {
         "psr-4": {
