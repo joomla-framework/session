@@ -7,9 +7,11 @@
 
 namespace Joomla\Session\Tests;
 
+use Joomla\Event\Dispatcher;
 use Joomla\Event\DispatcherInterface;
 use Joomla\Input\Input;
 use Joomla\Session\Session;
+use Joomla\Session\SessionEvents;
 use Joomla\Session\Storage\RuntimeStorage;
 use Joomla\Session\Validator\AddressValidator;
 use Joomla\Session\Validator\ForwardedValidator;
@@ -451,5 +453,27 @@ class SessionTest extends TestCase
         $this->session->start();
 
         $this->assertTrue($this->session->abort());
+    }
+
+    public function testValidateTheLegacyEventsAreNoLongerDispatched()
+    {
+        $dispatched = [];
+
+        $dispatcher = new Dispatcher();
+
+        foreach (['onAfterSessionStart', 'onAfterSessionRestart', SessionEvents::START, SessionEvents::RESTART] as $event) {
+            $dispatcher->addListener(
+                $event,
+                static function () use (&$dispatched, $event) {
+                    $dispatched[] = $event;
+                }
+            );
+        }
+
+        $this->session->setDispatcher($dispatcher);
+        $this->session->start();
+        $this->session->restart();
+
+        $this->assertSame([SessionEvents::START, SessionEvents::RESTART], $dispatched);
     }
 }
