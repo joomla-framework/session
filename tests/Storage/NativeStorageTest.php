@@ -307,4 +307,106 @@ class NativeStorageTest extends TestCase
 
         $this->assertSame($handler, $this->storage->getHandler());
     }
+
+    public function testValidateTheSameSiteCookieOptionIsApplied()
+    {
+        $previous = ini_get('session.cookie_samesite');
+
+        try {
+            $this->storage->setOptions(['cookie_samesite' => 'Lax']);
+
+            $this->assertSame('Lax', ini_get('session.cookie_samesite'));
+        } finally {
+            ini_set('session.cookie_samesite', $previous);
+        }
+    }
+
+    public function testValidateAnUnknownOptionTriggersANotice()
+    {
+        $errors = $this->captureErrors(fn () => $this->storage->setOptions(['cookie_samesitee' => 'Lax', 'url_rewriter.tags' => 'a=href']));
+
+        $this->assertContains(
+            [E_USER_NOTICE, 'The session option "cookie_samesitee" is not supported and was ignored.'],
+            $errors
+        );
+        $this->assertContains(
+            [E_USER_NOTICE, 'The session option "url_rewriter.tags" is not supported and was ignored.'],
+            $errors
+        );
+    }
+
+    public function testValidateOptionsForAnActiveSessionTriggerANotice()
+    {
+        $this->storage->start();
+
+        $errors = $this->captureErrors(fn () => $this->storage->setOptions(['gc_maxlifetime' => 60]));
+
+        $this->assertSame(
+            [[E_USER_NOTICE, 'The session options "gc_maxlifetime" were not applied because the session is already active.']],
+            $errors
+        );
+    }
+
+    public static function deprecatedOptionProvider(): array
+    {
+        return [
+            'sid_length'             => ['sid_length', 32, true],
+            'sid_bits_per_character' => ['sid_bits_per_character', 5, true],
+            'trans_sid_tags'         => ['trans_sid_tags', 'a=href', true],
+            'trans_sid_hosts'        => ['trans_sid_hosts', 'example.com', true],
+            'referer_check set'      => ['referer_check', 'example.com', true],
+            'referer_check empty'    => ['referer_check', '', false],
+            'use_only_cookies off'   => ['use_only_cookies', 0, true],
+            'use_only_cookies on'    => ['use_only_cookies', 1, false],
+            'use_trans_sid on'       => ['use_trans_sid', 1, true],
+            'use_trans_sid off'      => ['use_trans_sid', 0, false],
+        ];
+    }
+
+    #[DataProvider('deprecatedOptionProvider')]
+    public function testValidateOptionsDeprecatedInPhp84TriggerADeprecation(string $key, $value, bool $deprecated)
+    {
+        $previous = ini_get('session.' . $key);
+
+        try {
+            $errors = $this->captureErrors(fn () => $this->storage->setOptions([$key => $value]));
+        } finally {
+            ini_set('session.' . $key, $previous);
+        }
+
+        $packageDeprecations = array_filter(
+            $errors,
+            static fn (array $error) => $error[0] === E_USER_DEPRECATED && str_contains($error[1], '"' . $key . '"')
+        );
+
+        $this->assertCount($deprecated ? 1 : 0, $packageDeprecations);
+    }
+
+    /**
+     * Runs a callback and returns the errors it triggered as [level, message] pairs
+     *
+     * @param   callable  $callback  The callback to run
+     *
+     * @return  array
+     */
+    private function captureErrors(callable $callback): array
+    {
+        $errors = [];
+
+        set_error_handler(
+            static function (int $level, string $message) use (&$errors): bool {
+                $errors[] = [$level, $message];
+
+                return true;
+            }
+        );
+
+        try {
+            $callback();
+        } finally {
+            restore_error_handler();
+        }
+
+        return $errors;
+    }
 }
