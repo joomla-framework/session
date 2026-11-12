@@ -22,8 +22,10 @@ use Joomla\Session\HandlerInterface;
  *
  * @since  2.0.0
  */
-class DatabaseHandler implements HandlerInterface
+class DatabaseHandler implements HandlerInterface, \SessionIdInterface, \SessionUpdateTimestampHandlerInterface
 {
+    use SessionIdTrait;
+
     /**
      * Database connector
      *
@@ -250,6 +252,30 @@ class DatabaseHandler implements HandlerInterface
             return (string) $this->db->loadResult();
         } catch (\Exception $e) {
             return '';
+        }
+    }
+
+    /**
+     * Check whether a session with the given ID exists
+     *
+     * @param   string  $id  The session ID
+     *
+     * @return  boolean
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function validateId(string $id): bool
+    {
+        try {
+            $query = $this->db->createQuery()
+                ->select($this->db->quoteName('session_id'))
+                ->from($this->db->quoteName('#__session'))
+                ->where($this->db->quoteName('session_id') . ' = ?')
+                ->bind(1, $id);
+
+            return (bool) $this->db->setQuery($query)->loadResult();
+        } catch (\Exception $e) {
+            return false;
         }
     }
 

@@ -16,8 +16,10 @@ use Joomla\Session\HandlerInterface;
  *
  * @since  2.0.0
  */
-class MemcachedHandler implements HandlerInterface
+class MemcachedHandler implements HandlerInterface, \SessionIdInterface, \SessionUpdateTimestampHandlerInterface
 {
+    use SessionIdTrait;
+
     /**
      * Memcached driver
      *
@@ -149,6 +151,22 @@ class MemcachedHandler implements HandlerInterface
     public function read($session_id)
     {
         return $this->memcached->get($this->prefix . $session_id) ?: '';
+    }
+
+    /**
+     * Check whether a session with the given ID exists
+     *
+     * @param   string  $id  The session ID
+     *
+     * @return  boolean
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function validateId(string $id): bool
+    {
+        $this->memcached->get($this->prefix . $id);
+
+        return $this->memcached->getResultCode() === \Memcached::RES_SUCCESS;
     }
 
     /**
