@@ -29,7 +29,7 @@ The `getState()` method is used to get the current state of the session.
  *
  * @return  string  The session state
  */
-public function getState();
+public function getState(): string;
 ```
 
 ### Event Hooks

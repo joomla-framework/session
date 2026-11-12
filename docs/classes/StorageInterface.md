@@ -25,7 +25,7 @@ The `setName()` method is used to set the session name. In regular use, the `Joo
  *
  * @return  $this
  */
-public function setName(string $name);
+public function setName(string $name): static;
 ```
 
 #### Get the session ID
@@ -49,7 +49,7 @@ The `setId()` method is used to set the session ID. In regular use, the `Joomla\
  *
  * @return  $this
  */
-public function setId(string $name);
+public function setId(string $name): static;
 ```
 
 ### Session State Interactions
@@ -119,9 +119,9 @@ The `gc()` method is used to trigger the garbage collection process for the back
 
 ```php
 /**
- * @return  integer|boolean  Number of deleted sessions on success or boolean false on failure or if the function is unsupported
+ * @return  integer|false  Number of deleted sessions on success or false on failure or if the function is unsupported
  */
-public function gc();
+public function gc(): int|false;
 ```
 
 #### Abort the session
@@ -148,7 +148,7 @@ The `get()` method is used to read the data for a given key from the data store,
  *
  * @return  mixed  Value of a variable
  */
-public function get(string $name, $default);
+public function get(string $name, mixed $default): mixed;
 ```
 
 #### Write to the data store
@@ -162,7 +162,7 @@ The `set()` method is used to write data for a given key to the data store, retu
  *
  * @return  mixed  Old value of a variable
  */
-public function set(string $name, $value);
+public function set(string $name, mixed $value): mixed;
 ```
 
 #### Check if value is defined in data store
@@ -188,7 +188,7 @@ The `remove()` method is used to remove a given key from the data store, returni
  *
  * @return  mixed   The value from session or NULL if not set
  */
-public function remove(string $name);
+public function remove(string $name): mixed;
 ```
 
 #### Empty the data store

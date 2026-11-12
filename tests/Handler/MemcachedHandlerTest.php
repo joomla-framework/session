@@ -138,6 +138,6 @@ class MemcachedHandlerTest extends TestCase
      */
     public function testTheHandlerGarbageCollectsTheSessionCorrectly()
     {
-        $this->assertTrue($this->handler->gc(60));
+        $this->assertSame(0, $this->handler->gc(60));
     }
 }

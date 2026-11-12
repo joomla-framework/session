@@ -30,7 +30,7 @@ The `getExpire()` method is used to get the session lifetime in seconds.
 /**
  * @return  integer  The session expiration time in seconds
  */
-public function getExpire();
+public function getExpire(): int;
 ```
 
 ### Check if session is new
@@ -41,7 +41,7 @@ The `is()` method is used to determine if a session is new (generally, this is t
 /**
  * @return  boolean
  */
-public function isNew();
+public function isNew(): bool;
 ```
 
 ### Get the session token
@@ -56,7 +56,7 @@ The `getToken()` method is used to fetch the current session token. This token i
  *
  * @since   __DEPLOY_VERSION__
  */
-public function getToken($forceNew = false);
+public function getToken(bool $forceNew = false): string;
 ```
 
 ### Check if the session has a token
@@ -67,14 +67,14 @@ The `hasToken()` method is used to determine if the current session token matche
 /**
  * Check if the session has the given token.
  *
- * @param   string   $token        Hashed token to be verified
+ * @param   ?string  $token        Hashed token to be verified
  * @param   boolean  $forceExpire  If true, expires the session
  *
  * @return  boolean
  *
  * @since   __DEPLOY_VERSION__
  */
-public function hasToken($token, $forceExpire = true);
+public function hasToken(?string $token, bool $forceExpire = true): bool;
 ```
 
 ### Start the session
@@ -85,7 +85,7 @@ The `start()` method is used to start the session. Generally, this includes call
 /**
  * @return  void
  */
-public function start();
+public function start(): void;
 ```
 
 ### Destroy the session
@@ -96,7 +96,7 @@ The `start()` method is used to start the session. Generally, this includes call
 /**
  * @return  boolean
  */
-public function destroy();
+public function destroy(): bool;
 ```
 
 ### Restart the session
@@ -107,7 +107,7 @@ The `restart()` method is used to restart an expired or locked session. Generall
 /**
  * @return  void
  */
-public function restart();
+public function restart(): bool;
 ```
 
 ### Fork the session
@@ -120,5 +120,5 @@ An example use of this method is to migrate the session data to a new session (w
 /**
  * @return  boolean
  */
-public function fork();
+public function fork(): bool;
 ```

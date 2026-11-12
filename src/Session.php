@@ -103,7 +103,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
      *
      * @since   1.0
      */
-    public function getExpire()
+    public function getExpire(): int
     {
         return $this->expire;
     }
@@ -115,7 +115,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
      *
      * @since   1.0
      */
-    public function getState()
+    public function getState(): string
     {
         return $this->state;
     }
@@ -132,7 +132,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
      *
      * @since   1.0
      */
-    public function getToken($forceNew = false)
+    public function getToken(bool $forceNew = false): string
     {
         // Ensure the session token exists and create it if necessary
         if (!$this->has('session.token') || $forceNew) {
@@ -145,14 +145,14 @@ class Session implements SessionInterface, DispatcherAwareInterface
     /**
      * Check if the session has the given token.
      *
-     * @param   string   $token        Hashed token to be verified
+     * @param   ?string  $token        Hashed token to be verified
      * @param   boolean  $forceExpire  If true, expires the session
      *
      * @return  boolean
      *
      * @since   1.0
      */
-    public function hasToken($token, $forceExpire = true)
+    public function hasToken(?string $token, bool $forceExpire = true): bool
     {
         $result = $this->get('session.token') === $token;
 
@@ -170,8 +170,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
      *
      * @since   1.0
      */
-    #[\ReturnTypeWillChange]
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->all());
     }
@@ -183,7 +182,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
      *
      * @since   1.0
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->store->getName();
     }
@@ -197,7 +196,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
      *
      * @since   2.0.0
      */
-    public function setName(string $name)
+    public function setName(string $name): static
     {
         $this->store->setName($name);
 
@@ -211,7 +210,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
      *
      * @since   1.0
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->store->getId();
     }
@@ -225,7 +224,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
      *
      * @since   2.0.0
      */
-    public function setId(string $id)
+    public function setId(string $id): static
     {
         $this->store->setId($id);
 
@@ -239,7 +238,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
      *
      * @since   1.0
      */
-    public function isActive()
+    public function isActive(): bool
     {
         if ($this->getState() === SessionState::ACTIVE) {
             return $this->store->isActive();
@@ -255,7 +254,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
      *
      * @since   1.0
      */
-    public function isNew()
+    public function isNew(): bool
     {
         $counter = $this->get('session.counter');
 
@@ -284,7 +283,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
      *
      * @since   1.0
      */
-    public function get($name, $default = null)
+    public function get(string $name, mixed $default = null): mixed
     {
         if (!$this->isActive()) {
             $this->start();
@@ -303,7 +302,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
      *
      * @since   1.0
      */
-    public function set($name, $value = null)
+    public function set(string $name, mixed $value = null): mixed
     {
         if (!$this->isActive()) {
             $this->start();
@@ -321,7 +320,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
      *
      * @since   1.0
      */
-    public function has($name)
+    public function has(string $name): bool
     {
         if (!$this->isActive()) {
             $this->start();
@@ -339,7 +338,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
      *
      * @since   2.0.0
      */
-    public function remove(string $name)
+    public function remove(string $name): mixed
     {
         if (!$this->isActive()) {
             $this->start();
@@ -355,7 +354,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
      *
      * @since   1.0
      */
-    public function clear()
+    public function clear(): void
     {
         if (!$this->isActive()) {
             $this->start();
@@ -387,7 +386,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
      *
      * @since   1.0
      */
-    public function start()
+    public function start(): void
     {
         if ($this->isStarted()) {
             return;
@@ -442,7 +441,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
      * @see     session_unset()
      * @since   1.0
      */
-    public function destroy()
+    public function destroy(): bool
     {
         // Session was already destroyed
         if ($this->getState() === SessionState::DESTROYED) {
@@ -465,7 +464,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
      * @see     destroy
      * @since   1.0
      */
-    public function restart()
+    public function restart(): bool
     {
         // Backup existing session data
         $data = $this->all();
@@ -525,7 +524,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
      *
      * @since   1.0
      */
-    public function fork($destroy = false)
+    public function fork(bool $destroy = false): bool
     {
         $result = $this->store->regenerate($destroy);
 
@@ -552,7 +551,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
      * @see     session_write_close()
      * @since   1.0
      */
-    public function close()
+    public function close(): void
     {
         $this->store->close();
         $this->setState(SessionState::CLOSED);
@@ -561,12 +560,12 @@ class Session implements SessionInterface, DispatcherAwareInterface
     /**
      * Perform session data garbage collection
      *
-     * @return  integer|boolean  Number of deleted sessions on success or boolean false on failure or if the function is unsupported
+     * @return  integer|false  Number of deleted sessions on success or false on failure or if the function is unsupported
      *
      * @see     session_gc()
      * @since   2.0.0
      */
-    public function gc()
+    public function gc(): int|false
     {
         if (!$this->isActive()) {
             $this->start();
@@ -616,7 +615,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
      *
      * @since   1.0
      */
-    protected function setCounter()
+    protected function setCounter(): bool
     {
         $counter = $this->get('session.counter', 0);
         $counter++;
@@ -635,7 +634,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
      *
      * @since   1.3.0
      */
-    protected function setExpire($expire)
+    protected function setExpire(int $expire): static
     {
         $this->expire = $expire;
 
@@ -651,7 +650,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
      *
      * @since   1.3.0
      */
-    protected function setState($state)
+    protected function setState(string $state): static
     {
         $this->state = $state;
 
@@ -665,7 +664,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
      *
      * @since   1.0
      */
-    protected function setTimers()
+    protected function setTimers(): bool
     {
         if (!$this->has('session.timer.start')) {
             $start = time();
@@ -690,7 +689,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
      *
      * @since   1.0
      */
-    protected function setOptions(array $options)
+    protected function setOptions(array $options): bool
     {
         // Set name
         if (isset($options['name'])) {
@@ -727,7 +726,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
      * @see     http://shiflett.org/articles/the-truth-about-sessions
      * @since   1.0
      */
-    protected function validate($restart = false)
+    protected function validate(bool $restart = false): bool
     {
         // Allow to restart a session
         if ($restart) {

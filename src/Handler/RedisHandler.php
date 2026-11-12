@@ -68,8 +68,7 @@ class RedisHandler implements HandlerInterface
      *
      * @since   2.0.0
      */
-    #[\ReturnTypeWillChange]
-    public function close()
+    public function close(): bool
     {
         // No need to close the connection to Redis server manually.
         return true;
@@ -97,14 +96,13 @@ class RedisHandler implements HandlerInterface
      *
      * @param   integer  $maxlifetime  Sessions that have not updated for the last maxlifetime seconds will be removed
      *
-     * @return  boolean  True on success, false otherwise
+     * @return  integer|false  The number of deleted sessions, false on failure
      *
      * @since   2.0.0
      */
-    #[\ReturnTypeWillChange]
-    public function gc($maxlifetime)
+    public function gc(int $maxlifetime): int|false
     {
-        return true;
+        return 0;
     }
 
     /**
@@ -129,8 +127,7 @@ class RedisHandler implements HandlerInterface
      *
      * @since   2.0.0
      */
-    #[\ReturnTypeWillChange]
-    public function open($save_path, $session_id)
+    public function open(string $save_path, string $session_id): bool
     {
         return true;
     }
@@ -144,8 +141,7 @@ class RedisHandler implements HandlerInterface
      *
      * @since   2.0.0
      */
-    #[\ReturnTypeWillChange]
-    public function read($session_id)
+    public function read(string $session_id): string|false
     {
         return $this->redis->get($this->prefix . $session_id) ?: '';
     }
@@ -160,13 +156,12 @@ class RedisHandler implements HandlerInterface
      *
      * @since   2.0.0
      */
-    #[\ReturnTypeWillChange]
-    public function write($session_id, $session_data)
+    public function write(string $session_id, string $session_data): bool
     {
         if ($this->ttl > 0) {
-            return $this->redis->setex($this->prefix . $session_id, $this->ttl, $session_data);
+            return (bool) $this->redis->setex($this->prefix . $session_id, $this->ttl, $session_data);
         }
 
-        return $this->redis->set($this->prefix . $session_id, $session_data);
+        return (bool) $this->redis->set($this->prefix . $session_id, $session_data);
     }
 }

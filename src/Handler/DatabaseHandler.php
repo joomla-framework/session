@@ -67,8 +67,7 @@ class DatabaseHandler implements HandlerInterface
      *
      * @since   2.0.0
      */
-    #[\ReturnTypeWillChange]
-    public function close()
+    public function close(): bool
     {
         if ($this->gcCalled) {
             $query = $this->db->createQuery()
@@ -181,18 +180,17 @@ class DatabaseHandler implements HandlerInterface
      *
      * @param   integer  $maxlifetime  Sessions that have not updated for the last maxlifetime seconds will be removed
      *
-     * @return  boolean  True on success, false otherwise
+     * @return  integer|false  The number of deleted sessions, false on failure
      *
      * @since   2.0.0
      */
-    #[\ReturnTypeWillChange]
-    public function gc($maxlifetime)
+    public function gc(int $maxlifetime): int|false
     {
         // We'll delay garbage collection until the session is closed to prevent potential issues mid-cycle
         $this->gcLifetime = time() - $maxlifetime;
         $this->gcCalled   = true;
 
-        return true;
+        return 0;
     }
 
     /**
@@ -217,8 +215,7 @@ class DatabaseHandler implements HandlerInterface
      *
      * @since   2.0.0
      */
-    #[\ReturnTypeWillChange]
-    public function open($save_path, $session_id)
+    public function open(string $save_path, string $session_id): bool
     {
         $this->db->connect();
 
@@ -234,8 +231,7 @@ class DatabaseHandler implements HandlerInterface
      *
      * @since   2.0.0
      */
-    #[\ReturnTypeWillChange]
-    public function read($session_id)
+    public function read(string $session_id): string|false
     {
         try {
             // Get the session data from the database table.
@@ -263,8 +259,7 @@ class DatabaseHandler implements HandlerInterface
      *
      * @since   2.0.0
      */
-    #[\ReturnTypeWillChange]
-    public function write($session_id, $session_data)
+    public function write(string $session_id, string $session_data): bool
     {
         try {
             // Figure out if a row exists for the session ID

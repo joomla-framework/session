@@ -46,8 +46,7 @@ class ApcuHandler implements HandlerInterface
      *
      * @since   2.0.0
      */
-    #[\ReturnTypeWillChange]
-    public function close()
+    public function close(): bool
     {
         return true;
     }
@@ -72,14 +71,13 @@ class ApcuHandler implements HandlerInterface
      *
      * @param   integer  $maxlifetime  Sessions that have not updated for the last maxlifetime seconds will be removed
      *
-     * @return  boolean  True on success, false otherwise
+     * @return  integer|false  The number of deleted sessions, false on failure
      *
      * @since   2.0.0
      */
-    #[\ReturnTypeWillChange]
-    public function gc($maxlifetime)
+    public function gc(int $maxlifetime): int|false
     {
-        return true;
+        return 0;
     }
 
     /**
@@ -111,8 +109,7 @@ class ApcuHandler implements HandlerInterface
      *
      * @since   2.0.0
      */
-    #[\ReturnTypeWillChange]
-    public function open($save_path, $session_id)
+    public function open(string $save_path, string $session_id): bool
     {
         return true;
     }
@@ -126,8 +123,7 @@ class ApcuHandler implements HandlerInterface
      *
      * @since   2.0.0
      */
-    #[\ReturnTypeWillChange]
-    public function read($session_id)
+    public function read(string $session_id): string|false
     {
         return (string) apcu_fetch($this->prefix . $session_id);
     }
@@ -142,11 +138,10 @@ class ApcuHandler implements HandlerInterface
      *
      * @since   2.0.0
      */
-    #[\ReturnTypeWillChange]
-    public function write($session_id, $session_data)
+    public function write(string $session_id, string $session_data): bool
     {
         $gcMaxlifetime = (int)ini_get('session.gc_maxlifetime');
 
-        return apcu_store($this->prefix . $session_id, $session_data, $gcMaxlifetime);
+        return (bool) apcu_store($this->prefix . $session_id, $session_data, $gcMaxlifetime);
     }
 }
