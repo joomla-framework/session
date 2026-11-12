@@ -17,3 +17,11 @@ The `validate` method is used to check if the session is valid. If the session i
 public function validate(bool $restart = false);
 ```
 
+### Bundled validators
+
+| Validator | Requires | What it does |
+|---|---|---|
+| `Joomla\Session\Validator\AddressValidator` | `joomla/input`, `joomla/utilities` | Stores the client address from `Joomla\Utilities\IpHelper::getIp()` in the session and invalidates the session when it changes |
+| `Joomla\Session\Validator\ForwardedValidator` | `joomla/input` | Records the `X-Forwarded-For` header in the session |
+
+Both packages are optional dependencies of `joomla/session` (listed under `suggest` in `composer.json`), so install them when you use these validators.
