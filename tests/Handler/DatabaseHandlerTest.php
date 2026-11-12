@@ -7,6 +7,7 @@
 
 namespace Joomla\Session\Tests\Handler;
 
+use Joomla\Database\DatabaseInterface;
 use Joomla\Database\Sqlite\SqliteDriver;
 use Joomla\Session\Handler\DatabaseHandler;
 use Joomla\Session\Tests\DatabaseManager;
@@ -100,5 +101,55 @@ class DatabaseHandlerTest extends DatabaseTestCase
         $this->assertTrue($this->handler->destroy($sessionId));
         $this->assertTrue($this->handler->gc(900));
         $this->assertTrue($this->handler->close());
+    }
+
+    public function testTheHandlerDoesNotDisconnectTheDatabaseOnClose()
+    {
+        $db = $this->createMock(DatabaseInterface::class);
+        $db->expects($this->never())->method('disconnect');
+
+        $this->assertTrue((new DatabaseHandler($db))->close());
+    }
+
+    public function testTheHandlerUpdatesASessionCreatedConcurrentlyBeforeItsInsert()
+    {
+        $db        = static::$connection;
+        $sessionId = 'race';
+        $raced     = false;
+
+        // Simulate a concurrent request that inserts the row after this request found none
+        $racingDb = $this->createMock(DatabaseInterface::class);
+        $racingDb->method('createQuery')->willReturnCallback(fn () => $db->createQuery());
+        $racingDb->method('quoteName')->willReturnCallback(fn ($name, $as = null) => $db->quoteName($name, $as));
+        $racingDb->method('execute')->willReturnCallback(fn () => $db->execute());
+        $racingDb->method('setQuery')->willReturnCallback(
+            function ($query) use ($db, $racingDb) {
+                $db->setQuery($query);
+
+                return $racingDb;
+            }
+        );
+        $racingDb->method('loadResult')->willReturnCallback(
+            function () use ($db, $sessionId, &$raced) {
+                $result = $db->loadResult();
+
+                if (!$raced) {
+                    $raced = true;
+
+                    (new DatabaseHandler($db))->write($sessionId, 'concurrent');
+                }
+
+                return $result;
+            }
+        );
+
+        $handler = new DatabaseHandler($racingDb);
+
+        try {
+            $this->assertTrue($handler->write($sessionId, 'mine'));
+            $this->assertSame('mine', $this->handler->read($sessionId));
+        } finally {
+            $this->handler->destroy($sessionId);
+        }
     }
 }

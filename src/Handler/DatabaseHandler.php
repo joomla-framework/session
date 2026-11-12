@@ -83,8 +83,7 @@ class DatabaseHandler implements HandlerInterface
             $this->gcLifetime = 0;
         }
 
-        $this->db->disconnect();
-
+        // The connection is usually shared with the application, so it is not disconnected here
         return true;
     }
 
@@ -165,7 +164,8 @@ class DatabaseHandler implements HandlerInterface
         try {
             $query = $this->db->createQuery()
                 ->delete($this->db->quoteName('#__session'))
-                ->where($this->db->quoteName('session_id') . ' = ' . $this->db->quote($id));
+                ->where($this->db->quoteName('session_id') . ' = ?')
+                ->bind(1, $id);
 
             // Remove a session from the database.
             $this->db->setQuery($query)->execute();
@@ -267,42 +267,64 @@ class DatabaseHandler implements HandlerInterface
     public function write($session_id, $session_data)
     {
         try {
-            // Figure out if a row exists for the session ID
-            $query = $this->db->createQuery()
-                ->select($this->db->quoteName('session_id'))
-                ->from($this->db->quoteName('#__session'))
-                ->where($this->db->quoteName('session_id') . ' = ?')
-                ->bind(1, $session_id);
-
-            $idExists = $this->db->setQuery($query)->loadResult();
-
-            $query = $this->db->createQuery();
-
             $time = time();
 
-            if ($idExists) {
-                $query->update($this->db->quoteName('#__session'))
-                    ->set($this->db->quoteName('data') . ' = ?')
-                    ->set($this->db->quoteName('time') . ' = ?')
-                    ->where($this->db->quoteName('session_id') . ' = ?')
-                    ->bind(1, $session_data)
-                    ->bind(2, $time, ParameterType::INTEGER)
-                    ->bind(3, $session_id);
-            } else {
-                $query->insert($this->db->quoteName('#__session'))
+            if (!$this->sessionExists($session_id)) {
+                $query = $this->db->createQuery()
+                    ->insert($this->db->quoteName('#__session'))
                     ->columns([$this->db->quoteName('data'), $this->db->quoteName('time'), $this->db->quoteName('session_id')])
                     ->values('?, ?, ?')
                     ->bind(1, $session_data)
                     ->bind(2, $time, ParameterType::INTEGER)
                     ->bind(3, $session_id);
+
+                try {
+                    // Try to insert the session data in the database table.
+                    $this->db->setQuery($query)->execute();
+
+                    return true;
+                } catch (ExecutionFailureException $e) {
+                    // A concurrent request may have inserted the row since the check above; if so, update it instead
+                    if (!$this->sessionExists($session_id)) {
+                        return false;
+                    }
+                }
             }
 
-            // Try to insert the session data in the database table.
+            $query = $this->db->createQuery()
+                ->update($this->db->quoteName('#__session'))
+                ->set($this->db->quoteName('data') . ' = ?')
+                ->set($this->db->quoteName('time') . ' = ?')
+                ->where($this->db->quoteName('session_id') . ' = ?')
+                ->bind(1, $session_data)
+                ->bind(2, $time, ParameterType::INTEGER)
+                ->bind(3, $session_id);
+
             $this->db->setQuery($query)->execute();
 
             return true;
         } catch (\Exception $e) {
             return false;
         }
+    }
+
+    /**
+     * Check whether a row exists for the session ID
+     *
+     * @param   string  $sessionId  The session ID
+     *
+     * @return  boolean
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function sessionExists(string $sessionId): bool
+    {
+        $query = $this->db->createQuery()
+            ->select($this->db->quoteName('session_id'))
+            ->from($this->db->quoteName('#__session'))
+            ->where($this->db->quoteName('session_id') . ' = ?')
+            ->bind(1, $sessionId);
+
+        return (bool) $this->db->setQuery($query)->loadResult();
     }
 }
