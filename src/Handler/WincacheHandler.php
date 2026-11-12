@@ -14,7 +14,8 @@ use Joomla\Session\HandlerInterface;
 /**
  * Wincache session storage handler
  *
- * @since  2.0.0
+ * @since       2.0.0
+ * @deprecated  5.0 The wincache extension is abandoned and has no PHP 8 builds; use another session handler instead.
  */
 class WincacheHandler extends \SessionHandler implements HandlerInterface
 {
@@ -25,6 +26,13 @@ class WincacheHandler extends \SessionHandler implements HandlerInterface
      */
     public function __construct()
     {
+        trigger_deprecation(
+            'joomla/session',
+            '__DEPLOY_VERSION__',
+            'The %s class is deprecated and will be removed in 5.0, as the wincache extension is abandoned. Use another session handler instead.',
+            self::class
+        );
+
         if (!headers_sent()) {
             ini_set('session.save_handler', 'wincache');
         }

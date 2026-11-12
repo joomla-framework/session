@@ -416,7 +416,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
                 trigger_deprecation(
                     'joomla/session',
                     '2.0.0',
-                    'The `onAfterSessionStart` event is deprecated and will be removed in 3.0, use the %s::START event instead.',
+                    'The `onAfterSessionStart` event is deprecated and will be removed in 5.0, use the %s::START event instead.',
                     SessionEvents::class
                 );
 
@@ -501,7 +501,7 @@ class Session implements SessionInterface, DispatcherAwareInterface
                 trigger_deprecation(
                     'joomla/session',
                     '2.0.0',
-                    'The `onAfterSessionRestart` event is deprecated and will be removed in 3.0, use the %s::RESTART event instead.',
+                    'The `onAfterSessionRestart` event is deprecated and will be removed in 5.0, use the %s::RESTART event instead.',
                     SessionEvents::class
                 );
 

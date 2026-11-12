@@ -7,9 +7,11 @@
 
 namespace Joomla\Session\Tests;
 
+use Joomla\Event\Dispatcher;
 use Joomla\Event\DispatcherInterface;
 use Joomla\Input\Input;
 use Joomla\Session\Session;
+use Joomla\Session\SessionEvents;
 use Joomla\Session\Storage\RuntimeStorage;
 use Joomla\Session\Validator\AddressValidator;
 use Joomla\Session\Validator\ForwardedValidator;
@@ -451,5 +453,50 @@ class SessionTest extends TestCase
         $this->session->start();
 
         $this->assertTrue($this->session->abort());
+    }
+
+    public function testValidateTheLegacyEventsAreDeprecatedForRemovalIn50()
+    {
+        $dispatcher = new Dispatcher();
+        $dispatcher->addListener('onAfterSessionStart', static function () {
+        });
+        $dispatcher->addListener('onAfterSessionRestart', static function () {
+        });
+
+        $this->session->setDispatcher($dispatcher);
+
+        $errors = [];
+
+        set_error_handler(
+            static function (int $level, string $message) use (&$errors): bool {
+                $errors[] = [$level, $message];
+
+                return true;
+            }
+        );
+
+        try {
+            $this->session->start();
+            $this->session->restart();
+        } finally {
+            restore_error_handler();
+        }
+
+        $this->assertContains(
+            [
+                E_USER_DEPRECATED,
+                'Since joomla/session 2.0.0: The `onAfterSessionStart` event is deprecated and will be removed in 5.0, use the '
+                . SessionEvents::class . '::START event instead.',
+            ],
+            $errors
+        );
+        $this->assertContains(
+            [
+                E_USER_DEPRECATED,
+                'Since joomla/session 2.0.0: The `onAfterSessionRestart` event is deprecated and will be removed in 5.0, use the '
+                . SessionEvents::class . '::RESTART event instead.',
+            ],
+            $errors
+        );
     }
 }

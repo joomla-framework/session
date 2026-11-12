@@ -14,3 +14,7 @@ The `isSupported` method is used to validate whether a handler can be used in th
  */
 public static function isSupported();
 ```
+
+### Deprecated handlers
+
+`Joomla\Session\Handler\WincacheHandler` is deprecated and will be removed in 5.0: the `wincache` extension is abandoned and has no PHP 8 builds. Constructing it triggers a deprecation. Use another handler, such as the `FilesystemHandler`, `DatabaseHandler`, `RedisHandler` or `MemcachedHandler`, instead.
