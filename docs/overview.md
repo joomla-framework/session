@@ -141,3 +141,63 @@ To remove a piece of data in the session storage you can call `remove()` with a 
 To check if a piece of data is present in the session storage you can call `has()` with a parameter of the variable you wish to check. This returns a boolean depending on if the data is set.
 
 You can iterate over the data in session storage by calling `getIterator()`. This will create an [ArrayIterator](https://secure.php.net/manual/en/class.arrayiterator.php) object containing all the data in the session storage object.
+
+## Hardening the session
+
+The package passes your options to PHP and adds nothing, so the defaults are whatever `php.ini`
+says — and PHP's own defaults are not what you want. Set them explicitly:
+
+```php
+use Joomla\Session\Handler\FilesystemHandler;
+use Joomla\Session\Session;
+use Joomla\Session\Storage\NativeStorage;
+
+// Not in NativeStorage's option allowlist, so it has to be set directly.
+ini_set('session.cookie_samesite', 'Lax');
+
+$session = new Session(new NativeStorage(new FilesystemHandler(), [
+    'name'             => 'app_session',
+    'use_strict_mode'  => 1,   // reject client-supplied session ids
+    'use_only_cookies' => 1,
+    'cookie_httponly'  => 1,
+    'cookie_secure'    => 1,   // only when you serve over HTTPS
+    'cookie_path'      => '/',
+    'gc_maxlifetime'   => 1440,
+]));
+```
+
+`use_strict_mode` is the important one: without it PHP adopts a session id supplied by the client,
+which is exactly what session fixation needs.
+
+Two properties of `NativeStorage::setOptions()` to keep in mind:
+
+* **Unknown keys are discarded silently.** `cookie_samesite` is not in the allowlist, so passing it
+  does nothing — set it with `ini_set()` before the session starts, as above. A typo in any other
+  key is equally silent.
+* **It returns early once the session is active**, again without saying so. Set options before
+  starting.
+
+## Regenerate the session id on login
+
+Nothing in the framework does this for you — `joomla/authentication` does not know about sessions:
+
+```php
+if ($authentication->authenticate() !== false) {
+    $session->fork(true);              // new id, destroy the old session
+    $session->set('user', $user);
+}
+```
+
+Without it, an attacker who can plant a session cookie before login keeps a valid session
+afterwards.
+
+## Things to know about the validators
+
+`AddressValidator` binds the session to the client address, and `ForwardedValidator` — despite its
+name and the `ValidatorInterface` it implements — **validates nothing**. It only records
+`X-Forwarded-For` in the session, and even that fails whenever the header contains more than one
+address, because it is checked with `FILTER_VALIDATE_IP` as a whole.
+
+`AddressValidator` reads the address through `Joomla\Utilities\IpHelper::getIp()`. If IP overrides
+are enabled there, the client controls that value and the binding is worthless; if they are
+disabled, users on rotating addresses lose their session. Decide deliberately which you want.
