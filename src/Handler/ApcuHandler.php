@@ -16,8 +16,10 @@ use Joomla\Session\HandlerInterface;
  *
  * @since  2.0.0
  */
-class ApcuHandler implements HandlerInterface
+class ApcuHandler implements HandlerInterface, \SessionIdInterface, \SessionUpdateTimestampHandlerInterface
 {
+    use SessionIdTrait;
+
     /**
      * Session ID prefix to avoid naming conflicts
      *
@@ -130,6 +132,20 @@ class ApcuHandler implements HandlerInterface
     public function read($session_id)
     {
         return (string) apcu_fetch($this->prefix . $session_id);
+    }
+
+    /**
+     * Check whether a session with the given ID exists
+     *
+     * @param   string  $id  The session ID
+     *
+     * @return  boolean
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function validateId(string $id): bool
+    {
+        return apcu_exists($this->prefix . $id);
     }
 
     /**

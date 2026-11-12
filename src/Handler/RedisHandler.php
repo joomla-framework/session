@@ -16,8 +16,10 @@ use Joomla\Session\HandlerInterface;
  *
  * @since  2.0.0
  */
-class RedisHandler implements HandlerInterface
+class RedisHandler implements HandlerInterface, \SessionIdInterface, \SessionUpdateTimestampHandlerInterface
 {
+    use SessionIdTrait;
+
     /**
      * Session ID prefix to avoid naming conflicts
      *
@@ -148,6 +150,20 @@ class RedisHandler implements HandlerInterface
     public function read($session_id)
     {
         return $this->redis->get($this->prefix . $session_id) ?: '';
+    }
+
+    /**
+     * Check whether a session with the given ID exists
+     *
+     * @param   string  $id  The session ID
+     *
+     * @return  boolean
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function validateId(string $id): bool
+    {
+        return (bool) $this->redis->exists($this->prefix . $id);
     }
 
     /**

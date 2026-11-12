@@ -85,6 +85,28 @@ class DatabaseHandlerTest extends DatabaseTestCase
         $this->assertTrue(DatabaseHandler::isSupported());
     }
 
+    public function testTheHandlerImplementsTheSessionIdInterfaces()
+    {
+        $this->assertInstanceOf(\SessionIdInterface::class, $this->handler);
+        $this->assertInstanceOf(\SessionUpdateTimestampHandlerInterface::class, $this->handler);
+    }
+
+    public function testTheHandlerValidatesSessionIds()
+    {
+        $id = $this->handler->create_sid();
+
+        $this->assertFalse($this->handler->validateId($id));
+
+        $this->handler->write($id, 'data');
+        $this->assertTrue($this->handler->validateId($id));
+
+        $this->assertTrue($this->handler->updateTimestamp($id, 'data'));
+        $this->assertSame('data', $this->handler->read($id));
+
+        $this->handler->destroy($id);
+        $this->assertFalse($this->handler->validateId($id));
+    }
+
     /**
      * @covers  Joomla\Session\Handler\DatabaseHandler
      */
