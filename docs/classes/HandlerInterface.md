@@ -6,7 +6,7 @@ Implementations of the `SessionHandlerInterface` are used by a `Joomla\Session\S
 
 ### Check if the handler is supported
 
-The `isSupported` method is used to validate whether a handler can be used in the current environment. Handlers implementing this interface should add internal checks to ensure its dependencies are available. For example, the `Joomla\Session\Handler\MemcachedHandler::isSupported()` method ensures that Memcached is available on the server.
+The `isSupported` method is used to validate whether a handler can be used in the current environment. Handlers implementing this interface should add internal checks to ensure its dependencies are available. For example, the `Joomla\Session\Handler\MemcachedHandler::isSupported()` method checks that the `memcached` PHP extension is loaded.
 
 ```php
 /*
